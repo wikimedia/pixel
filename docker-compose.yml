@@ -29,6 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-database
+    container_name: pixel-database-1
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
