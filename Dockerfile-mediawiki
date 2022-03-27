@@ -1,0 +1,38 @@
+FROM docker-registry.wikimedia.org/dev/buster-php72-fpm:2.0.0-s1
+
+# Install git review to enable git checkout by patch id.
+RUN apt-get update
+RUN apt-get -y install git-review
+
+WORKDIR /var/www/html
+
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/core.git" w
+
+WORKDIR /var/www/html/w
+
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/skins/Vector" skins/Vector
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/skins/MinervaNeue" skins/MinervaNeue
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Cite" extensions/Cite
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend" extensions/MobileFrontend
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo" extensions/Echo
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Popups" extensions/Popups
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/UniversalLanguageSelector" extensions/UniversalLanguageSelector
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging" extensions/EventLogging
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/EventBus" extensions/EventBus
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/EventStreamConfig" extensions/EventStreamConfig
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikimediaEvents" extensions/WikimediaEvents
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateStyles" extensions/TemplateStyles
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Scribunto" extensions/Scribunto
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/BetaFeatures" extensions/BetaFeatures
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/CentralNotice" extensions/CentralNotice
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Gadgets" extensions/Gadgets
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/GlobalPreferences" extensions/GlobalPreferences
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontendContentProvider" extensions/MobileFrontendContentProvider
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Parsoid" extensions/Parsoid
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/QuickSurveys" extensions/QuickSurveys
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/RelatedArticles" extensions/RelatedArticles
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor" extensions/VisualEditor
+RUN git -C extensions/VisualEditor submodule update --init
+RUN git clone --depth=1 "https://gerrit.wikimedia.org/r/schemas/event/secondary" extensions/secondary
+
+RUN composer install --no-dev --quiet

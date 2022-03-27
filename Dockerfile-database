@@ -1,0 +1,7 @@
+FROM mariadb
+
+COPY ./database.tar.gz .
+
+RUN tar xvf database.tar.gz
+
+RUN rm database.tar.gz
