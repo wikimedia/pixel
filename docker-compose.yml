@@ -7,7 +7,7 @@ services:
   mediawiki:
     build:
       context: .
-      dockerfile: Dockerfile-mediawiki
+      dockerfile: Dockerfile.mediawiki
     env_file:
       - '.env'
     environment:
@@ -28,7 +28,7 @@ services:
   database:
     build:
       context: .
-      dockerfile: Dockerfile-database
+      dockerfile: Dockerfile.database
     container_name: pixel-database-1
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1

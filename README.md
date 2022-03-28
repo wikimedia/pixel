@@ -145,5 +145,5 @@ replacing the `database.tar.gz` file in the root directory and then running the
 ### Installed extensions and skins
 
 Pixel ships with a number of MediaWiki extensions and skins already installed.
-Please reference the [Dockerfile-mediawiki](Dockerfile-mediawiki) file to see a
+Please reference the [Dockerfile.mediawiki](Dockerfile.mediawiki) file to see a
 list of these.
