@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Update core, extensions, and skins.
 time for i in . extensions/*/ skins/*/; do
   echo "************Updating $i************"
