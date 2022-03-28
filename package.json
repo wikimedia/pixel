@@ -8,6 +8,6 @@
     "test": "docker-compose run pixel test --config backstop.config.js && app/backstop_data/html_report/index.html; open app/backstop_data/html_report/index.html",
     "stop": "docker-compose down",
     "clean": "docker-compose down --rmi all -v",
-    "db:save": "docker run --rm --volumes-from pixel-database-1 -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql"
+    "db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql"
   }
 }
