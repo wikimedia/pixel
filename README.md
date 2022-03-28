@@ -80,7 +80,8 @@ npm test
 ```
 
 An HTML report of your test resuls with screenshots will be opened automatically
-after the test completes.
+on a Mac after the test completes. If you're not on a Mac, you can manually open
+the file at `backstop_data/html_report/index.html`.
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
