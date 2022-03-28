@@ -6,7 +6,10 @@
 
 Pixel is a visual regression tool for MediaWiki developers/QA engineers that
 helps you replace manual testing with automated tests that catch web ui
-regressions before users see them. It uses [BackstopJS](https://github.com/garris/BackstopJS) under the hood.
+regressions before users see them. It integrates
+[BackstopJS](https://github.com/garris/BackstopJS),
+[MediaWiki-Docker](https://www.mediawiki.org/wiki/MediaWiki-Docker), and Docker
+under the hood.
 
 Please read [T302246](https://phabricator.wikimedia.org/T302246) for the
 motivation behind Pixel.
