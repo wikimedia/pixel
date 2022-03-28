@@ -69,6 +69,8 @@ cd skins/Vector && git review -d <PATCH_ID> && git rebase origin/master
 exit
 ```
 
+If needed, Pixel's root directory also includes a `LocalSettings.php` which can be edited at anytime (no need to restart Docker) if there is MediaWiki configuration you'd like to add, change or remove.
+
 ### 3) Run all tests
 
 If you want to run all of the visual regression tests and compare the snapshots taken against the reference snapshots, then:
