@@ -30,44 +30,55 @@ module.exports = {
     // vector-2022
     {
       "label": "Main_Page (vector-2022)",
-      "url": `${BASE_URL}/wiki/Main_Page`
+      "url": `${BASE_URL}/wiki/Main_Page`,
+      // Apply a 500ms delay for the dancing tabs.
+      "delay": 1200
     },
     {
       "label": "Test (vector-2022)",
-      "url": `${BASE_URL}/wiki/Test`
+      "url": `${BASE_URL}/wiki/Test`,
+      "delay": 1200
     },
     {
       "label": "Test?action=History (vector-2022)",
-      "url": `${BASE_URL}/w/index.php?title=Test&action=history`
+      "url": `${BASE_URL}/w/index.php?title=Test&action=history`,
+      "delay": 1200
     },
     {
       "label": "Talk:Test (vector-2022)",
-      "url": `${BASE_URL}/wiki/Talk:Test`
+      "url": `${BASE_URL}/wiki/Talk:Test`,
+      "delay": 1200
     },
     {
       "label": "Tree (vector-2022)",
-      "url": `${BASE_URL}/wiki/Tree`
+      "url": `${BASE_URL}/wiki/Tree`,
+      "delay": 1200
     },
     // vector (legacy)
     {
       "label": "Main_Page (vector)",
-      "url": `${BASE_URL}/wiki/Main_Page?useskin=vector`
+      "url": `${BASE_URL}/wiki/Main_Page?useskin=vector`,
+      "delay": 1200
     },
     {
       "label": "Test (vector)",
-      "url": `${BASE_URL}/wiki/Test?useskin=vector`
+      "url": `${BASE_URL}/wiki/Test?useskin=vector`,
+      "delay": 1200
     },
     {
       "label": "Test?action=History (vector)",
-      "url": `${BASE_URL}/w/index.php?title=Test&action=history&useskin=vector`
+      "url": `${BASE_URL}/w/index.php?title=Test&action=history&useskin=vector`,
+      "delay": 1200
     },
     {
       "label": "Talk:Test (vector)",
-      "url": `${BASE_URL}/wiki/Talk:Test`
+      "url": `${BASE_URL}/wiki/Talk:Test`,
+      "delay": 1200
     },
     {
       "label": "Tree (vector)",
-      "url": `${BASE_URL}/wiki/Tree?useskin=vector`
+      "url": `${BASE_URL}/wiki/Tree?useskin=vector`,
+      "delay": 1200
     },
   ],
   "paths": {
