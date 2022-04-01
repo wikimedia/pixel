@@ -1,6 +1,6 @@
 FROM mariadb
 
-COPY ./database.tar.gz .
+ADD https://pixeltool.netlify.app/database.tar.gz  .
 
 RUN tar xvf database.tar.gz
 

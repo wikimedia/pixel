@@ -22,17 +22,6 @@ First, clone the repo wherever you wish and `cd` into it:
 git clone https://github.com/nicholasray/pixel.git && cd pixel
 ```
 
-Pixel comes with a large amount of database seed data to simulate a production
-environment. The database dump is hosted externally and needs to be downloaded
-into Pixel's root folder before using it:
-
-```sh
-curl https://pixeltool.netlify.app/database.tar.gz -O 
-```
-
-**Do not extract the `tar.gz` file**. Pixel expects a `database.tar.gz` file in its
-root directory and will extract it in its containers.
-
 Pixel runs in multiple Docker containers to eliminate inconsistent rendering
 issues across environments and also to make local installation a breeze. Please
 install [Docker](https://docs.docker.com/get-docker/) and **make sure it is
