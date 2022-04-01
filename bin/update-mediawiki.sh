@@ -18,7 +18,6 @@ time for i in . extensions/*/ skins/*/; do
   composer install --working-dir="$i" --no-dev &
 done
 
-
 wait
 # Update the database schema.
 php maintenance/update.php
