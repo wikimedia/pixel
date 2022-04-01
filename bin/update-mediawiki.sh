@@ -8,7 +8,7 @@ time for i in . extensions/*/ skins/*/; do
   echo "************Updating $i************"
   git -C "$i" fetch --depth=1
   git -C "$i" reset --hard origin
-  composer --working-dir="$i" install --no-dev 
+  composer install --working-dir="$i" --no-dev 
 done
 
 
