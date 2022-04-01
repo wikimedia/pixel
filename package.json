@@ -4,7 +4,7 @@
   "scripts": {
     "start": "docker-compose up -d",
     "bash": "docker-compose exec mediawiki bash",
-    "reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run pixel reference --config backstop.config.js",
+    "reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run visual-regression reference --config backstop.config.js",
     "test": "docker-compose run visual-regression test --config backstop.config.js && app/backstop_data/html_report/index.html; open app/backstop_data/html_report/index.html",
     "stop": "docker-compose down",
     "clean": "docker-compose down --rmi all -v",
