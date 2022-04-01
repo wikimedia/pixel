@@ -1,12 +1,15 @@
 #!/bin/bash
 
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
 # Update core, extensions, and skins.
 time for i in . extensions/*/ skins/*/; do
   echo "************Updating $i************"
-  git checkout master
-  git -C "$i" pull
-	git -C "$i" submodule update --init
-  composer install --no-dev --quiet
+  git -C "$i" fetch --depth=1
+  git -C "$i" reset --hard origin
+  composer --working-dir="$i" install --no-dev 
+  composer --working-dir="$i" update --no-dev
 done
 
 
