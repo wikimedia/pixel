@@ -120,23 +120,6 @@ skin that is feature flagged and want to enable it. All changes made in this
 file will be automatically reflected in the Docker services without having to
 restart them.
 
-### Database changes
-
-Make any database changes (e.g. adding new pages) without fear of being able to
-[revert them](#cleanup).
-
-If you'd like to save the state of your database that you can import into Pixel
-anytime later, then:
-
-```sh
-npm run db:save
-```
-
-The backup will be saved inside the `backups` directory (e.g.
-`backups/database.<datetime>tar.gz`). You can make Pixel use the file by
-replacing the `database.tar.gz` file in the root directory and then running the
-[cleanup](#cleanup) commands.
-
 ### Installed extensions and skins
 
 Pixel ships with a number of MediaWiki extensions and skins already installed.
