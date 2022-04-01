@@ -20,4 +20,4 @@ done
 
 wait
 # Update the database schema.
-php maintenance/update.php
+php maintenance/update.php --quick
