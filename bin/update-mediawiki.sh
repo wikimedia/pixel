@@ -9,7 +9,6 @@ time for i in . extensions/*/ skins/*/; do
   git -C "$i" fetch --depth=1
   git -C "$i" reset --hard origin
   composer --working-dir="$i" install --no-dev 
-  composer --working-dir="$i" update --no-dev
 done
 
 
