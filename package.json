@@ -7,7 +7,7 @@
     "reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run visual-regression reference --config backstop.config.js",
     "test": "docker-compose run visual-regression test --config backstop.config.js && app/backstop_data/html_report/index.html; open app/backstop_data/html_report/index.html",
     "stop": "docker-compose down",
-    "clean": "docker-compose down --rmi all -v",
+    "clean": "docker-compose down --rmi all -v --remove-orphans",
     "db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql"
   }
 }
