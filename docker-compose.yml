@@ -34,7 +34,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - dbdata:/var/lib/mysql
-  pixel:
+  visual-regression:
     image: backstopjs/backstopjs
     working_dir: /usr/src/app
     volumes:
