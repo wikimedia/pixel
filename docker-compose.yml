@@ -16,7 +16,7 @@ services:
     volumes:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
-      - ./bin/update-mediawiki.sh:/var/www/html/w/update-mediawiki.sh
+      - ./scripts:/scripts
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
     user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
