@@ -1,4 +1,12 @@
 const BASE_URL = `http://mediawiki-web:8080`;
+const tests = require('../config.json').tests;
+
+const scenarios = tests.map( test => {
+  return Object.assign( {}, test, {
+    url: `${BASE_URL}${test.path}`,
+    delay: 1500
+  } );
+} );
 
 module.exports = {
   "id": "MediaWiki",
@@ -26,61 +34,7 @@ module.exports = {
   ],
   "onBeforeScript": "puppet/onBefore.js",
   "onReadyScript": "puppet/onReady.js",
-  "scenarios": [
-    // vector-2022
-    {
-      "label": "Main_Page (vector-2022)",
-      "url": `${BASE_URL}/wiki/Main_Page`,
-      // Apply a 500ms delay for the dancing tabs.
-      "delay": 1500
-    },
-    {
-      "label": "Test (vector-2022)",
-      "url": `${BASE_URL}/wiki/Test`,
-      "delay": 1500
-    },
-    {
-      "label": "Test?action=History (vector-2022)",
-      "url": `${BASE_URL}/w/index.php?title=Test&action=history`,
-      "delay": 1500
-    },
-    {
-      "label": "Talk:Test (vector-2022)",
-      "url": `${BASE_URL}/wiki/Talk:Test`,
-      "delay": 1500
-    },
-    {
-      "label": "Tree (vector-2022)",
-      "url": `${BASE_URL}/wiki/Tree`,
-      "delay": 1500
-    },
-    // vector (legacy)
-    {
-      "label": "Main_Page (vector)",
-      "url": `${BASE_URL}/wiki/Main_Page?useskin=vector`,
-      "delay": 1500
-    },
-    {
-      "label": "Test (vector)",
-      "url": `${BASE_URL}/wiki/Test?useskin=vector`,
-      "delay": 1500
-    },
-    {
-      "label": "Test?action=History (vector)",
-      "url": `${BASE_URL}/w/index.php?title=Test&action=history&useskin=vector`,
-      "delay": 1500
-    },
-    {
-      "label": "Talk:Test (vector)",
-      "url": `${BASE_URL}/wiki/Talk:Test`,
-      "delay": 1500
-    },
-    {
-      "label": "Tree (vector)",
-      "url": `${BASE_URL}/wiki/Tree?useskin=vector`,
-      "delay": 1500
-    },
-  ],
+  scenarios,
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",

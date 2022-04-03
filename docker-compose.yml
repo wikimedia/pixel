@@ -35,7 +35,8 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
   visual-regression:
-    image: backstopjs/backstopjs
+    image: backstopjs/backstopjs:6.0.4
     working_dir: /usr/src/app
     volumes:
       - ./app:/usr/src/app
+      - ./config.json:/usr/src/config.json

@@ -1,0 +1,44 @@
+{
+	"tests": [
+		{
+			"label": "Main_Page (vector-2022)",
+			"path": "/wiki/Main_Page"
+		},
+		{
+			"label": "Test (vector-2022)",
+			"path": "/wiki/Test"
+		},
+		{
+			"label": "Test?action=History (vector-2022)",
+			"path": "/w/index.php?title=Test&action=history"
+		},
+		{
+			"label": "Talk:Test (vector-2022)",
+			"path": "/wiki/Talk:Test"
+		},
+		{
+			"label": "Tree (vector-2022)",
+			"path": "/wiki/Tree"
+		},
+		{
+			"label": "Main_Page (vector)",
+			"path": "/wiki/Main_Page?useskin=vector"
+		},
+		{
+			"label": "Test (vector)",
+			"path": "/wiki/Test?useskin=vector"
+		},
+		{
+			"label": "Test?action=History (vector)",
+			"path": "/w/index.php?title=Test&action=history&useskin=vector"
+		},
+		{
+			"label": "Talk:Test (vector)",
+			"path": "/wiki/Talk:Test"
+		},
+		{
+			"label": "Tree (vector)",
+			"path": "/wiki/Tree?useskin=vector"
+		}
+	]
+}
