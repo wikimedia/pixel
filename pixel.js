@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-
 const spawn = require( 'child_process' ).spawn;
 
 /**
  * @param {string} command
  * @param {string[]} args
- * @return {Promise}
+ * @return {Promise<number>}
  */
 function createSpawn( command, args ) {
 	return new Promise( ( resolve, reject ) => {
@@ -30,7 +29,7 @@ function createSpawn( command, args ) {
  * @param {'test'|'reference'} type
  * @param {any} opts
  */
-async function start( type, opts ) {
+async function processCommand( type, opts ) {
 	try {
 		// Start docker containers.
 		await createSpawn( 'docker-compose', [ 'up', '-d' ] );
@@ -42,8 +41,12 @@ async function start( type, opts ) {
 		// Execute Visual regression
 		await createSpawn(
 			'docker-compose',
-			[ 'run', 'visual-regression', type, '--config', 'backstop.config.js' ]
-		);
+			[ 'run', '--rm', 'visual-regression', type, '--config', 'backstop.config.js' ]
+		).finally( async () => {
+			if ( type === 'test' ) {
+				await createSpawn( 'open', [ 'app/backstop_data/html_report/index.html' ] );
+			}
+		} );
 
 	} catch ( err ) {
 		console.log( `Exited with code ${err}` );
@@ -69,12 +72,11 @@ function setupCli() {
 
 	program
 		.command( 'reference' )
-		.description( 'Create reference (baseline) screenshots that your test snapshots will be compared against.' )
+		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
 		.action( ( opts ) => {
-			console.log( 'in reference', opts );
-			start( 'reference', opts );
+			processCommand( 'reference', opts );
 		} );
 
 	program
@@ -83,12 +85,10 @@ function setupCli() {
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
 		.action( ( opts ) => {
-			console.log( 'in test', opts );
-			start( 'test', opts );
+			processCommand( 'test', opts );
 		} );
 
 	program.parse();
-
 }
 
 setupCli();

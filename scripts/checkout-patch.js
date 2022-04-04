@@ -49,6 +49,11 @@ function getPath( change, repos ) {
 }
 
 /**
+ * Processes a list of Change-Ids and checks out the appropriate patches. Kudos
+ * to the devs of PatchDemo [1] for figuring out much of what follows.
+ *
+ * [1] https://github.com/MatmaRex/patchdemo
+ *
  * @param {string[]} changeQueue
  * @param {Repos} repos
  */

@@ -8,6 +8,5 @@ for repo in "${repos[@]}"; do
 	git clone "https://gerrit.wikimedia.org/r/$repo.git" $path
 done
 
-ls extensions
 git -C "extensions/VisualEditor" submodule update --init
 composer install --no-dev --quiet

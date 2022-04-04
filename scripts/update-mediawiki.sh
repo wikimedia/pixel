@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-
 # Update core, extensions, and skins.
 time for i in . extensions/*/ skins/*/; do
+  git -C "$i" checkout $BRANCH &&
+  git -C "$i" reset --hard &&
   git -C "$i" pull &
 done
 
