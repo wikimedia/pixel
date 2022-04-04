@@ -3,10 +3,9 @@
 	"name": "pixel",
 	"scripts": {
 		"start": "docker-compose up -d",
-		"bash": "docker-compose exec mediawiki bash",
-		"reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run visual-regression reference --config backstop.config.js",
 		"stop": "docker-compose down",
 		"clean": "docker-compose down --rmi all -v --remove-orphans",
+		"bash": "docker-compose exec mediawiki bash",
 		"db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql",
 		"lint": "eslint --cache .",
 		"test": "npm -s run lint && tsc",
