@@ -1,89 +1,132 @@
 #!/usr/bin/env node
-const client = require('axios').default;
-const util = require('util');
-const exec = util.promisify(require("child_process").exec);
+const client = require( 'axios' ).default;
+const util = require( 'util' );
+const exec = util.promisify( require( 'child_process' ).exec );
 
-async function getGerrit(path) {
-	console.log(`https://gerrit.wikimedia.org/r/${path}` );
-	const res = await client.get(`https://gerrit.wikimedia.org/r/${path}`);
+/**
+ * @typedef {Object} Commit
+ * @property {string} commit
+ */
 
-	return JSON.parse(res.data.substring(4));
+/**
+ * @typedef {Object} RelatedChange
+ * @property {Commit} commit
+ * @property {number} _change_number
+ * @property {number} _revision_number
+ */
+
+/**
+ * @typedef {Object} Change
+ * @property {string} project
+ */
+
+/**
+ * @typedef {Object} RepoDetails
+ * @property {string} path
+ */
+
+/**
+ * @typedef {Object<string, RepoDetails>} Repos
+ */
+
+/**
+ * @param {string} path
+ */
+async function getGerrit( path ) {
+	console.log( `https://gerrit.wikimedia.org/r/${path}` );
+	const res = await client.get( `https://gerrit.wikimedia.org/r/${path}` );
+
+	return JSON.parse( res.data.slice( 4 ) );
 }
 
-function getPath(change) {
-	return repos[change['project']]['path'];
+/**
+ * @param {Change} change
+ * @param {Repos} repos
+ * @return {string}
+ */
+function getPath( change, repos ) {
+	return repos[ change.project ].path;
 }
 
+/**
+ * @param {string[]} changeQueue
+ * @param {Repos} repos
+ */
 async function processQueue( changeQueue, repos ) {
 	const commands = [];
 
 	while ( changeQueue.length ) {
 		const changeId = changeQueue.shift();
-		const changes = (await getGerrit( `changes/?q=change:${changeId}&o=LABELS&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=DOWNLOAD_COMMANDS` ))
-		const change = changes[0];
+		const changes = ( await getGerrit( `changes/?q=change:${changeId}&o=LABELS&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=DOWNLOAD_COMMANDS` ) );
+		const change = changes[ 0 ];
 
-		if ( changes.length === 0  ) {
-			throw new Error( `Change-Id "${change['project']}'" was not found.` );
+		if ( changes.length === 0 ) {
+			throw new Error( `Change-Id "${change.project}'" was not found.` );
 		}
 
-		if ( changes.length > 1  ) {
+		if ( changes.length > 1 ) {
 			throw new Error( `Change-Id "${changeId}'" returned ${changes.length} results, but only one was expected.` );
 		}
 
-		if ( !repos[change['project']] ) {
-			throw new Error( `Project "${change['project']}" is not supported.` );
+		if ( !repos[ change.project ] ) {
+			throw new Error( `Project "${change.project}" is not supported.` );
 		}
 
-		const path = getPath(change);
+		const path = getPath( change, repos );
 
-		if (!change['current_revision']) {
+		if ( !change.current_revision ) {
 			throw new Error( `Could not find current revision for Change-Id "${changeId}".` );
 		}
 
-		commands.push( 
+		commands.push(
 			`cd ${path} && 
-			git fetch origin ${change['revisions'][change['current_revision']]['ref']} && 
-			git rebase --onto HEAD origin/${change.branch} ${change['current_revision']}`
+			git fetch origin ${change.revisions[ change.current_revision ].ref} && 
+			git rebase --onto HEAD origin/${change.branch} ${change.current_revision}`
 		);
 
-		/** @type {array} */
-		const relatedChanges = (await getGerrit( `changes/${change.id}/revisions/${change['revisions'][change['current_revision']]['_number']}/related`))['changes'];
+		/** @type {RelatedChange[]} */
+		// eslint-disable-next-line no-underscore-dangle
+		const relatedChanges = ( await getGerrit( `changes/${change.id}/revisions/${change.revisions[ change.current_revision ]._number}/related` ) ).changes;
 
 		const dependsOnQueue = [
 			{
-				changeNumber: change['_number'],
-				revisionNumber: change['revisions'][change['current_revision']]['_number']
+				// eslint-disable-next-line no-underscore-dangle
+				changeNumber: change._number,
+				// eslint-disable-next-line no-underscore-dangle
+				revisionNumber: change.revisions[ change.current_revision ]._number
 			}
 		];
 
 		let isCommitFound = false;
-		relatedChanges.forEach( relatedChange => {
-			if (isCommitFound) {
-				dependsOnQueue.push({
-					changeNumber: relatedChange['_change_number'],
-					revisionNumber: relatedChange['_revision_number']
-				})
+		relatedChanges.forEach( ( relatedChange ) => {
+			if ( isCommitFound ) {
+				dependsOnQueue.push( {
+					// eslint-disable-next-line no-underscore-dangle
+					changeNumber: relatedChange._change_number,
+					// eslint-disable-next-line no-underscore-dangle
+					revisionNumber: relatedChange._revision_number
+				} );
 				return;
 			}
 
-			if (relatedChange['commit']['commit'] === change['current_revision']) {
+			if ( relatedChange.commit.commit === change.current_revision ) {
 				isCommitFound = true;
 			}
-		});
+		} );
 
-		await dependsOnQueue.reduce( async (memo, item) => {
-			const commit = await getGerrit( `changes/${item.changeNumber}/revisions/${item.revisionNumber}/commit`, true );
-			let matches = [...commit.message.matchAll(/^Depends-On: (.+)$/gm)]
+		await Promise.all( dependsOnQueue.map( async ( item ) => {
+			const commit = await getGerrit( `changes/${item.changeNumber}/revisions/${item.revisionNumber}/commit` );
+			const matches = [ ...commit.message.matchAll( /^Depends-On: (.+)$/gm ) ];
 
-			matches.forEach( match => {
-				changeQueue.push( match[1] );
+			matches.forEach( ( match ) => {
+				changeQueue.push( match[ 1 ] );
 			} );
-		}, undefined );
+		} ) );
 	}
 
-	await commands.reduce( async (memo, command) => {
+	await Promise.all( commands.map( async ( command ) => {
 		await exec( command );
-	}, undefined );
+	} ) );
 }
 
 module.exports = processQueue;

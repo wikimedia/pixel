@@ -1,13 +1,24 @@
 {
-  "private": true,
-  "name": "pixel",
-  "scripts": {
-    "start": "docker-compose up -d",
-    "bash": "docker-compose exec mediawiki bash",
-    "reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run visual-regression reference --config backstop.config.js",
-    "test": "docker-compose run visual-regression test --config backstop.config.js && app/backstop_data/html_report/index.html; open app/backstop_data/html_report/index.html",
-    "stop": "docker-compose down",
-    "clean": "docker-compose down --rmi all -v --remove-orphans",
-    "db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql"
-  }
+	"private": true,
+	"name": "pixel",
+	"scripts": {
+		"start": "docker-compose up -d",
+		"bash": "docker-compose exec mediawiki bash",
+		"reference": "docker-compose exec mediawiki ./update-mediawiki.sh && docker-compose run visual-regression reference --config backstop.config.js",
+		"stop": "docker-compose down",
+		"clean": "docker-compose down --rmi all -v --remove-orphans",
+		"db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql",
+		"lint": "eslint --cache .",
+		"test": "npm -s run lint && tsc",
+		"pre-commit": "[ \"${PRE_COMMIT:-1}\" -eq 0 ] || npm -s t"
+	},
+	"pre-commit": "pre-commit",
+	"devDependencies": {
+		"pre-commit": "^1.2.2",
+		"typescript": "^4.6.3"
+	},
+	"dependencies": {
+		"@types/node": "^17.0.23",
+		"eslint-config-wikimedia": "^0.22.1"
+	}
 }

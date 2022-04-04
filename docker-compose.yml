@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 volumes:
   dbdata:
@@ -10,9 +10,9 @@ services:
       context: .
       dockerfile: Dockerfile.mediawiki
     env_file:
-      - '.env'
+      - .env
     environment:
-      COMPOSER_CACHE_DIR: '/var/www/html/w/cache/composer'
+      COMPOSER_CACHE_DIR: /var/www/html/w/cache/composer
     volumes:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
@@ -23,7 +23,7 @@ services:
     ports:
       - "${MW_DOCKER_PORT:-8080}:8080"
     env_file:
-      - '.env'
+      - .env
     volumes:
       - mwcode:/var/www/html/w
   database:

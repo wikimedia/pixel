@@ -1,29 +1,29 @@
 #!/usr/bin/env node
 const checkoutPatch = require( './checkout-patch' );
-const repos = require('../repositories.json');
-const { program } = require('commander');
-const branchOpt = [ '-b, --branch <name-of-branch>', 'Name of branch. Can be `master` or a release branch (e.g. `origin/wmf/1.37.0-wmf.19`)', 'master' ];
-const changeIdOpt = [ '-c, --change-id <Change-Id...>', 'The Change-Id to use' ];
+const repos = require( '../repositories.json' );
+const { program } = require( 'commander' );
+const branchOpt = /** @type {const} */ ( [ '-b, --branch <name-of-branch>', 'Name of branch. Can be `master` or a release branch (e.g. `origin/wmf/1.37.0-wmf.19`)', 'master' ] );
+const changeIdOpt = /** @type {const} */ ( [ '-c, --change-id <Change-Id...>', 'The Change-Id to use' ] );
 
 program
-	.command('reference')
-	.description('Take reference snapshots')
-  .requiredOption( ...branchOpt )
-  .option( ...changeIdOpt )
-	.action( (opts) => {
-		console.log("in reference", opts);
-		checkoutPatch( opts['changeId'], repos );
-	});
+	.command( 'reference' )
+	.description( 'Take reference snapshots' )
+	.requiredOption( ...branchOpt )
+	.option( ...changeIdOpt )
+	.action( ( opts ) => {
+		console.log( 'in reference', opts );
+		checkoutPatch( opts.changeId, repos );
+	} );
 
 program
-	.command('test')
-	.description('Take test snapshots')
-  .requiredOption(...branchOpt)
-  .option(...changeIdOpt)
-	.action( (opts) => {
-		console.log("in test", opts);
-		checkoutPatch( opts['changeId'], repos );
-	});
+	.command( 'test' )
+	.description( 'Take test snapshots' )
+	.requiredOption( ...branchOpt )
+	.option( ...changeIdOpt )
+	.action( ( opts ) => {
+		console.log( 'in test', opts );
+		checkoutPatch( opts.changeId, repos );
+	} );
 
 program.parse();
 
