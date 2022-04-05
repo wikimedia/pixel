@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
-
 const spawn = require( 'child_process' ).spawn;
 
 /**
@@ -70,8 +69,6 @@ async function update( branch, repos ) {
 		branch = 'origin/main';
 	}
 
-	// for ( const id of Object.keys( repos ) ) {
-	// }
 	await Promise.all( Object.keys( repos ).map( async ( id ) => {
 		const path = repos[ id ].path;
 		const childProcess = await exec( `git -C ${path} for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );

@@ -6,6 +6,7 @@ for repo in "${repos[@]}"; do
 	echo "Cloning $repo..."
 	path=$( echo $1 | jq -rc ".[\"$repo\"].path" )
 	git clone "https://gerrit.wikimedia.org/r/$repo.git" $path
+	git -C $path checkout origin
 done
 
 git -C "extensions/VisualEditor" submodule update --init
