@@ -50,7 +50,7 @@ function execUpdateCommand( branch, path ) {
 		git -C "${path}" checkout ${branch}
 
 		echo "Composer install: ${path}"
-		if [ -e "ve/composer.json" ]; then composer install --working-dir="${path}" --no-dev; fi;`,
+		if [ -e "${path}/composer.json" ]; then composer install --working-dir="${path}" --no-dev -n -q; fi;`,
 		[],
 		{ shell: true }
 	);
