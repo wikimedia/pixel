@@ -47,11 +47,8 @@ function execUpdateCommand( branch, path ) {
 	return createSpawn(
 		`
 		echo "Git checkout: ${path}"
+		git -C "${path}" fetch origin
 		git -C "${path}" checkout ${branch}
-		git -C "${path}" fetch
-		git -C "${path}" reset --hard
-		git -C "${path}" clean -fd
-		git -C "${path}" merge origin/master
 
 		echo "Composer install: ${path}"
 		if [ -e "ve/composer.json" ]; then composer install --working-dir="${path}" --no-dev; fi;`,
