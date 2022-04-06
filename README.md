@@ -63,7 +63,7 @@ If you want to pull a change or multiple changes down from gerrit, take screensh
 
 Note that although change id `Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2` has a
 `Depends-On` dependency, it is the only change that needs to be passed. Pixel
-will figure out and pull down the rest of the dependencies provided Pixel has
+will figure out and pull down the rest of the dependencies provided that it has
 the relevant repositories (set in repositories.json).
 
 An HTML report of your test resuls with screenshots will be opened automatically
