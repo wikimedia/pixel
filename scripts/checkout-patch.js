@@ -1,7 +1,35 @@
 #!/usr/bin/env node
-const client = require( 'axios' ).default;
 const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
+const https = require( 'https' );
+
+const client = {
+	/**
+	 * @param {string} url
+	 * @return {Promise<string>}
+	 */
+	get: ( url ) => {
+		let data = '';
+		return new Promise( ( resolve, reject ) => {
+			https.get( url, ( res ) => {
+				res.setEncoding( 'utf8' );
+
+				res.on( 'data', ( chunk ) => {
+					data += chunk;
+				} );
+
+				res.on( 'end', () => {
+					resolve( data );
+				} );
+
+				res.on( 'error', ( e ) => {
+					console.error( e );
+					reject( e );
+				} );
+			} );
+		} );
+	}
+};
 
 /**
  * @typedef {Object} Commit
@@ -36,7 +64,7 @@ async function getGerrit( path ) {
 	console.log( `https://gerrit.wikimedia.org/r/${path}` );
 	const res = await client.get( `https://gerrit.wikimedia.org/r/${path}` );
 
-	return JSON.parse( res.data.slice( 4 ) );
+	return JSON.parse( res.slice( 4 ) );
 }
 
 /**

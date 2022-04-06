@@ -8,8 +8,6 @@ RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 COPY scripts /scripts
 COPY repositories.json /repositories.json
 
-RUN npm --prefix /scripts install
-
 WORKDIR /var/www/html/w
 
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"

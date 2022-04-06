@@ -1,7 +1,0 @@
-{
-	"private": true,
-	"name": "scripts",
-	"dependencies": {
-		"axios": "^0.26.1"
-	}
-}
