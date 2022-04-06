@@ -39,9 +39,9 @@ Your workflow will usually involve the following ordered steps:
 
 ### 1) Take reference (baseline) screenshots with `master` or release branch code
 
-If you want to checkout the latest code in `master` from MediaWiki core and all
-of its installed extensions and skins and then take reference screenshots that
-your test snapshots (step 2) will be compared against, then:
+If you want to checkout the latest code in `master` or `main` from MediaWiki
+core and all of its installed extensions and skins and then take reference
+screenshots that your test snapshots (step 2) will be compared against, then:
 
 ```sh
 ./pixel.js reference
