@@ -27,49 +27,44 @@ issues across environments and also to make local installation a breeze. Please
 install [Docker](https://docs.docker.com/get-docker/) and **make sure it is
 running** prior to using Pixel.
 
-Finally, start all of the required docker services:
+Finally, install the CLI dependency:
 
 ```sh
-npm start
+npm install
 ```
 
 ## Usage
 
 Your workflow will usually involve the following ordered steps:
 
-### 1) Take reference snapshots of `master` code
+### 1) Take reference (baseline) screenshots with `master` or release branch code
 
 If you want to checkout the latest code in `master` from MediaWiki core and all
-of its installed extensions and skins and then take reference snapshots that
-your test snapshots will be compared against, then:
+of its installed extensions and skins and then take reference screenshots that
+your test snapshots (step 2) will be compared against, then:
 
 ```sh
-npm run reference
+./pixel.js reference
 ```
 
-### 2) Pull code changes related to your feature
-
-Use the `npm run bash` command to enter the MediaWiki container where you can
-make any code changes you wish. For example, if you want to checkout a `Vector`
-gerrit patch with [git
-review](https://docs.opendev.org/opendev/git-review/latest/) and rebase it on
-top of master, then: 
+Or if you want the reference to be a certain release branch:
 
 ```sh
-npm run bash
-cd skins/Vector && git review -d <PATCH_ID> && git rebase origin/master
-exit
+./pixel.js reference -b origin/wmf/1.37.0-wmf.19
 ```
 
-If needed, Pixel's root directory also includes a `LocalSettings.php` which can be edited at anytime (no need to restart Docker) if there is MediaWiki configuration you'd like to add, change or remove.
+### 2) Take test screenshots with changed code
 
-### 3) Run all tests
-
-If you want to run all of the visual regression tests and compare the snapshots taken against the reference snapshots, then:
+If you want to pull a change or multiple changes down from gerrit, take screenshots with these changes on top of master and then compare these screenshots against the reference screenshots, then
 
 ```sh
-npm test 
+./pixel.js test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2
 ```
+
+Note that although change id `Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2` has a
+`Depends-On` dependency, it is the only change that needs to be passed. Pixel
+will figure out and pull down the rest of the dependencies provided Pixel has
+the relevant repositories (set in repositories.json).
 
 An HTML report of your test resuls with screenshots will be opened automatically
 on a Mac after the test completes. If you're not on a Mac, you can manually open
@@ -94,7 +89,6 @@ run:
 
 ```
 npm run clean
-npm start
 ```
 
 Note that if you've made changes to LocalSettings.php and want to reset that,
@@ -123,5 +117,5 @@ restart them.
 ### Installed extensions and skins
 
 Pixel ships with a number of MediaWiki extensions and skins already installed.
-Please reference the [Dockerfile.mediawiki](Dockerfile.mediawiki) file to see a
+Please reference the [repositories.json](repositories.json) file to see a
 list of these.
