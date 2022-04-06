@@ -83,9 +83,9 @@ npm stop
 
 ### Cleanup
 
-Sometimes after making MediaWiki code changes or database changes you just want
-to throw away everything and start Pixel with a clean slate. To do that, simply
-run:
+Sometimes after making MediaWiki code changes, database changes, or having
+issuees with the containers you just want to throw away everything and start
+Pixel with a clean slate. To do that, simply run:
 
 ```
 npm run clean
