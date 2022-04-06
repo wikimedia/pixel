@@ -41,7 +41,7 @@ Your workflow will usually involve the following ordered steps:
 
 If you want to checkout the latest code in `master` or `main` from MediaWiki
 core and all of its installed extensions and skins and then take reference
-screenshots that your test snapshots (step 2) will be compared against, then:
+screenshots that your test screenshots (step 2) will be compared against, then:
 
 ```sh
 ./pixel.js reference
