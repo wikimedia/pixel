@@ -1,39 +1,6 @@
 version: "3.8"
 
-volumes:
-  dbdata:
-    name: pixel_dbdata
-  mwcode:
 services:
-  mediawiki:
-    build:
-      context: .
-      dockerfile: Dockerfile.mediawiki
-    env_file:
-      - .env
-    environment:
-      COMPOSER_CACHE_DIR: /var/www/html/w/cache/composer
-    volumes:
-      - mwcode:/var/www/html/w
-      - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
-      - ./scripts:/scripts
-  mediawiki-web:
-    image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
-    user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
-    ports:
-      - "${MW_DOCKER_PORT:-8080}:8080"
-    env_file:
-      - .env
-    volumes:
-      - mwcode:/var/www/html/w
-  database:
-    build:
-      context: .
-      dockerfile: Dockerfile.database
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-    volumes:
-      - dbdata:/var/lib/mysql
   visual-regression:
     image: backstopjs/backstopjs:6.0.4
     working_dir: /usr/src/app
