@@ -66,9 +66,9 @@ Note that although change id `Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2` has a
 will figure out and pull down the rest of the dependencies provided that it has
 the relevant repositories (set in repositories.json).
 
-An HTML report of your test resuls with screenshots will be opened automatically
-on a Mac after the test completes. If you're not on a Mac, you can manually open
-the file at `app/backstop_data/html_report/index.html`.
+An HTML report of your test results with screenshots will be opened
+automatically on a Mac after the test completes. If you're not on a Mac, you can
+manually open the file at `app/backstop_data/html_report/index.html`.
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
@@ -84,8 +84,8 @@ npm stop
 ### Cleanup
 
 Sometimes after making MediaWiki code changes, database changes, or having
-issuees with the containers you just want to throw away everything and start
-Pixel with a clean slate. To do that, simply run:
+issues with the containers you just want to throw away everything and start
+Pixel with a clean slate. To do that, run:
 
 ```
 npm run clean
