@@ -47,7 +47,7 @@ function execUpdateCommand( branch, path ) {
 		`
 		echo "Git checkout: ${path}"
 		git -C "${path}" fetch origin
-		git -C "${path}" checkout ${branch}
+		git -C "${path}" checkout -f ${branch}
 
 		echo "Composer install: ${path}"
 		if [ -e "${path}/composer.json" ]; then composer install --working-dir="${path}" --no-dev -n -q; fi;`,
