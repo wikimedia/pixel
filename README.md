@@ -45,6 +45,13 @@ screenshots that your test screenshots (step 2) will be compared against, then:
 
 ```sh
 ./pixel.js reference
+
+```
+
+Or if you want the reference to be the latest release branch:
+
+```sh
+./pixel.js reference -b latest-release
 ```
 
 Or if you want the reference to be a certain release branch:
