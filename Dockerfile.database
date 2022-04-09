@@ -1,5 +1,3 @@
 FROM mariadb
 
-ADD https://pixeltool.netlify.app/database.tar.gz  .
-
-RUN tar xvf database.tar.gz && rm database.tar.gz
+RUN apt-get update && apt-get install curl -y
