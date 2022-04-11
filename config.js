@@ -1,12 +1,24 @@
 const BASE_URL = 'http://mediawiki-web:8080';
 const tests = [
 	{
-		label: 'Main_Page (vector-2022)',
-		path: '/wiki/Main_Page'
+		label: "Main_Page (vector-2022)",
+		path: "/wiki/Main_Page"
 	},
 	{
-		label: 'Test (vector-2022)',
-		path: '/wiki/Test'
+		label: "Test (vector-2022, #sidebar-closed, #userMenu-closed)",
+		path: "/wiki/Test"
+	},
+	{
+		label: "Test (vector-2022, #sidebar-open)",
+		path: "/wiki/Test"
+	},
+	{
+		label: "Test (vector-2022, #userMenu-open)",
+		path: "/wiki/Test"
+	},
+	{
+		label: "Special:RecentChanges (no max width, #sidebar-closed)",
+		path: "/wiki/Special:RecentChanges"
 	},
 	{
 		label: 'Test?action=History (vector-2022)',
