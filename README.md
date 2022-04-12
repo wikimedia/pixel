@@ -1,6 +1,6 @@
 # Pixel
 
-![Visual regression HTML reporter showing failing and passing tests](assets/reporter.png)
+![Visual regression HTML reporter showing failing and passing tests](reporter.png)
 
 🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous.** 🚨
 
