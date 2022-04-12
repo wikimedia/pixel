@@ -75,7 +75,7 @@ the relevant repositories (set in repositories.json).
 
 An HTML report of your test results with screenshots will be opened
 automatically on a Mac after the test completes. If you're not on a Mac, you can
-manually open the file at `app/backstop_data/html_report/index.html`.
+manually open the file at `report/index.html`.
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
@@ -109,7 +109,7 @@ git checkout -- LocalSettings.php
 
 ### Changing or adding tests
 
-All tests are located in [backstop.config.js](app/backstop.config.js) and follow
+All tests are located in [config.js](config.js) and follow
 BackstopJS conventions. For more info on how to change or add tests, please
 refer to the [BackstopJS](https://github.com/garris/BackstopJS) README.
 
