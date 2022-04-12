@@ -45,11 +45,6 @@ Thumbs.db
 # VSCode
 .vscode
 
-# Backstop
-app/backstop_data/bitmaps_test
-app/backstop_data/bitmaps_reference
-app/backstop_data/html_report
-
 # Database tar and backups
 database.tar.gz
 backups

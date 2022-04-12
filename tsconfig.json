@@ -1,11 +1,12 @@
 {
 	"include": [
 		"scripts",
-		"app"
+		"app",
+		"config.js"
 	],
 	"exclude": [
-		"app/backstop_data/engine_scripts",
-		"app/backstop_data/html_report"
+		"app/engine-scripts",
+		"report"
 	],
 	"compilerOptions": {
 		"lib": [

@@ -61,10 +61,10 @@ async function processCommand( type, opts ) {
 		// Execute Visual regression
 		await createSpawn(
 			'docker-compose',
-			[ 'run', '--rm', 'visual-regression', type, '--config', 'backstop.config.js' ]
+			[ 'run', '--rm', 'visual-regression', type, '--config', 'config.js' ]
 		).finally( async () => {
 			if ( type === 'test' ) {
-				await createSpawn( 'open', [ 'app/backstop_data/html_report/index.html' ] );
+				await createSpawn( 'open', [ 'report/index.html' ] );
 			}
 		} );
 
