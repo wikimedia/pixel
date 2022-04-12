@@ -56,7 +56,7 @@ async function processCommand( type, opts ) {
 		// Execute main.js.
 		await createSpawn(
 			'docker-compose',
-			[ 'exec', 'mediawiki', '/scripts/main.js', JSON.stringify( opts ) ]
+			[ 'exec', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
 		);
 		// Execute Visual regression
 		await createSpawn(

@@ -1,11 +1,10 @@
 {
 	"include": [
-		"scripts",
-		"app",
+		"src",
 		"config.js"
 	],
 	"exclude": [
-		"app/engine-scripts",
+		"src/engine-scripts",
 		"report"
 	],
 	"compilerOptions": {
