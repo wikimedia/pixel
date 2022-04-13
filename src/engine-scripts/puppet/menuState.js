@@ -1,5 +1,5 @@
 const menuState = async (page, buttonSelector, isClosed) => {
-    await page.waitFor(buttonSelector);
+    await page.waitForSelector(buttonSelector);
     await page.evaluate((selector, isExpectedClosed)  => {
       const btn = document.querySelector(selector);
       const checkbox = btn.getAttribute('type') === 'checkbox' ?
