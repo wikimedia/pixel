@@ -138,6 +138,19 @@ wfLoadSkin( 'Vector' );
 # End of automatically generated settings.
 # Add more configuration options below.
 
+// Use same localisation cache settings as production. This also seems to get
+// rid of localisation errors associated with the `array` store (set by
+// PlatformSettings.php) when checking out patches/release branches.
+$wgLocalisationCacheConf = [
+	'class' => LocalisationCache::class,
+	'store' => 'detect',
+	'storeClass' => false,
+	'storeDirectory' => false,
+	'storeServer' => [],
+	'forceRecache' => false,
+	'manualRecache' => false,
+];
+
 # Content Provider used to show articles from enwiki. Can be helpful when trying to see how
 # production articles look locally, but be aware that there are some gotchas
 # with using this that don't perfectly match the production environment. Use at
