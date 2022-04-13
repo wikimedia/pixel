@@ -86,7 +86,9 @@ module.exports = {
 		// eslint-disable-next-line camelcase
 		html_report: 'report',
 		// eslint-disable-next-line camelcase
-		ci_report: 'report/ci-report'
+		ci_report: 'report/ci-report',
+		// eslint-disable-next-line camelcase
+		json_report: 'report/json-report'
 	},
 	report: [],
 	engine: 'puppeteer',
