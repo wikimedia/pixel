@@ -105,6 +105,12 @@ you'll also need to run:
 git checkout -- LocalSettings.php
 ```
 
+If all else fails and you're still running into problems, you may want to try removing Docker's build cache:
+
+```
+docker builder prune
+```
+
 ## Development
 
 ### Changing or adding tests
