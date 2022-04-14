@@ -1,19 +1,25 @@
 const menuState = async (page, buttonSelector, isClosed) => {
     await page.waitForSelector(buttonSelector);
-    await page.evaluate((selector, isExpectedClosed)  => {
+    await page.evaluate((selector, isExpectedClosed) => {
       const btn = document.querySelector(selector);
-      const checkbox = btn.getAttribute('type') === 'checkbox' ?
+      const isCheckbox = btn.getAttribute('type') === 'checkbox'
+      const checkbox =  isCheckbox ?
        btn : document.getElementById(btn.getAttribute('for'));
       const isOpen = checkbox.checked;
 
-      if ( isExpectedClosed && isOpen ) {
-        btn.dispatchEvent(
-            new Event( 'click' )
-        );
-      } else if ( !isExpectedClosed && !isOpen ) {
+      const toggle = () => {
+        if ( isCheckbox ) {
+          btn.checked = !btn.checked;
+        } else {
           btn.dispatchEvent(
             new Event( 'click' )
-          )
+          );
+        }
+      }
+      if ( isExpectedClosed && isOpen ) {
+        toggle();
+      } else if ( !isExpectedClosed && !isOpen ) {
+        toggle();
       }
     }, buttonSelector, isClosed);
 };
