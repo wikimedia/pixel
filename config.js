@@ -1,19 +1,19 @@
 const BASE_URL = 'http://mediawiki-web:8080';
 const tests = [
 	{
-		label: "Main_Page (vector-2022)",
+		label: "Main_Page (##vector-2022)",
 		path: "/wiki/Main_Page"
 	},
 	{
-		label: "Test (vector-2022, #sidebar-closed, #userMenu-closed)",
+		label: "Test (#vector-2022, #sidebar-closed, #userMenu-closed)",
 		path: "/wiki/Test"
 	},
 	{
-		label: "Test (vector-2022, #sidebar-open)",
+		label: "Test (#vector-2022, #sidebar-open)",
 		path: "/wiki/Test"
 	},
 	{
-		label: "Test (vector-2022, #userMenu-open)",
+		label: "Test (#vector-2022, #userMenu-open)",
 		path: "/wiki/Test"
 	},
 	{
@@ -21,15 +21,15 @@ const tests = [
 		path: "/wiki/Special:RecentChanges"
 	},
 	{
-		label: 'Test?action=History (vector-2022)',
+		label: 'Test?action=History (#vector-2022)',
 		path: '/w/index.php?title=Test&action=history'
 	},
 	{
-		label: 'Talk:Test (vector-2022)',
+		label: 'Talk:Test (#vector-2022)',
 		path: '/wiki/Talk:Test'
 	},
 	{
-		label: 'Tree (vector-2022)',
+		label: 'Tree (#vector-2022)',
 		path: '/wiki/Tree'
 	},
 	{
