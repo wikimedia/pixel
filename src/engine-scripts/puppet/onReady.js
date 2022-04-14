@@ -1,8 +1,7 @@
 module.exports = async (page, scenario, vp) => {
   console.log('SCENARIO > ' + scenario.label);
   const label = scenario.label;
-  const hashtagsMatch = label.match( /(#[^ ]*)/g);
-  const hashtags = hashtagsMatch ? hashtagsMatch[0] : [];
+  const hashtags = label.match( /(#[^ ,\)]*)/g) || [];
   await require('./clickAndHoverHelper')(page, scenario);
 
   // These only apply to Vector 2022
