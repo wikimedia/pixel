@@ -1,3 +1,5 @@
+[![Node.js CI](https://github.com/nicholasray/pixel/actions/workflows/node.js.yml/badge.svg)](https://github.com/nicholasray/pixel/actions/workflows/node.js.yml)
+
 # Pixel
 
 ![Visual regression HTML reporter showing failing and passing tests](reporter.png)
