@@ -23,6 +23,6 @@ const menuState = async (page, buttonSelector, isClosed) => {
       }
     }, buttonSelector, isClosed);
     // Allow for menu transitions
-    page.waitForTimeout(1000);
+    await page.waitForTimeout(1000);
 };
 module.exports = menuState;
