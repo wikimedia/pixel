@@ -38,6 +38,8 @@ services:
   visual-regression:
     image: backstopjs/backstopjs:6.0.4
     working_dir: /pixel
+    env_file:
+      - .env
     volumes:
       - ./config.js:/pixel/config.js
       - ./src:/pixel/src

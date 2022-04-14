@@ -1,3 +1,5 @@
+const username = process.env.MEDIAWIKI_USER;
+const password = process.env.MEDIAWIKI_PASSWORD;
 const BASE_URL = 'http://mediawiki-web:8080';
 const tests = [
 	{
@@ -21,6 +23,16 @@ const tests = [
 	{
 		label: 'Special:RecentChanges (#vector-2022, no max width, #sidebar-closed)',
 		path: '/wiki/Special:RecentChanges'
+	},
+	{
+		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
+		path: '/wiki/Special:BlankPage',
+		misMatchThreshold: 0.4
+	},
+	{
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
 	},
 	{
 		label: 'Test?action=History (#vector-2022)',
@@ -59,7 +71,9 @@ const tests = [
 const scenarios = tests.map( ( test ) => {
 	return Object.assign( {}, test, {
 		url: `${BASE_URL}${test.path}`,
-		delay: 1500
+		delay: 1500,
+		loginUrl: `${BASE_URL}/wiki/Special:UserLogin`,
+		username, password
 	} );
 } );
 
