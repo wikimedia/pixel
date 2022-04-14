@@ -22,5 +22,7 @@ const menuState = async (page, buttonSelector, isClosed) => {
         toggle();
       }
     }, buttonSelector, isClosed);
+    // Allow for menu transitions
+    page.waitForTimeout(1000);
 };
 module.exports = menuState;
