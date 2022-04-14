@@ -9,12 +9,14 @@ const tests = [
 		path: "/wiki/Test"
 	},
 	{
-		label: "Test (#vector-2022, #sidebar-open)",
-		path: "/wiki/Test"
+		label: "Special:BlankPage (#vector-2022, #sidebar-open)",
+		path: "/wiki/Special:BlankPage",
+		misMatchThreshold: 0.4
 	},
 	{
-		label: "Test (#vector-2022, #userMenu-open)",
-		path: "/wiki/Test"
+		label: "Special:BlankPage (#vector-2022, #userMenu-open)",
+		path: "/wiki/Special:BlankPage",
+		misMatchThreshold: 0.4
 	},
 	{
 		label: "Special:RecentChanges (no max width, #sidebar-closed)",
