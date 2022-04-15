@@ -25,7 +25,7 @@ jobs:
       run: npm ci
     - name: Run tests
       run: npm test
-    - name: docker-compose
-      run: docker-compose 
     - name: Run visual regression tests
+      env:
+        COMPOSE_INTERACTIVE_NO_CLI: 1
       run: ./pixel.js reference && ./pixel.js test
