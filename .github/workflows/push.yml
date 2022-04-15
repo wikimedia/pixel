@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Lint, test, and run visual regressions
+    name: Lint, test, and run visual regression tests
     runs-on: ubuntu-latest
     steps:
     - name: Checkout branch
@@ -25,7 +25,3 @@ jobs:
       run: npm ci
     - name: Run tests
       run: npm test
-    - name: Run visual regression tests
-      env:
-        COMPOSE_INTERACTIVE_NO_CLI: 1
-      run: ./pixel.js reference && ./pixel.js test
