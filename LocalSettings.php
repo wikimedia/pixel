@@ -135,6 +135,31 @@ $wgDefaultSkin = "vector-2022";
 wfLoadSkin( 'MinervaNeue' );
 wfLoadSkin( 'Vector' );
 
+
+# Enabled extensions. Most of the extensions are enabled by adding
+# wfLoadExtension( 'ExtensionName' );
+# to LocalSettings.php. Check specific extension documentation for more details.
+# The following extensions were automatically enabled:
+wfLoadExtension( 'BetaFeatures' );
+wfLoadExtension( 'CentralNotice' );
+wfLoadExtension( 'Cite' );
+wfLoadExtension( 'Echo' );
+wfLoadExtension( 'EventBus' );
+wfLoadExtension( 'EventLogging' );
+wfLoadExtension( 'EventStreamConfig' );
+wfLoadExtension( 'Gadgets' );
+wfLoadExtension( 'GlobalPreferences' );
+wfLoadExtension( 'MobileFrontend' );
+wfLoadExtension( 'Popups' );
+wfLoadExtension( 'RelatedArticles' );
+wfLoadExtension( 'SandboxLink' );
+wfLoadExtension( 'Scribunto' );
+wfLoadExtension( 'TemplateStyles' );
+wfLoadExtension( 'UniversalLanguageSelector' );
+wfLoadExtension( 'VisualEditor' );
+wfLoadExtension( 'WikimediaEvents' );
+
+
 # End of automatically generated settings.
 # Add more configuration options below.
 
@@ -183,12 +208,7 @@ $wgLogos = [
 // on enwiki.
 $wgFragmentMode = [ 'html5', 'legacy' ];
 
-wfLoadExtension( 'Cite' );
-wfLoadExtension( 'MobileFrontend' );
-wfLoadSkin( 'MinervaNeue' );
-
-wfLoadExtension( 'TemplateStyles' );
-wfLoadExtension( 'Scribunto' );
+# Scribunto
 $wgScribuntoDefaultEngine = 'luastandalone';
 $wgUseInstantCommons = true;
 
@@ -196,38 +216,21 @@ $wgUseInstantCommons = true;
 $wgPopupsGateway = 'restbaseHTML';
 $wgPopupsRestGatewayEndpoint = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 $wgArticlePath = "/wiki/$1";
-wfLoadExtension( 'Popups' );
-
-# Echo
-wfLoadExtension( 'Echo' );
 
 # EventLogging
 # Note: In order for EventLoggging to pick up your local schemas, make sure
 # EventLogging/devserver/eventgate.config.yaml `schema_base_uris` point to:
 # - ../repositories/secondary/jsonschema
-wfLoadExtension( 'EventLogging' );
-# EventLogging requires EventBus
-wfLoadExtension( 'EventBus' );
-# EventLogging requires EventStreamConfig
-wfLoadExtension( 'EventStreamConfig' );
-wfLoadExtension( 'WikimediaEvents' );
 
 # Universal Language Selector
 $wgULSPosition = 'interlanguage';
 $wgULSCompactLanguageLinksBetaFeature = false;
-wfLoadExtension( 'UniversalLanguageSelector' );
 
 # Useful when testing language variants
 $wgUsePigLatinVariant = true;
 
 # GlobalPreferences
 $wgSharedTables = [ 'user' ]; // Note that 'user_properties' is not included.
-wfLoadExtension( 'GlobalPreferences' );
-
-# Gadgets
-wfLoadExtension( 'Gadgets' );
-
-wfLoadExtension( 'BetaFeatures' );
 
 $wgHooks['SkinTemplateNavigation::Universal'][] = function ( $skinTemplate, &$links ) {
         $links['user-menu']['extension'] = [
@@ -238,7 +241,7 @@ $wgHooks['SkinTemplateNavigation::Universal'][] = function ( $skinTemplate, &$li
         ];
 };
 
-wfLoadExtension( 'VisualEditor' );
+# Visual Editor
 $PARSOID_INSTALL_DIR = 'vendor/wikimedia/parsoid'; # bundled copy
 
 // For developers: ensure Parsoid is executed from $PARSOID_INSTALL_DIR,
