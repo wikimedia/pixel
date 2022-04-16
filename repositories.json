@@ -1,87 +1,27 @@
 {
-	"mediawiki/core": {
-		"path": "."
+	"mediawiki/extensions/ApiFeatureUsage": {
+		"path": "extensions/ApiFeatureUsage"
 	},
-	"mediawiki/extensions/3D": {
-		"path": "extensions/3D"
-	},
-	"mediawiki/extensions/AbuseFilter": {
-		"path": "extensions/AbuseFilter"
-	},
-	"mediawiki/extensions/BetaFeatures": {
-		"path": "extensions/BetaFeatures"
-	},
-	"mediawiki/extensions/CategoryTree": {
-		"path": "extensions/CategoryTree"
-	},
-	"mediawiki/extensions/CharInsert": {
-		"path": "extensions/CharInsert"
-	},
-	"mediawiki/extensions/ChessBrowser": {
-		"path": "extensions/ChessBrowser"
-	},
-	"mediawiki/extensions/Cite": {
-		"path": "extensions/Cite"
+	"mediawiki/extensions/CheckUser": {
+		"path": "extensions/CheckUser"
 	},
 	"mediawiki/extensions/CiteThisPage": {
 		"path": "extensions/CiteThisPage"
 	},
-	"mediawiki/extensions/Citoid": {
-		"path": "extensions/Citoid"
+	"mediawiki/extensions/Collection": {
+		"path": "extensions/Collection"
 	},
-	"mediawiki/extensions/CodeEditor": {
-		"path": "extensions/CodeEditor"
-	},
-	"mediawiki/extensions/CodeMirror": {
-		"path": "extensions/CodeMirror"
-	},
-	"mediawiki/extensions/ConfirmEdit": {
-		"path": "extensions/ConfirmEdit"
+	"mediawiki/extensions/ContentTranslation": {
+		"path": "extensions/ContentTranslation"
 	},
 	"mediawiki/extensions/Echo": {
 		"path": "extensions/Echo"
 	},
-	"mediawiki/extensions/EventBus": {
-		"path": "extensions/EventBus"
-	},
-	"mediawiki/extensions/EventLogging": {
-		"path": "extensions/EventLogging"
-	},
-	"mediawiki/extensions/EventStreamConfig": {
-		"path": "extensions/EventStreamConfig"
-	},
-	"mediawiki/extensions/FlaggedRevs": {
-		"path": "extensions/FlaggedRevs"
-	},
-	"mediawiki/extensions/Flow": {
-		"path": "extensions/Flow"
-	},
-	"mediawiki/extensions/Gadgets": {
-		"path": "extensions/Gadgets"
-	},
-	"mediawiki/extensions/GlobalBlocking": {
-		"path": "extensions/GlobalBlocking"
+	"mediawiki/extensions/GlobalUsage": {
+		"path": "extensions/GlobalUsage"
 	},
 	"mediawiki/extensions/GlobalPreferences": {
 		"path": "extensions/GlobalPreferences"
-	},
-	"mediawiki/extensions/GlobalWatchlist": {
-		"path": "extensions/GlobalWatchlist"
-	},
-	"mediawiki/extensions/GrowthExperiments": {
-		"path": "extensions/GrowthExperiments"
-	},
-	"mediawiki/extensions/GuidedTour": {
-		"path": "extensions/GuidedTour"
-	},
-	"mediawiki/extensions/ImageMap": {
-		"path": "extensions/ImageMap"
-	},
-	"mediawiki/extensions/Inbox": {
-		"path": "extensions/Inbox"
-	},
-	"mediawiki/extensions/InputBox": {
-		"path": "extensions/InputBox"
 	},
 	"mediawiki/extensions/Interwiki": {
 		"path": "extensions/Interwiki"
@@ -89,77 +29,86 @@
 	"mediawiki/extensions/Linter": {
 		"path": "extensions/Linter"
 	},
-	"mediawiki/extensions/LocalisationUpdate": {
-		"path": "extensions/LocalisationUpdate"
-	},
-	"mediawiki/extensions/Math": {
-		"path": "extensions/Math"
-	},
 	"mediawiki/extensions/MassMessage": {
 		"path": "extensions/MassMessage"
-	},
-	"mediawiki/extensions/MultimediaViewer": {
-		"path": "extensions/MultimediaViewer"
 	},
 	"mediawiki/extensions/Nuke": {
 		"path": "extensions/Nuke"
 	},
-	"mediawiki/extensions/OATHAuth": {
-		"path": "extensions/OATHAuth"
-	},
-	"mediawiki/extensions/PageImages": {
-		"path": "extensions/PageImages"
-	},
-	"mediawiki/extensions/PageViewInfo": {
-		"path": "extensions/PageViewInfo"
-	},
-	"mediawiki/extensions/ParserFunctions": {
-		"path": "extensions/ParserFunctions"
-	},
-	"mediawiki/extensions/PdfHandler": {
-		"path": "extensions/PdfHandler"
-	},
-	"mediawiki/extensions/Poem": {
-		"path": "extensions/Poem"
-	},
-	"mediawiki/extensions/Popups": {
-		"path": "extensions/Popups"
-	},
-	"mediawiki/extensions/ProofreadPage": {
-		"path": "extensions/ProofreadPage"
-	},
-	"mediawiki/extensions/QuickInstantCommons": {
-		"path": "extensions/QuickInstantCommons"
-	},
-	"mediawiki/extensions/QuickSurveys": {
-		"path": "extensions/QuickSurveys"
-	},
-	"mediawiki/extensions/RelatedArticles": {
-		"path": "extensions/RelatedArticles"
+	"mediawiki/extensions/PageTriage": {
+		"path": "extensions/PageTriage"
 	},
 	"mediawiki/extensions/Renameuser": {
 		"path": "extensions/Renameuser"
 	},
-	"mediawiki/extensions/ReplaceText": {
-		"path": "extensions/ReplaceText"
+	"mediawiki/extensions/SiteMatrix": {
+		"path": "extensions/SiteMatrix"
 	},
-	"mediawiki/extensions/RevisionSlider": {
-		"path": "extensions/RevisionSlider"
+	"mediawiki/extensions/TemplateSandbox": {
+		"path": "extensions/TemplateSandbox"
 	},
-	"mediawiki/extensions/SandboxLink": {
-		"path": "extensions/SandboxLink"
+	"mediawiki/extensions/UrlShortener": {
+		"path": "extensions/UrlShortener"
+	},
+	"mediawiki/extensions/CodeEditor": {
+		"path": "extensions/CodeEditor"
+	},
+	"mediawiki/extensions/CodeMirror": {
+		"path": "extensions/CodeMirror"
+	},
+	"mediawiki/extensions/VisualEditor": {
+		"path": "extensions/VisualEditor"
+	},
+	"mediawiki/extensions/WikiEditor": {
+		"path": "extensions/WikiEditor"
+	},
+	"mediawiki/extensions/Babel": {
+		"path": "extensions/Babel"
+	},
+	"mediawiki/extensions/CategoryTree": {
+		"path": "extensions/CategoryTree"
+	},
+	"mediawiki/extensions/CharInsert": {
+		"path": "extensions/CharInsert"
+	},
+	"mediawiki/extensions/Cite": {
+		"path": "extensions/Cite"
+	},
+	"mediawiki/extensions/timeline": {
+		"path": "extensions/timeline"
+	},
+	"mediawiki/extensions/Graph": {
+		"path": "extensions/Graph"
+	},
+	"mediawiki/extensions/ImageMap": {
+		"path": "extensions/ImageMap"
+	},
+	"mediawiki/extensions/InputBox": {
+		"path": "extensions/InputBox"
+	},
+	"mediawiki/extensions/Kartographer": {
+		"path": "extensions/Kartographer"
+	},
+	"mediawiki/extensions/LabeledSectionTransclusion": {
+		"path": "extensions/LabeledSectionTransclusion"
+	},
+	"mediawiki/extensions/Math": {
+		"path": "extensions/Math"
+	},
+	"mediawiki/extensions/PageAssessments": {
+		"path": "extensions/PageAssessments"
+	},
+	"mediawiki/extensions/ParserFunctions": {
+		"path": "extensions/ParserFunctions"
+	},
+	"mediawiki/extensions/Poem": {
+		"path": "extensions/Poem"
+	},
+	"mediawiki/extensions/Score": {
+		"path": "extensions/Score"
 	},
 	"mediawiki/extensions/Scribunto": {
 		"path": "extensions/Scribunto"
-	},
-	"mediawiki/extensions/SecurePoll": {
-		"path": "extensions/SecurePoll"
-	},
-	"mediawiki/extensions/SpamBlacklist": {
-		"path": "extensions/SpamBlacklist"
-	},
-	"mediawiki/extensions/StopForumSpam": {
-		"path": "extensions/StopForumSpam"
 	},
 	"mediawiki/extensions/SyntaxHighlight_GeSHi": {
 		"path": "extensions/SyntaxHighlight_GeSHi"
@@ -170,6 +119,183 @@
 	"mediawiki/extensions/TemplateStyles": {
 		"path": "extensions/TemplateStyles"
 	},
+	"mediawiki/extensions/wikihiero": {
+		"path": "extensions/wikihiero"
+	},
+	"mediawiki/extensions/3D": {
+		"path": "extensions/3D"
+	},
+	"mediawiki/extensions/PagedTiffHandler": {
+		"path": "extensions/PagedTiffHandler"
+	},
+	"mediawiki/extensions/PdfHandler": {
+		"path": "extensions/PdfHandler"
+	},
+	"mediawiki/extensions/TimedMediaHandler": {
+		"path": "extensions/TimedMediaHandler"
+	},
+	"mediawiki/extensions/VipsScaler": {
+		"path": "extensions/VipsScaler"
+	},
+	"mediawiki/extensions/AbuseFilter": {
+		"path": "extensions/AbuseFilter"
+	},
+	"mediawiki/extensions/AntiSpoof": {
+		"path": "extensions/AntiSpoof"
+	},
+	"mediawiki/extensions/ConfirmEdit": {
+		"path": "extensions/ConfirmEdit"
+	},
+	"mediawiki/extensions/SpamBlacklist": {
+		"path": "extensions/SpamBlacklist"
+	},
+	"mediawiki/extensions/TitleBlacklist": {
+		"path": "extensions/TitleBlacklist"
+	},
+	"mediawiki/extensions/TorBlock": {
+		"path": "extensions/TorBlock"
+	},
+	"mediawiki/extensions/PageImages": {
+		"path": "extensions/PageImages"
+	},
+	"mediawiki/extensions/RelatedArticles": {
+		"path": "extensions/RelatedArticles"
+	},
+	"mediawiki/extensions/WikimediaBadges": {
+		"path": "extensions/WikimediaBadges"
+	},
+	"mediawiki/extensions/AdvancedSearch": {
+		"path": "extensions/AdvancedSearch"
+	},
+	"mediawiki/extensions/ArticleCreationWorkflow": {
+		"path": "extensions/ArticleCreationWorkflow"
+	},
+	"mediawiki/extensions/BetaFeatures": {
+		"path": "extensions/BetaFeatures"
+	},
+	"mediawiki/extensions/BounceHandler": {
+		"path": "extensions/BounceHandler"
+	},
+	"mediawiki/extensions/Campaigns": {
+		"path": "extensions/Campaigns"
+	},
+	"mediawiki/extensions/CentralNotice": {
+		"path": "extensions/CentralNotice"
+	},
+	"mediawiki/extensions/CirrusSearch": {
+		"path": "extensions/CirrusSearch"
+	},
+	"mediawiki/extensions/Citoid": {
+		"path": "extensions/Citoid"
+	},
+	"mediawiki/extensions/cldr": {
+		"path": "extensions/cldr"
+	},
+	"mediawiki/extensions/CommonsMetadata": {
+		"path": "extensions/CommonsMetadata"
+	},
+	"mediawiki/extensions/Disambiguator": {
+		"path": "extensions/Disambiguator"
+	},
+	"mediawiki/extensions/DiscussionTools": {
+		"path": "extensions/DiscussionTools"
+	},
+	"mediawiki/extensions/DismissableSiteNotice": {
+		"path": "extensions/DismissableSiteNotice"
+	},
+	"mediawiki/extensions/Elastica": {
+		"path": "extensions/Elastica"
+	},
+	"mediawiki/extensions/ElectronPdfService": {
+		"path": "extensions/ElectronPdfService"
+	},
+	"mediawiki/extensions/EventBus": {
+		"path": "extensions/EventBus"
+	},
+	"mediawiki/extensions/EventLogging": {
+		"path": "extensions/EventLogging"
+	},
+	"mediawiki/extensions/EventStreamConfig": {
+		"path": "extensions/EventStreamConfig"
+	},
+	"mediawiki/extensions/ExternalGuidance": {
+		"path": "extensions/ExternalGuidance"
+	},
+	"mediawiki/extensions/FeaturedFeeds": {
+		"path": "extensions/FeaturedFeeds"
+	},
+	"mediawiki/extensions/FileExporter": {
+		"path": "extensions/FileExporter"
+	},
+	"mediawiki/extensions/Gadgets": {
+		"path": "extensions/Gadgets"
+	},
+	"mediawiki/extensions/GeoData": {
+		"path": "extensions/GeoData"
+	},
+	"mediawiki/extensions/GlobalCssJs": {
+		"path": "extensions/GlobalCssJs"
+	},
+	"mediawiki/extensions/GlobalUserPage": {
+		"path": "extensions/GlobalUserPage"
+	},
+	"mediawiki/extensions/GrowthExperiments": {
+		"path": "extensions/GrowthExperiments"
+	},
+	"mediawiki/extensions/GuidedTour": {
+		"path": "extensions/GuidedTour"
+	},
+	"mediawiki/extensions/InterwikiSorting": {
+		"path": "extensions/InterwikiSorting"
+	},
+	"mediawiki/extensions/JsonConfig": {
+		"path": "extensions/JsonConfig"
+	},
+	"mediawiki/extensions/LoginNotify": {
+		"path": "extensions/LoginNotify"
+	},
+	"mediawiki/extensions/MediaModeration": {
+		"path": "extensions/MediaModeration"
+	},
+	"mediawiki/extensions/MobileApp": {
+		"path": "extensions/MobileApp"
+	},
+	"mediawiki/extensions/MobileFrontend": {
+		"path": "extensions/MobileFrontend"
+	},
+	"mediawiki/extensions/MultimediaViewer": {
+		"path": "extensions/MultimediaViewer"
+	},
+	"mediawiki/extensions/NavigationTiming": {
+		"path": "extensions/NavigationTiming"
+	},
+	"mediawiki/extensions/OATHAuth": {
+		"path": "extensions/OATHAuth"
+	},
+	"mediawiki/extensions/PageViewInfo": {
+		"path": "extensions/PageViewInfo"
+	},
+	"mediawiki/extensions/PoolCounter": {
+		"path": "extensions/PoolCounter"
+	},
+	"mediawiki/extensions/Popups": {
+		"path": "extensions/Popups"
+	},
+	"mediawiki/extensions/ReadingLists": {
+		"path": "extensions/ReadingLists"
+	},
+	"mediawiki/extensions/RevisionSlider": {
+		"path": "extensions/RevisionSlider"
+	},
+	"mediawiki/extensions/SandboxLink": {
+		"path": "extensions/SandboxLink"
+	},
+	"mediawiki/extensions/SecureLinkFixer": {
+		"path": "extensions/SecureLinkFixer"
+	},
+	"mediawiki/extensions/SecurePoll": {
+		"path": "extensions/SecurePoll"
+	},
 	"mediawiki/extensions/TemplateWizard": {
 		"path": "extensions/TemplateWizard"
 	},
@@ -179,29 +305,38 @@
 	"mediawiki/extensions/Thanks": {
 		"path": "extensions/Thanks"
 	},
-	"mediawiki/extensions/TimedMediaHandler": {
-		"path": "extensions/TimedMediaHandler"
+	"mediawiki/extensions/TrustedXFF": {
+		"path": "extensions/TrustedXFF"
 	},
-	"mediawiki/extensions/TitleBlacklist": {
-		"path": "extensions/TitleBlacklist"
-	},
-	"mediawiki/extensions/Translate": {
-		"path": "extensions/Translate"
+	"mediawiki/extensions/TwoColConflict": {
+		"path": "extensions/TwoColConflict"
 	},
 	"mediawiki/extensions/UniversalLanguageSelector": {
 		"path": "extensions/UniversalLanguageSelector"
 	},
-	"mediawiki/extensions/UploadWizard": {
-		"path": "extensions/UploadWizard"
+	"mediawiki/extensions/WebAuthn": {
+		"path": "extensions/WebAuthn"
 	},
-	"mediawiki/extensions/WikiEditor": {
-		"path": "extensions/WikiEditor"
+	"mediawiki/extensions/WikiLove": {
+		"path": "extensions/WikiLove"
 	},
 	"mediawiki/extensions/WikimediaEvents": {
 		"path": "extensions/WikimediaEvents"
 	},
-	"mediawiki/extensions/Wikispeech": {
-		"path": "extensions/Wikispeech"
+	"mediawiki/extensions/WikimediaMessages": {
+		"path": "extensions/WikimediaMessages"
+	},
+	"mediawiki/extensions/XAnalytics": {
+		"path": "extensions/XAnalytics"
+	},
+	"mediawiki/skins/CologneBlue": {
+		"path": "skins/CologneBlue"
+	},
+	"mediawiki/skins/MinervaNeue": {
+		"path": "skins/MinervaNeue"
+	},
+	"mediawiki/skins/Modern": {
+		"path": "skins/Modern"
 	},
 	"mediawiki/skins/MonoBook": {
 		"path": "skins/MonoBook"
@@ -212,40 +347,7 @@
 	"mediawiki/skins/Vector": {
 		"path": "skins/Vector"
 	},
-	"mediawiki/services/parsoid": {
-		"path": "parsoid"
-	},
-	"mediawiki/extensions/VisualEditor": {
-		"path": "extensions/VisualEditor"
-	},
-	"VisualEditor/VisualEditor": {
-		"path": "extensions/VisualEditor/lib/ve"
-	},
-	"mediawiki/extensions/DiscussionTools": {
-		"path": "extensions/DiscussionTools"
-	},
-	"mediawiki/extensions/MobileFrontend": {
-		"path": "extensions/MobileFrontend"
-	},
-	"mediawiki/extensions/MobileFrontendContentProvider": {
-		"path": "extensions/MobileFrontendContentProvider"
-	},
-	"mediawiki/skins/MinervaNeue": {
-		"path": "skins/MinervaNeue"
-	},
-	"mediawiki/extensions/WikiLambda": {
-		"path": "extensions/WikiLambda"
-	},
-	"mediawiki/extensions/Wikisource": {
-		"path": "extensions/Wikisource"
-	},
-	"mediawiki/extensions/Wikistories": {
-		"path": "extensions/Wikistories"
-	},
-	"mediawiki/extensions/Disambiguator": {
-		"path": "extensions/Disambiguator"
-	},
-	"mediawiki/extensions/VueTest": {
-		"path": "extensions/VueTest"
+	"mediawiki/core": {
+		"path": "."
 	}
 }

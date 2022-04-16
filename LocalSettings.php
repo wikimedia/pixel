@@ -132,8 +132,129 @@ $wgDefaultSkin = "vector-2022";
 
 # Enabled skins.
 # The following skins were automatically enabled:
+wfLoadSkin( 'CologneBlue' );
 wfLoadSkin( 'MinervaNeue' );
+wfLoadSkin( 'Modern' );
+wfLoadSkin( 'MonoBook' );
+wfLoadSkin( 'Timeless' );
 wfLoadSkin( 'Vector' );
+
+
+# Enabled extensions. Most of the extensions are enabled by adding
+# wfLoadExtension( 'ExtensionName' );
+# to LocalSettings.php. Check specific extension documentation for more details.
+# The following extensions were automatically enabled:
+wfLoadExtension( '3D' );
+wfLoadExtension( 'AbuseFilter' );
+wfLoadExtension( 'AdvancedSearch' );
+wfLoadExtension( 'AntiSpoof' );
+wfLoadExtension( 'ApiFeatureUsage' );
+wfLoadExtension( 'ArticleCreationWorkflow' );
+wfLoadExtension( 'Babel' );
+wfLoadExtension( 'BetaFeatures' );
+wfLoadExtension( 'BounceHandler' );
+wfLoadExtension( 'Campaigns' );
+wfLoadExtension( 'CategoryTree' );
+wfLoadExtension( 'CentralNotice' );
+wfLoadExtension( 'CharInsert' );
+wfLoadExtension( 'CheckUser' );
+wfLoadExtension( 'CirrusSearch' );
+wfLoadExtension( 'Cite' );
+wfLoadExtension( 'CiteThisPage' );
+wfLoadExtension( 'Citoid' );
+wfLoadExtension( 'cldr' );
+wfLoadExtension( 'CodeEditor' );
+wfLoadExtension( 'CodeMirror' );
+wfLoadExtension( 'Collection' );
+wfLoadExtension( 'CommonsMetadata' );
+wfLoadExtension( 'ConfirmEdit' );
+wfLoadExtension( 'ContentTranslation' );
+wfLoadExtension( 'Disambiguator' );
+wfLoadExtension( 'DiscussionTools' );
+wfLoadExtension( 'DismissableSiteNotice' );
+wfLoadExtension( 'Echo' );
+wfLoadExtension( 'Elastica' );
+wfLoadExtension( 'ElectronPdfService' );
+wfLoadExtension( 'EventBus' );
+wfLoadExtension( 'EventLogging' );
+wfLoadExtension( 'EventStreamConfig' );
+wfLoadExtension( 'ExternalGuidance' );
+wfLoadExtension( 'FeaturedFeeds' );
+wfLoadExtension( 'FileExporter' );
+wfLoadExtension( 'Gadgets' );
+wfLoadExtension( 'GeoData' );
+wfLoadExtension( 'GlobalCssJs' );
+wfLoadExtension( 'GlobalPreferences' );
+wfLoadExtension( 'GlobalUsage' );
+wfLoadExtension( 'GlobalUserPage' );
+wfLoadExtension( 'Graph' );
+wfLoadExtension( 'GrowthExperiments' );
+wfLoadExtension( 'GuidedTour' );
+wfLoadExtension( 'ImageMap' );
+wfLoadExtension( 'InputBox' );
+wfLoadExtension( 'Interwiki' );
+wfLoadExtension( 'InterwikiSorting' );
+wfLoadExtension( 'JsonConfig' );
+wfLoadExtension( 'Kartographer' );
+wfLoadExtension( 'LabeledSectionTransclusion' );
+wfLoadExtension( 'Linter' );
+wfLoadExtension( 'LoginNotify' );
+wfLoadExtension( 'MassMessage' );
+wfLoadExtension( 'Math' );
+wfLoadExtension( 'MediaModeration' );
+wfLoadExtension( 'MobileApp' );
+wfLoadExtension( 'MobileFrontend' );
+wfLoadExtension( 'MultimediaViewer' );
+wfLoadExtension( 'NavigationTiming' );
+wfLoadExtension( 'Nuke' );
+wfLoadExtension( 'OATHAuth' );
+wfLoadExtension( 'PageAssessments' );
+wfLoadExtension( 'PagedTiffHandler' );
+wfLoadExtension( 'PageImages' );
+wfLoadExtension( 'PageTriage' );
+wfLoadExtension( 'PageViewInfo' );
+wfLoadExtension( 'ParserFunctions' );
+wfLoadExtension( 'PdfHandler' );
+wfLoadExtension( 'Poem' );
+wfLoadExtension( 'PoolCounter' );
+wfLoadExtension( 'Popups' );
+wfLoadExtension( 'ReadingLists' );
+wfLoadExtension( 'RelatedArticles' );
+wfLoadExtension( 'Renameuser' );
+wfLoadExtension( 'RevisionSlider' );
+wfLoadExtension( 'SandboxLink' );
+wfLoadExtension( 'Score' );
+wfLoadExtension( 'Scribunto' );
+wfLoadExtension( 'SecureLinkFixer' );
+wfLoadExtension( 'SecurePoll' );
+wfLoadExtension( 'SiteMatrix' );
+wfLoadExtension( 'SpamBlacklist' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
+wfLoadExtension( 'TemplateData' );
+wfLoadExtension( 'TemplateSandbox' );
+wfLoadExtension( 'TemplateStyles' );
+wfLoadExtension( 'TemplateWizard' );
+wfLoadExtension( 'TextExtracts' );
+wfLoadExtension( 'Thanks' );
+wfLoadExtension( 'TimedMediaHandler' );
+wfLoadExtension( 'timeline' );
+wfLoadExtension( 'TitleBlacklist' );
+wfLoadExtension( 'TorBlock' );
+wfLoadExtension( 'TrustedXFF' );
+wfLoadExtension( 'TwoColConflict' );
+wfLoadExtension( 'UniversalLanguageSelector' );
+wfLoadExtension( 'UrlShortener' );
+wfLoadExtension( 'VipsScaler' );
+wfLoadExtension( 'VisualEditor' );
+wfLoadExtension( 'WebAuthn' );
+wfLoadExtension( 'WikiEditor' );
+wfLoadExtension( 'wikihiero' );
+wfLoadExtension( 'WikiLove' );
+wfLoadExtension( 'WikimediaBadges' );
+wfLoadExtension( 'WikimediaEvents' );
+wfLoadExtension( 'WikimediaMessages' );
+wfLoadExtension( 'XAnalytics' );
+
 
 # End of automatically generated settings.
 # Add more configuration options below.
@@ -179,12 +300,7 @@ $wgLogos = [
 // on enwiki.
 $wgFragmentMode = [ 'html5', 'legacy' ];
 
-wfLoadExtension( 'Cite' );
-wfLoadExtension( 'MobileFrontend' );
-wfLoadSkin( 'MinervaNeue' );
-
-wfLoadExtension( 'TemplateStyles' );
-wfLoadExtension( 'Scribunto' );
+# Scribunto
 $wgScribuntoDefaultEngine = 'luastandalone';
 $wgUseInstantCommons = true;
 
@@ -192,38 +308,21 @@ $wgUseInstantCommons = true;
 $wgPopupsGateway = 'restbaseHTML';
 $wgPopupsRestGatewayEndpoint = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 $wgArticlePath = "/wiki/$1";
-wfLoadExtension( 'Popups' );
-
-# Echo
-wfLoadExtension( 'Echo' );
 
 # EventLogging
 # Note: In order for EventLoggging to pick up your local schemas, make sure
 # EventLogging/devserver/eventgate.config.yaml `schema_base_uris` point to:
 # - ../repositories/secondary/jsonschema
-wfLoadExtension( 'EventLogging' );
-# EventLogging requires EventBus
-wfLoadExtension( 'EventBus' );
-# EventLogging requires EventStreamConfig
-wfLoadExtension( 'EventStreamConfig' );
-wfLoadExtension( 'WikimediaEvents' );
 
 # Universal Language Selector
 $wgULSPosition = 'interlanguage';
 $wgULSCompactLanguageLinksBetaFeature = false;
-wfLoadExtension( 'UniversalLanguageSelector' );
 
 # Useful when testing language variants
 $wgUsePigLatinVariant = true;
 
 # GlobalPreferences
 $wgSharedTables = [ 'user' ]; // Note that 'user_properties' is not included.
-wfLoadExtension( 'GlobalPreferences' );
-
-# Gadgets
-wfLoadExtension( 'Gadgets' );
-
-wfLoadExtension( 'BetaFeatures' );
 
 $wgHooks['SkinTemplateNavigation::Universal'][] = function ( $skinTemplate, &$links ) {
         $links['user-menu']['extension'] = [
@@ -234,7 +333,7 @@ $wgHooks['SkinTemplateNavigation::Universal'][] = function ( $skinTemplate, &$li
         ];
 };
 
-wfLoadExtension( 'VisualEditor' );
+# Visual Editor
 $PARSOID_INSTALL_DIR = 'vendor/wikimedia/parsoid'; # bundled copy
 
 // For developers: ensure Parsoid is executed from $PARSOID_INSTALL_DIR,
