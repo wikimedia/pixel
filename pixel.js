@@ -1,33 +1,10 @@
 #!/usr/bin/env node
-const spawn = require( 'child_process' ).spawn;
 const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
-
-/**
- * @param {string} command
- * @param {string[]} args
- * @return {Promise<number>}
- */
-function createSpawn( command, args ) {
-	return new Promise( ( resolve, reject ) => {
-		const childProcess = spawn(
-			command,
-			args,
-			{ stdio: 'inherit' }
-		);
-
-		childProcess.on( 'close', ( code ) => {
-			if ( code === 0 ) {
-				resolve( code );
-				return;
-			}
-
-			reject( code );
-		} );
-	} );
-}
+const BatchSpawn = require( './src/batch-spawn' );
+const batchSpawn = new BatchSpawn( 1 );
 
 /**
  * @return {Promise<string>}
@@ -35,6 +12,21 @@ function createSpawn( command, args ) {
 async function getLatestReleaseBranch() {
 	const { stdout } = await exec( 'git ls-remote -h --sort="-version:refname" https://gerrit.wikimedia.org/r/mediawiki/core | head -1' );
 	return `origin/${stdout.split( 'refs/heads/' )[ 1 ].trim()}`;
+}
+
+/**
+ * @param {'test'|'reference'} type
+ * @return {Promise<undefined>}
+ */
+async function openReportIfNecessary( type ) {
+	try {
+		if ( type === 'reference' ) {
+			return;
+		}
+		await batchSpawn.spawn( 'open', [ 'report/index.html' ] );
+	} catch ( e ) {
+		console.log( 'Could not open report, but it is located at report/index.html' );
+	}
 }
 
 /**
@@ -52,26 +44,35 @@ async function processCommand( type, opts ) {
 		}
 
 		// Start docker containers.
-		await createSpawn( 'docker-compose', [ 'up', '-d' ] );
+		await batchSpawn.spawn( 'docker-compose', [ 'up', '-d' ] );
 		// Execute main.js.
-		await createSpawn(
+		await batchSpawn.spawn(
 			'docker-compose',
 			[ 'exec', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
 		);
-		// Execute Visual regression
-		await createSpawn(
+		// Execute Visual regression tests.
+		await batchSpawn.spawn(
 			'docker-compose',
 			[ 'run', '--rm', 'visual-regression', type, '--config', 'config.js' ]
-		).finally( async () => {
-			if ( type === 'test' ) {
-				await createSpawn( 'open', [ 'report/index.html' ] );
+		).then( async () => {
+			await openReportIfNecessary( type );
+		}, async ( /** @type {Error} */ err ) => {
+			if ( err.message.includes( '130' ) ) {
+				// If user ends subprocess with a sigint, exit early.
+				return;
 			}
+
+			if ( err.message.includes( 'Exit with error code 1' ) ) {
+				return openReportIfNecessary( type );
+			}
+
+			throw err;
 		} );
-
 	} catch ( err ) {
-		console.log( `Exited with code ${err}` );
+		console.error( err );
+		// eslint-disable-next-line no-process-exit
+		process.exit( 1 );
 	}
-
 }
 
 function setupCli() {
