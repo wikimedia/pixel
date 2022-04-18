@@ -2,7 +2,12 @@
 	"extends": [
 		"wikimedia",
 		"wikimedia/node",
-		"wikimedia/language/es2021"
+		"wikimedia/language/es2021",
+		"plugin:jest/recommended",
+		"plugin:jest/style"
+	],
+	"plugins": [
+		"jest"
 	],
 	"env": {
 		"browser": true,
@@ -19,6 +24,9 @@
 				"message": "Using `waitForTimeout` can significantly slow down tests. Please find an alternative solution such as emulating `prefers-reduced-motion`, using `fastForwardAnimations.js` to fast-forward animations, or using MutationObserver to wait for DOM manipulations to end."
 			}
 		]
+	},
+	"parserOptions": {
+		"ecmaVersion": 13
 	},
 	"settings": {
 		"jsdoc": {
