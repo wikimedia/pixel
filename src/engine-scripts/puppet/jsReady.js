@@ -20,5 +20,12 @@ module.exports = async (page) => {
 	});
 
 	// wait for animation frame or two.
-	await page.waitForTimeout(2000);
+        // Wait until the next frame before resolving.
+	await new Promise( resolve => {
+	  requestAnimationFrame( () => {
+	    requestAnimationFrame( () => {
+	      resolve();
+	    } );
+	  } );
+	} );
 };
