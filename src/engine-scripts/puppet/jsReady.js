@@ -3,7 +3,6 @@ module.exports = async (page) => {
 		{ name: 'prefers-reduced-motion', value: 'reduce' },
 	]);
 	await page.evaluate( () => {
-		window.dispatchEvent( new Event( 'resize' ) );
 		const skin = mw.config.get( 'skin' );
 		let moduleName;
 		switch( skin ) {
@@ -16,7 +15,13 @@ module.exports = async (page) => {
 			default:
 				return true;
 		}
-		return mw.loader.getState( moduleName ) === 'ready';
+		return new Promise((resolve) => {
+			setInterval(() => {
+				if ( mw.loader.getState( moduleName ) === 'ready' ) {
+					resolve(true);
+				}
+			}, 500 );
+		});
 	});
 
 	// wait for animation frame or two.
