@@ -24,13 +24,14 @@ module.exports = async (page) => {
 		});
 	});
 
-	// wait for animation frame or two.
-        // Wait until the next frame before resolving.
-	await new Promise( resolve => {
-	  requestAnimationFrame( () => {
-	    requestAnimationFrame( () => {
-	      resolve();
-	    } );
-	  } );
+	// Wait until the next frame before resolving.
+	await page.evaluate( () => {
+		return new Promise( resolve => {
+			requestAnimationFrame( () => {
+				requestAnimationFrame( () => {
+					resolve();
+				} );
+			} );
+		} );
 	} );
 };
