@@ -9,5 +9,8 @@ module.exports = async (page, scenario, vp) => {
     await require('./sidebarState')(page, hashtags);
     await require('./userMenuState')(page, hashtags);
   }
+
+  // Make sure the main skin JavaScript module has loaded.
+  await require('./jsReady')(page);
   // add more ready handlers here...
 };
