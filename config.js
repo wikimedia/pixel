@@ -1,7 +1,7 @@
 const BASE_URL = 'http://mediawiki-web:8080';
 const tests = [
 	{
-		label: 'Main_Page (##vector-2022)',
+		label: 'Main_Page (#vector-2022)',
 		path: '/wiki/Main_Page'
 	},
 	{
@@ -19,7 +19,7 @@ const tests = [
 		misMatchThreshold: 0.04
 	},
 	{
-		label: 'Special:RecentChanges (no max width, #sidebar-closed)',
+		label: 'Special:RecentChanges (#vector-2022, no max width, #sidebar-closed)',
 		path: '/wiki/Special:RecentChanges'
 	},
 	{
@@ -35,23 +35,23 @@ const tests = [
 		path: '/wiki/Tree'
 	},
 	{
-		label: 'Main_Page (vector)',
+		label: 'Main_Page (#vector)',
 		path: '/wiki/Main_Page?useskin=vector'
 	},
 	{
-		label: 'Test (vector)',
+		label: 'Test (#vector)',
 		path: '/wiki/Test?useskin=vector'
 	},
 	{
-		label: 'Test?action=History (vector)',
+		label: 'Test?action=History (#vector)',
 		path: '/w/index.php?title=Test&action=history&useskin=vector'
 	},
 	{
-		label: 'Talk:Test (vector)',
+		label: 'Talk:Test (#vector)',
 		path: '/wiki/Talk:Test'
 	},
 	{
-		label: 'Tree (vector)',
+		label: 'Tree (#vector)',
 		path: '/wiki/Tree?useskin=vector'
 	}
 ];
