@@ -1,6 +1,4 @@
-const username = process.env.MEDIAWIKI_USER;
-const password = process.env.MEDIAWIKI_PASSWORD;
-const BASE_URL = 'http://mediawiki-web:8080';
+const BASE_URL = process.env.MW_SERVER;
 const tests = [
 	{
 		label: 'Main_Page (#vector-2022)',
@@ -71,9 +69,7 @@ const tests = [
 const scenarios = tests.map( ( test ) => {
 	return Object.assign( {}, test, {
 		url: `${BASE_URL}${test.path}`,
-		delay: 1500,
-		loginUrl: `${BASE_URL}/wiki/Special:UserLogin`,
-		username, password
+		delay: 1500
 	} );
 } );
 

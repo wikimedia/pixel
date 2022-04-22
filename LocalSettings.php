@@ -138,6 +138,10 @@ wfLoadSkin( 'Vector' );
 # End of automatically generated settings.
 # Add more configuration options below.
 
+// Make extended cookies (e.g. when logging in with "Keep me logged in" option)
+// last indefinitely.
+$wgExtendedLoginCookieExpiration = 0;
+
 // Use same localisation cache settings as production. This also seems to get
 // rid of localisation errors associated with the `array` store (set by
 // PlatformSettings.php) when checking out patches/release branches.

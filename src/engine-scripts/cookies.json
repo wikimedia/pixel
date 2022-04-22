@@ -1,14 +1,18 @@
 [
 	{
-		"domain": ".www.yourdomain.com",
-		"path": "/",
-		"name": "yourCookieName",
-		"value": "yourCookieValue",
-		"expirationDate": 1798790400,
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": false,
-		"session": false,
-		"sameSite": "Lax"
+		"name": "my_wikiToken",
+		"value": "7cc096f2b26a8207b8363cede71a7ff6"
+	},
+	{
+		"name": "my_wikiUserID",
+		"value": "1"
+	},
+	{
+		"name": "my_wikiUserName",
+		"value": "Admin"
+	},
+	{
+		"name": "my_wiki_session",
+		"value": "q435sohpicv4mf17oas491ub9pmof21b"
 	}
 ]
