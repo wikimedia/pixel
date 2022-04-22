@@ -4,6 +4,10 @@
 		"wikimedia/node",
 		"wikimedia/language/es2021"
 	],
+	"env": {
+		"browser": true,
+		"node": true
+	},
 	"rules": {
 		"strict": "off",
 		"yml/no-empty-mapping-value": "off"
