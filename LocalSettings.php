@@ -262,9 +262,6 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
     'url' => "http://mediawiki-web:8080" . $wgScriptPath . '/rest.php',
 ];
 
-// Show sidebar for anonymous users;
-$wgVectorDefaultSidebarVisibleForAnonymousUser = true;
-
 // Show new sidebar table of contents.
 $wgVectorTableOfContents = [
 	"default" => true,
