@@ -1,11 +1,12 @@
-module.exports = async (page) => {
-	await page.emulateMediaFeatures([
-		{ name: 'prefers-reduced-motion', value: 'reduce' },
-	]);
+module.exports = async ( page ) => {
+	await page.emulateMediaFeatures( [
+		{ name: 'prefers-reduced-motion', value: 'reduce' }
+	] );
 	await page.evaluate( async () => {
+		// eslint-disable-next-line no-undef
 		const skin = mw.config.get( 'skin' );
 		let moduleName;
-		switch( skin ) {
+		switch ( skin ) {
 			case 'vector-2022':
 				moduleName = 'skins.vector.js';
 				break;
@@ -17,18 +18,19 @@ module.exports = async (page) => {
 		}
 
 		// Poll the state of the module until it is ready.
-		await new Promise((resolve) => {
-			const id = setInterval(() => {
+		await new Promise( ( resolve ) => {
+			const id = setInterval( () => {
+				// eslint-disable-next-line no-undef
 				if ( mw.loader.getState( moduleName ) === 'ready' ) {
 					clearInterval( id );
-					resolve(true);
+					resolve( true );
 				}
 			}, 500 );
-		});
+		} );
 
 		// Wait until the next frame before resolving. collapsibleTabs.js in Vector
 		// and Vector-2022 make use of rAF.
-		return new Promise( resolve => {
+		return new Promise( ( resolve ) => {
 			requestAnimationFrame( () => {
 				requestAnimationFrame( () => {
 					resolve();
@@ -36,5 +38,5 @@ module.exports = async (page) => {
 			} );
 		} );
 
-	});
+	} );
 };
