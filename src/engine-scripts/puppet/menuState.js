@@ -1,3 +1,5 @@
+const fastForwardAnimations = require( './fastForwardAnimations' );
+
 /**
  * Handles opening or closing a menu.
  *
@@ -29,7 +31,9 @@ const menuState = async ( page, buttonSelector, isClosed ) => {
 			toggle();
 		}
 	}, buttonSelector, isClosed );
-	// Allow for menu transitions
-	await page.waitForTimeout( 1000 );
+
+	// Vector-2022 menus currently have transition animations when opened.
+	fastForwardAnimations( page );
 };
+
 module.exports = menuState;

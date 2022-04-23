@@ -10,7 +10,15 @@
 	},
 	"rules": {
 		"strict": "off",
-		"yml/no-empty-mapping-value": "off"
+		"yml/no-empty-mapping-value": "off",
+		"no-restricted-properties": [
+			"error",
+			{
+				"object": "page",
+				"property": "waitForTimeout",
+				"message": "Using `waitForTimeout` can significantly slow down tests. Please find an alternative solution such as using `fastForwardAnimations.js` or using MutationObserver to wait for DOM manipulations to end."
+			}
+		]
 	},
 	"settings": {
 		"jsdoc": {
