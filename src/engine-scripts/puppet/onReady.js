@@ -1,3 +1,9 @@
+/**
+ * Runs after onReady event on all scenarios -- use for simulating interactions.
+ *
+ * @param {import('puppeteer').Page} page
+ * @param {import('backstopjs').Scenario} scenario
+ */
 module.exports = async ( page, scenario ) => {
 	console.log( 'SCENARIO > ' + scenario.label );
 	const label = scenario.label;

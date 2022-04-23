@@ -1,5 +1,9 @@
 const fs = require( 'fs' );
 
+/**
+ * @param {import('puppeteer').Page} page
+ * @param {import('backstopjs').Scenario} scenario
+ */
 module.exports = async ( page, scenario ) => {
 	let cookies = [];
 	const cookiePath = scenario.cookiePath;
