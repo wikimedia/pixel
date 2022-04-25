@@ -11,5 +11,10 @@
 	"rules": {
 		"strict": "off",
 		"yml/no-empty-mapping-value": "off"
+	},
+	"settings": {
+		"jsdoc": {
+			"mode": "typescript"
+		}
 	}
 }

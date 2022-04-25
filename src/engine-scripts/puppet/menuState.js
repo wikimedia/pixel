@@ -1,3 +1,10 @@
+/**
+ * Handles opening or closing a menu.
+ *
+ * @param {import('puppeteer').Page} page
+ * @param {string} buttonSelector
+ * @param {boolean} isClosed
+ */
 const menuState = async ( page, buttonSelector, isClosed ) => {
 	await page.waitForSelector( buttonSelector );
 	await page.evaluate( ( selector, isExpectedClosed ) => {

@@ -1,3 +1,9 @@
+/**
+ * Returns a promise that resolves when the vector or vector-2022's main module
+ * is ready.
+ *
+ * @param {import("puppeteer").Page} page
+ */
 module.exports = async ( page ) => {
 	await page.emulateMediaFeatures( [
 		{ name: 'prefers-reduced-motion', value: 'reduce' }
