@@ -12,4 +12,4 @@ WORKDIR /var/www/html/w
 
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"
 
-RUN /src/setup-repos.sh "$( cat /repositories.json )"
+RUN /src/setupRepos.sh "$( cat /repositories.json )"
