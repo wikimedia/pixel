@@ -34,7 +34,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - dbdata:/var/lib/mysql
-      - ./src/seed-db.sh:/docker-entrypoint-initdb.d/seed-db.sh
+      - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
   visual-regression:
     image: backstopjs/backstopjs:6.0.4
     working_dir: /pixel

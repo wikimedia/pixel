@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const checkoutBranch = require( './checkout-branch' );
-const checkoutPatch = require( './checkout-patch' );
+const checkoutBranch = require( './checkoutBranch' );
+const checkoutPatch = require( './checkoutPatch' );
 const repos = require( '../repositories.json' );
 const opts = JSON.parse( process.argv[ 2 ] );
 
