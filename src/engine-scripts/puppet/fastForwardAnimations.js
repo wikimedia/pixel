@@ -2,6 +2,10 @@
  * Fast forward the document's running animation(s) so that we don't have to
  * wait around for them to finish.
  *
+ * Please note this will only work for animations that use css transitions or
+ * the web animation api. It will NOT work for animations that manipulate the
+ * DOM (e.g. altering the style attribute).
+ *
  * @param {import("puppeteer").Page} page
  */
 async function fastForwardAnimations( page ) {
