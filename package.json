@@ -12,6 +12,10 @@
 		"test:unit": "jest",
 		"pre-commit": "[ \"${PRE_COMMIT:-1}\" -eq 0 ] || npm -s t"
 	},
+	"engines": {
+		"npm": ">=7.21.0",
+		"node": ">=14"
+	},
 	"pre-commit": "pre-commit",
 	"devDependencies": {
 		"@types/backstopjs": "^4.1.2",
