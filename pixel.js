@@ -3,7 +3,7 @@ const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
-const BatchSpawn = require( './src/batchSpawn' );
+const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 
 /**

@@ -1,4 +1,4 @@
-const BatchSpawn = require( './batchSpawn' );
+const BatchSpawn = require( './BatchSpawn' );
 const childProcess = require( 'child_process' );
 
 jest.mock( 'child_process', () => {
@@ -8,7 +8,7 @@ jest.mock( 'child_process', () => {
 	};
 } );
 
-describe( 'batchSpawn.js', () => {
+describe( 'BatchSpawn.js', () => {
 	afterEach( () => {
 		/** @type {jest.Mock} */ ( childProcess.spawn ).mockReset();
 	} );
