@@ -1,4 +1,4 @@
-const BASE_URL = 'http://mediawiki-web:8080';
+const BASE_URL = process.env.MW_SERVER;
 const tests = [
 	{
 		label: 'Main_Page (#vector-2022)',
@@ -21,6 +21,16 @@ const tests = [
 	{
 		label: 'Special:RecentChanges (#vector-2022, no max width, #sidebar-closed)',
 		path: '/wiki/Special:RecentChanges'
+	},
+	{
+		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
+		path: '/wiki/Special:BlankPage',
+		misMatchThreshold: 0.4
+	},
+	{
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
 	},
 	{
 		label: 'Test?action=History (#vector-2022)',

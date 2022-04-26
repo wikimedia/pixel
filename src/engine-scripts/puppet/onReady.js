@@ -9,6 +9,10 @@ module.exports = async ( page, scenario ) => {
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
 
+	if ( hashtags.includes( '#scroll' ) ) {
+		require( './scroll.js' )( page );
+	}
+
 	// These only apply to Vector 2022
 	if ( hashtags.includes( '#vector-2022' ) ) {
 		await require( './sidebarState' )( page, hashtags );

@@ -36,8 +36,11 @@ services:
       - dbdata:/var/lib/mysql
       - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
   visual-regression:
+    network_mode: host
     image: backstopjs/backstopjs:6.0.4
     working_dir: /pixel
+    env_file:
+      - .env
     volumes:
       - ./config.js:/pixel/config.js
       - ./src:/pixel/src
