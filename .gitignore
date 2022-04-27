@@ -49,3 +49,7 @@ Thumbs.db
 # Database tar and backups
 database.tar.gz
 backups
+
+# Playwright
+test-results/
+playwright-report/

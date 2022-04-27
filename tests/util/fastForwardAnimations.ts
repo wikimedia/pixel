@@ -1,3 +1,5 @@
+import { Page } from '@playwright/test';
+
 /**
  * Fast forward the document's running animation(s) so that we don't have to
  * wait around for them to finish.
@@ -6,9 +8,9 @@
  * the web animation api. It will NOT work for animations that manipulate the
  * DOM (e.g. altering the style attribute).
  *
- * @param {import("puppeteer").Page} page
+ * @param page
  */
-async function fastForwardAnimations( page ) {
+async function fastForwardAnimations( page: Page ) {
 	return page.evaluate( () => {
 		// Adapted from https://github.com/microsoft/playwright/blob/0a401b2d86a39df85e57ad30bcec9ef81618abd0/packages/playwright-core/src/server/screenshotter.ts#L174
 		document.getAnimations().forEach( ( animation ) => {
@@ -25,4 +27,4 @@ async function fastForwardAnimations( page ) {
 	} );
 }
 
-module.exports = fastForwardAnimations;
+export default fastForwardAnimations;

@@ -1,21 +1,40 @@
 {
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": [
+		"jest",
+		"@typescript-eslint"
+	],
 	"extends": [
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
 		"wikimedia",
 		"wikimedia/node",
-		"wikimedia/language/es2021",
-		"plugin:jest/recommended",
-		"plugin:jest/style"
+		"wikimedia/language/es2021"
 	],
-	"plugins": [
-		"jest"
+	"overrides": [
+		{
+			"files": [
+				"src/*.test.js"
+			],
+			"plugins": [
+				"jest"
+			],
+			"extends": [
+				"plugin:jest/recommended",
+				"plugin:jest/style"
+			]
+		}
 	],
 	"env": {
 		"browser": true,
 		"node": true
 	},
 	"rules": {
+		"node/no-missing-import": "off",
 		"strict": "off",
 		"yml/no-empty-mapping-value": "off",
+		"jsdoc/require-param-type": "off",
 		"no-restricted-properties": [
 			"error",
 			{

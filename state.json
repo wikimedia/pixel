@@ -1,0 +1,69 @@
+{
+  "cookies": [
+    {
+      "sameSite": "Lax",
+      "name": "my_wikimwuser-sessionId",
+      "value": "b71ab55450ed9e3c0fd1",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false
+    },
+    {
+      "sameSite": "Lax",
+      "name": "my_wiki_session",
+      "value": "5sb8fq9trqjsagtv2m793a8olq3cvsm1",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false
+    },
+    {
+      "sameSite": "Lax",
+      "name": "my_wikiUserID",
+      "value": "1",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 33187734426.79106,
+      "httpOnly": true,
+      "secure": false
+    },
+    {
+      "sameSite": "Lax",
+      "name": "my_wikiUserName",
+      "value": "Admin",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 33187734426.79108,
+      "httpOnly": true,
+      "secure": false
+    },
+    {
+      "sameSite": "Lax",
+      "name": "my_wikiToken",
+      "value": "7cc096f2b26a8207b8363cede71a7ff6",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 33187734426.791092,
+      "httpOnly": true,
+      "secure": false
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "uls-previous-language-autonym",
+          "value": "English"
+        },
+        {
+          "name": "uls-previous-language-code",
+          "value": "en"
+        }
+      ]
+    }
+  ]
+}

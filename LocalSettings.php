@@ -153,8 +153,8 @@ wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)
-// last indefinitely.
-$wgExtendedLoginCookieExpiration = 0;
+// last for a thousand years.
+$wgExtendedLoginCookieExpiration = 1000 * 365 * 86400;
 
 // Use same localisation cache settings as production. This also seems to get
 // rid of localisation errors associated with the `array` store (set by

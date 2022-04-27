@@ -1,13 +1,14 @@
+import { Page } from '@playwright/test';
+
 /**
  * Returns a promise that resolves when the vector or vector-2022's main module
  * is ready.
  *
- * @param {import("puppeteer").Page} page
+ * @param page
  */
-module.exports = async ( page ) => {
-	await page.emulateMediaFeatures( [
-		{ name: 'prefers-reduced-motion', value: 'reduce' }
-	] );
+export default async ( page: Page ) => {
+	await page.emulateMedia( { reducedMotion: 'reduce' } );
+
 	await page.evaluate( async () => {
 		// eslint-disable-next-line no-undef
 		const skin = mw.config.get( 'skin' );
@@ -26,6 +27,7 @@ module.exports = async ( page ) => {
 		// Poll the state of the module until it is ready.
 		await new Promise( ( resolve ) => {
 			const id = setInterval( () => {
+
 				// eslint-disable-next-line no-undef
 				if ( mw.loader.getState( moduleName ) === 'ready' ) {
 					clearInterval( id );
@@ -36,7 +38,7 @@ module.exports = async ( page ) => {
 
 		// Wait until the next frame before resolving. collapsibleTabs.js in Vector
 		// and Vector-2022 make use of rAF.
-		return new Promise( ( resolve ) => {
+		return new Promise<void>( ( resolve ) => {
 			requestAnimationFrame( () => {
 				requestAnimationFrame( () => {
 					resolve();
