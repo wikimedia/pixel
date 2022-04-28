@@ -19,6 +19,11 @@ module.exports = async ( page, scenario ) => {
 		await require( './userMenuState' )( page, hashtags );
 	}
 
+	// These only apply to Minerva
+	if ( hashtags.includes( '#minerva' ) ) {
+		await require( './minerva/mainMenuState' )( page, hashtags );
+	}
+
 	// Make sure the main skin JavaScript module has loaded.
 	await require( './jsReady' )( page );
 	// add more ready handlers here...
