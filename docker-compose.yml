@@ -42,6 +42,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./context.json:/pixel/context.json
       - ./config.js:/pixel/config.js
       - ./src:/pixel/src
       - ./report:/pixel/report

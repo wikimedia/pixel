@@ -5,6 +5,19 @@ const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
+const fs = require( 'fs' );
+const REPORT_PATH = 'report/index.html';
+const CONTEXT_PATH = `${__dirname}/context.json`;
+
+let context;
+if ( fs.existsSync( CONTEXT_PATH ) ) {
+	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
+} else {
+	context = {
+		test: 'unknown',
+		reference: 'unknown'
+	};
+}
 
 /**
  * @return {Promise<string>}
@@ -19,13 +32,27 @@ async function getLatestReleaseBranch() {
  * @return {Promise<undefined>}
  */
 async function openReportIfNecessary( type ) {
+	const filePathFull = `${__dirname}/${REPORT_PATH}`;
+	const markerString = '<div id="root">';
 	try {
 		if ( type === 'reference' ) {
 			return;
 		}
-		await batchSpawn.spawn( 'open', [ 'report/index.html' ] );
+		const fileString = fs.readFileSync( filePathFull ).toString().replace(
+			markerString,
+			`<div style="color: #000; box-sizing: border-box;
+margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
+word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
+background-color: #eaecf0; border-color: #a2a9b1;">
+<p>Comparing ${context.reference} against ${context.test}.</p>
+<p>Test ran on ${new Date()}</p>
+</div>
+${markerString}`
+		);
+		fs.writeFileSync( filePathFull, fileString );
+		await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
 	} catch ( e ) {
-		console.log( 'Could not open report, but it is located at report/index.html' );
+		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
 	}
 }
 
@@ -42,6 +69,9 @@ async function processCommand( type, opts ) {
 
 			console.log( `Using latest branch "${opts.branch}"` );
 		}
+		context[ type ] = opts.branch;
+		// store details of this run.
+		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 
 		// Start docker containers.
 		await batchSpawn.spawn( 'docker-compose', [ 'up', '-d' ] );
