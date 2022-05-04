@@ -1,5 +1,6 @@
 # git-deploy status file:
 /.deploy
+/context.json
 
 # Editors
 *.kate-swp
