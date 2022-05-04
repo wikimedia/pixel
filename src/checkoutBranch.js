@@ -45,7 +45,6 @@ function execUpdateCommand( branch, path ) {
 	return createSpawn(
 		`
 		echo "Git checkout: ${path}"
-		git -C "${path}" fetch origin
 		git -C "${path}" checkout -f ${branch}
 
 		if [ ! -e "${path}/composer.json" ]; then 
@@ -84,7 +83,7 @@ async function update( branch, repos ) {
 
 	await Promise.all( Object.keys( repos ).map( async ( id ) => {
 		const path = repos[ id ].path;
-		const childProcess = await exec( `git -C ${path} for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
+		const childProcess = await exec( `git -C ${path} fetch origin && git -C ${path} for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
 		const branches = childProcess.stdout.split( '\n' );
 
 		if ( branches.includes( branch ) ) {
