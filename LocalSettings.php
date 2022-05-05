@@ -197,19 +197,10 @@ $wgLogos = [
 // on enwiki.
 $wgFragmentMode = [ 'html5', 'legacy' ];
 
-# Scribunto
-$wgScribuntoDefaultEngine = 'luastandalone';
-$wgUseInstantCommons = true;
-
 # Popups
 $wgPopupsGateway = 'restbaseHTML';
 $wgPopupsRestGatewayEndpoint = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 $wgArticlePath = "/wiki/$1";
-
-# EventLogging
-# Note: In order for EventLoggging to pick up your local schemas, make sure
-# EventLogging/devserver/eventgate.config.yaml `schema_base_uris` point to:
-# - ../repositories/secondary/jsonschema
 
 # Universal Language Selector
 $wgULSPosition = 'interlanguage';
