@@ -10,13 +10,11 @@ const tests = [
 	},
 	{
 		label: 'Special:BlankPage (#vector-2022, #sidebar-open)',
-		path: '/wiki/Special:BlankPage',
-		misMatchThreshold: 0.04
+		path: '/wiki/Special:BlankPage'
 	},
 	{
 		label: 'Special:BlankPage (#vector-2022, #userMenu-open)',
-		path: '/wiki/Special:BlankPage',
-		misMatchThreshold: 0.04
+		path: '/wiki/Special:BlankPage'
 	},
 	{
 		label: 'Special:RecentChanges (#vector-2022, no max width, #sidebar-closed)',
@@ -24,8 +22,7 @@ const tests = [
 	},
 	{
 		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
-		path: '/wiki/Special:BlankPage',
-		misMatchThreshold: 0.4
+		path: '/wiki/Special:BlankPage'
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
@@ -69,7 +66,8 @@ const tests = [
 const scenarios = tests.map( ( test ) => {
 	return Object.assign( {}, test, {
 		url: `${BASE_URL}${test.path}`,
-		delay: 1500
+		delay: 1500,
+		misMatchThreshold: 0.04
 	} );
 } );
 
