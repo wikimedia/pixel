@@ -141,27 +141,16 @@ wfLoadSkin( 'Vector' );
 # to LocalSettings.php. Check specific extension documentation for more details.
 # The following extensions were automatically enabled:
 wfLoadExtension( 'BetaFeatures' );
-wfLoadExtension( 'CentralNotice' );
 wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Echo' );
-wfLoadExtension( 'EventBus' );
-wfLoadExtension( 'EventLogging' );
-wfLoadExtension( 'EventStreamConfig' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
 wfLoadExtension( 'SandboxLink' );
-wfLoadExtension( 'Scribunto' );
-wfLoadExtension( 'TemplateStyles' );
 wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
-wfLoadExtension( 'WikimediaEvents' );
-
-
-# End of automatically generated settings.
-# Add more configuration options below.
 
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)
 // last indefinitely.

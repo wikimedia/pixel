@@ -11,29 +11,11 @@
 	"mediawiki/extensions/Cite": {
 		"path": "extensions/Cite"
 	},
-	"mediawiki/extensions/Scribunto": {
-		"path": "extensions/Scribunto"
-	},
-	"mediawiki/extensions/TemplateStyles": {
-		"path": "extensions/TemplateStyles"
-	},
 	"mediawiki/extensions/RelatedArticles": {
 		"path": "extensions/RelatedArticles"
 	},
 	"mediawiki/extensions/BetaFeatures": {
 		"path": "extensions/BetaFeatures"
-	},
-	"mediawiki/extensions/CentralNotice": {
-		"path": "extensions/CentralNotice"
-	},
-	"mediawiki/extensions/EventBus": {
-		"path": "extensions/EventBus"
-	},
-	"mediawiki/extensions/EventLogging": {
-		"path": "extensions/EventLogging"
-	},
-	"mediawiki/extensions/EventStreamConfig": {
-		"path": "extensions/EventStreamConfig"
 	},
 	"mediawiki/extensions/Gadgets": {
 		"path": "extensions/Gadgets"
@@ -49,9 +31,6 @@
 	},
 	"mediawiki/extensions/UniversalLanguageSelector": {
 		"path": "extensions/UniversalLanguageSelector"
-	},
-	"mediawiki/extensions/WikimediaEvents": {
-		"path": "extensions/WikimediaEvents"
 	},
 	"mediawiki/skins/MinervaNeue": {
 		"path": "skins/MinervaNeue"
