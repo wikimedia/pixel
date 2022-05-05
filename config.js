@@ -67,7 +67,7 @@ const scenarios = tests.map( ( test ) => {
 	return Object.assign( {}, test, {
 		url: `${BASE_URL}${test.path}`,
 		delay: 1500,
-		misMatchThreshold: 0.04
+		misMatchThreshold: 0.2
 	} );
 } );
 
