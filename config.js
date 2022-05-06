@@ -43,22 +43,27 @@ const tests = [
 	},
 	{
 		label: 'Main_Page (#vector)',
+		delay: 1500,
 		path: '/wiki/Main_Page?useskin=vector'
 	},
 	{
 		label: 'Test (#vector)',
+		delay: 1500,
 		path: '/wiki/Test?useskin=vector'
 	},
 	{
 		label: 'Test?action=History (#vector)',
+		delay: 1500,
 		path: '/w/index.php?title=Test&action=history&useskin=vector'
 	},
 	{
 		label: 'Talk:Test (#vector)',
+		delay: 1500,
 		path: '/wiki/Talk:Test'
 	},
 	{
 		label: 'Tree (#vector)',
+		delay: 1500,
 		path: '/wiki/Tree?useskin=vector'
 	}
 ];
@@ -66,7 +71,6 @@ const tests = [
 const scenarios = tests.map( ( test ) => {
 	return Object.assign( {}, test, {
 		url: `${BASE_URL}${test.path}`,
-		delay: 1500,
 		misMatchThreshold: 0.04
 	} );
 } );
