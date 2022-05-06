@@ -17,6 +17,9 @@ services:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
       - ./src:/src
+    depends_on:
+      database:
+        condition: service_healthy
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
     user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
@@ -26,6 +29,9 @@ services:
       - .env
     volumes:
       - mwcode:/var/www/html/w
+    depends_on:
+      database:
+        condition: service_healthy
   database:
     build:
       context: .
@@ -35,6 +41,11 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
       - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
+    healthcheck:
+      test: [ CMD, mysqladmin, ping, -h, localhost ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
   visual-regression:
     network_mode: host
     image: backstopjs/backstopjs:6.0.4
