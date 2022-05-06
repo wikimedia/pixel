@@ -78,7 +78,7 @@ async function processCommand( type, opts ) {
 		// Execute main.js.
 		await batchSpawn.spawn(
 			'docker-compose',
-			[ 'exec', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
+			[ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
 		);
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
