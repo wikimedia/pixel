@@ -1,0 +1,17 @@
+name: Push or PR workflow
+
+on:
+  push:
+    tags-ignore:
+      - 'v*'
+  pull_request:
+    branches: 
+      - main
+
+concurrency:
+  group: ci-pr-${{ github.ref }}-1
+  cancel-in-progress: true
+
+jobs:
+  call-lint-build-test:
+    uses: ./.github/workflows/_lint-build-test.yml

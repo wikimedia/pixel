@@ -1,3 +1,4 @@
+const configFactory = require( './configFactory' );
 const BASE_URL = process.env.MW_SERVER;
 const tests = [
 	{
@@ -75,56 +76,4 @@ const scenarios = tests.map( ( test ) => {
 	} );
 } );
 
-module.exports = {
-	id: 'MediaWiki',
-	viewports: [
-		{
-			label: 'phone',
-			width: 320,
-			height: 480
-		},
-		{
-			label: 'tablet',
-			width: 720,
-			height: 768
-		},
-		{
-			label: 'desktop',
-			width: 1000,
-			height: 900
-		},
-		{
-			label: 'desktop-wide',
-			width: 1792,
-			height: 900
-		}
-	],
-	onBeforeScript: 'puppet/onBefore.js',
-	onReadyScript: 'puppet/onReady.js',
-	scenarios,
-	paths: {
-		// eslint-disable-next-line camelcase
-		bitmaps_reference: 'report/reference-screenshots',
-		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots',
-		// eslint-disable-next-line camelcase
-		engine_scripts: 'src/engine-scripts',
-		// eslint-disable-next-line camelcase
-		html_report: 'report/desktop',
-		// eslint-disable-next-line camelcase
-		ci_report: 'report/ci-report',
-		// eslint-disable-next-line camelcase
-		json_report: 'report/json-report'
-	},
-	report: [],
-	engine: 'puppeteer',
-	engineOptions: {
-		args: [
-			'--no-sandbox'
-		]
-	},
-	asyncCaptureLimit: 5,
-	asyncCompareLimit: 50,
-	debug: false,
-	debugWindow: false
-};
+module.exports = configFactory( 'desktop', scenarios );

@@ -1,7 +1,7 @@
 {
 	"include": [
 		"src",
-		"config.js"
+		"configDesktop.js"
 	],
 	"exclude": [
 		"src/engine-scripts",

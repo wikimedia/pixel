@@ -1,6 +1,5 @@
 # git-deploy status file:
 /.deploy
-/context.json
 
 # Editors
 *.kate-swp
@@ -46,6 +45,8 @@ Thumbs.db
 # VSCode
 .vscode
 
-# Database tar and backups
+# Project stuff
 database.tar.gz
 backups
+pixel-report
+context.json

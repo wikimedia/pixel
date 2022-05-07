@@ -1,0 +1,9 @@
+FROM node:16.15.0-buster AS node
+
+RUN npm i -g http-server
+
+EXPOSE 4000
+
+WORKDIR /vrdata/pixel-report
+
+ENTRYPOINT ["http-server", "/vrdata/pixel-report", "-p", "4000", "-c-1"]

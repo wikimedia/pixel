@@ -1,15 +1,28 @@
 FROM node:16.15.0-buster AS node
 FROM docker-registry.wikimedia.org/dev/buster-php72-fpm:2.0.0-s1
 
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
-
-COPY src /src
-COPY repositories.json /repositories.json
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
 
 WORKDIR /var/www/html/w
 
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"
-
+COPY repositories.json /repositories.json
+COPY src /src
 RUN /src/setupRepos.js "$( cat /repositories.json )"
+
+RUN apt-get update && apt-get install -y \
+	libfcgi-bin \
+	&& rm -rf /var/lib/apt/lists/*
+# Enable the php-fpm status page so we can do healthchecks with cgi-fcgi.
+RUN echo "pm.status_path = /status" >> /etc/php/7.2/fpm/pool.d/www.conf
+RUN curl \
+	https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
+	-o /usr/local/bin/php-fpm-healthcheck \
+	&& chmod +x /usr/local/bin/php-fpm-healthcheck
+
+COPY LocalSettings.php  /var/www/html/w/LocalSettings.php
+

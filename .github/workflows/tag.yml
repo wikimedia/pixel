@@ -1,0 +1,35 @@
+name: Tag workflow
+
+on:
+  push:
+    tags: 
+      - v*
+
+concurrency:
+  group: ci-tag-${{ github.ref }}-1
+  cancel-in-progress: true
+
+jobs:
+  call-lint-build-test:
+    uses: ./.github/workflows/_lint-build-test.yml
+    with:
+      run_vr: false
+  call-publish-npm:
+    needs: call-lint-build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+  call-publish-docker:
+    needs: call-publish-npm
+    uses: ./.github/workflows/_publish-docker.yml
+    with:
+      tag_name: ${{ needs.call-publish-npm.outputs.version }}-next.${{ github.sha }}
+      matrix: "{\"include\":[{\"dockerfile\":\"Dockerfile.mediawiki\",\"image\":\"nicholasray/pixel_mediawiki\"},{\"dockerfile\":\"Dockerfile.database\",\"image\":\"nicholasray/pixel_database\"},{\"dockerfile\":\"Dockerfile.visual-regression\",\"image\":\"nicholasray/pixel_visual-regression\"},{\"dockerfile\":\"Dockerfile.visual-regression-reporter\",\"image\":\"nicholasray/pixel_visual-regression-reporter\"}]}"
