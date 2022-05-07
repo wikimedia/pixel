@@ -1,0 +1,7 @@
+services:
+  mediawiki:
+    image: ghcr.io/nicholasray/pixel_mediawiki:0.0.0
+  database:
+    image: ghcr.io/nicholasray/pixel_database:0.0.0
+  visual-regression:
+    image: ghcr.io/nicholasray/pixel_visual-regression:0.0.0

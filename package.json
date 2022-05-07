@@ -1,12 +1,35 @@
 {
-	"private": true,
-	"name": "pixel",
+	"name": "@nicholasray/pixel",
+	"version": "0.0.0",
+	"description": "Catch visual regressions in MediaWiki before users see them",
+	"license": "GPL-2.0-or-later",
+	"bin": {
+		"pixel": "./pixel.js"
+	},
+	"files": [
+		"src",
+		"config*.js",
+		"docker-compose.yml",
+		"docker-compose.build.yml",
+		"pixel.js",
+		".env"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nicholasray/pixel.git"
+	},
+	"keywords": [
+		"visual regression",
+		"visual tests",
+		"visual diff",
+		"ui tests"
+	],
 	"scripts": {
-		"start": "docker-compose up -d",
-		"stop": "docker-compose down",
-		"clean": "docker-compose down --rmi all -v --remove-orphans",
-		"bash": "docker-compose exec mediawiki bash",
-		"db:save": "docker run --rm -v pixel_dbdata:/var/lib/mysql -v $(pwd)/backups:/backups ubuntu tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql",
+		"start": "docker compose up -d",
+		"stop": "docker compose down",
+		"clean": "docker compose down --rmi all -v --remove-orphans",
+		"bash": "docker compose exec mediawiki bash",
+		"db:save": "docker compose run -v $(pwd)/backups:/backups database tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql",
 		"lint": "eslint --cache .",
 		"test": "npm -s run lint && tsc && npm run test:unit",
 		"test:unit": "jest",
@@ -14,7 +37,7 @@
 	},
 	"engines": {
 		"npm": ">=7.21.0",
-		"node": ">=16"
+		"node": ">=15"
 	},
 	"pre-commit": "pre-commit",
 	"devDependencies": {

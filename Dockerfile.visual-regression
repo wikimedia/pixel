@@ -1,0 +1,22 @@
+FROM backstopjs/backstopjs:6.0.4
+
+LABEL project="@nicholasray/pixel"
+
+RUN apt-get update && apt-get install -y \
+	socat \
+	supervisor \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN npm i -g http-server
+
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+COPY /src /pixel/src
+COPY /config*.js /pixel/
+
+EXPOSE 3000
+
+WORKDIR /pixel
+
+ENV NODE_PATH=/usr/local/lib/node_modules
+
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

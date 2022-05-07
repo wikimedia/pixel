@@ -3,20 +3,23 @@ const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
+const IMAGES = [
+	'ghcr.io/nicholasray/pixel_mediawiki',
+	'ghcr.io/nicholasray/pixel_database',
+	'ghcr.io/nicholasray/pixel_visual-regression'
+];
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
+const REPORT_ORIGIN = 'http://localhost:4000';
+const packageJson = require( './package.json' );
+const { program, Option } = require( 'commander' );
+const resolve = require( 'path' ).resolve;
 const fs = require( 'fs' );
-const CONTEXT_PATH = `${__dirname}/context.json`;
-
-let context;
-if ( fs.existsSync( CONTEXT_PATH ) ) {
-	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
-} else {
-	context = {
-		test: 'unknown',
-		reference: 'unknown'
-	};
-}
+// Use the presence of the package-lock.json file as a proxy for whether this
+// script is running as part of a released package. The package-lock.json file
+// is not specified in the `files` list in package.json so it will not exist in
+// releases.
+const IS_BUILD = !fs.existsSync( `${__dirname}/package-lock.json` );
 
 /**
  * @return {Promise<string>}
@@ -27,94 +30,115 @@ async function getLatestReleaseBranch() {
 }
 
 /**
- * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'} group
- * @return {Promise<undefined>}
+ * @param {string} reportLocation
  */
-async function openReportIfNecessary( type, group ) {
-	const REPORT_PATH = `report/${group}/index.html`;
-	const filePathFull = `${__dirname}/${REPORT_PATH}`;
-	const markerString = '<div id="root">';
+async function copyReportToHost( reportLocation ) {
 	try {
-		if ( type === 'reference' ) {
-			return;
-		}
-		const fileString = fs.readFileSync( filePathFull ).toString().replace(
-			markerString,
-			`<div style="color: #000; box-sizing: border-box;
-margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
-word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
-background-color: #eaecf0; border-color: #a2a9b1;">
-<h2>Test group: <strong>${context.group}</strong></h2>
-<p>Comparing ${context.reference} against ${context.test}.</p>
-<p>Test ran on ${new Date()}</p>
-</div>
-${markerString}`
+		// Save report to host at the location specified by `path`.
+		await batchSpawn.spawn(
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'cp', 'visual-regression:/vrdata/pixel-report', reportLocation ] ) ]
 		);
-		fs.writeFileSync( filePathFull, fileString );
-		await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
 	} catch ( e ) {
-		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
+		console.log( 'Could not copy report to host', e );
 	}
 }
 
 /**
- * @param {string} groupName
- * @return {string} path to configuration file.
- * @throws {Error} for unknown group
+ * @param {'test'|'reference'} type
+ * @param {string} group
+ * @param {string} [path] Path that the report should be written.
+ * @return {Promise<undefined>}
  */
-const getGroupConfig = ( groupName ) => {
-	switch ( groupName ) {
-		case 'desktop':
-			return 'config.js';
-		case 'mobile':
-			return 'configMobile.js';
-		default:
-			throw new Error( `Unknown test group: ${groupName}` );
+async function openReportIfNecessary( type, group, path ) {
+	const reportUrl = `${REPORT_ORIGIN}/${group}`;
+
+	try {
+		if ( type === 'reference' ) {
+			return;
+		}
+
+		if ( path ) {
+			path = resolve( path );
+			copyReportToHost( resolve( path ) );
+		}
+
+		await batchSpawn.spawn( 'open', [ reportUrl ] );
+
+		console.log( `Report located at ${reportUrl}${path ? ` and at ${path}` : ''}` );
+	} catch ( e ) {
+		console.log( `Could not open report, but it is located at ${reportUrl}` );
 	}
-};
+}
 
 /**
- * @param {'test'|'reference'} type
+ * @param {string[]} opts
+ * @return {string[]}
+ */
+function getComposeOpts( opts ) {
+	return [
+		'--project-directory', __dirname,
+		'-f', `${__dirname}/docker-compose.yml`,
+		'-f', IS_BUILD ? `${__dirname}/docker-compose.build.yml` : `${__dirname}/docker-compose.override.yml`,
+		...opts
+	];
+}
+
+/**
  * @param {any} opts
  */
-async function processCommand( type, opts ) {
+async function processCommand( opts ) {
 	try {
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
 
-			console.log( `Using latest branch "${opts.branch}"` );
+			console.log( `Using latest release branch "${opts.branch}"` );
 		}
-		const group = opts.group;
-		context[ type ] = opts.branch;
-		context.group = group;
-		// store details of this run.
-		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
-		const configFile = getGroupConfig( group );
+
+		// Check if required images with the same tag as the package.json are found.
+		// If not, then pull the latest images and remove the database volume.
+		if ( IS_BUILD ) {
+			try {
+				await Promise.all( IMAGES.map( ( image ) => {
+					return exec( `docker image inspect ${image}:${packageJson.version}` );
+				} ) );
+			} catch ( e ) {
+				if ( !e.message.includes( 'No such image' ) ) {
+					throw e;
+				}
+
+				console.log( 'Docker images associated with this version were not found. To prepare for the new version, any existing database volumes, images, and containers will now be removed.' );
+				await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
+				await batchSpawn.spawn( 'docker', [ 'image', 'prune', '-a', '--filter', 'label=project=@nicholasray/pixel', '-f' ] );
+			}
+		}
 
 		// Start docker containers.
-		await batchSpawn.spawn( 'docker-compose', [ 'up', '-d' ] );
+		await batchSpawn.spawn(
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'up', '-d', ...( IS_BUILD ? [ '--quiet-pull' ] : [] ) ] ) ]
+		);
 		// Execute main.js.
 		await batchSpawn.spawn(
-			'docker-compose',
-			[ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
-			'docker-compose',
-			[ 'run', '--rm', 'visual-regression', type, '--config', configFile ]
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'exec', 'visual-regression', '/pixel/src/runTests.js', JSON.stringify( opts ) ] ) ]
 		).then( async () => {
-			await openReportIfNecessary( type, group );
+			await openReportIfNecessary( opts.type, opts.group, opts.output );
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
 				return;
 			}
 
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type, group );
+			if ( err.message === 'Exit with error code 1' ) {
+				return openReportIfNecessary( opts.type, opts.group, opts.output );
 			}
 
 			throw err;
@@ -127,24 +151,26 @@ async function processCommand( type, opts ) {
 }
 
 function setupCli() {
-	const { program } = require( 'commander' );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
-		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
+		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.39.0-wmf.10"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
 		'master'
 	] );
 	const changeIdOpt = /** @type {const} */ ( [
 		'-c, --change-id <Change-Id...>',
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
-	const groupOpt = /** @type {const} */ ( [
+	const groupOpt = new Option(
 		'-g, --group <(mobile|desktop)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
-	] );
+	)
+		.default( 'desktop' )
+		.choices( [ 'mobile', 'desktop' ] );
 
 	program
-		.name( 'pixel.js' )
+		.name( 'pixel' )
+		.version( packageJson.version, '-v, --version', 'output the version number' )
 		.description( 'Welcome to the pixel CLI to perform visual regression testing' );
 
 	program
@@ -152,9 +178,11 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
+		.addOption( groupOpt )
 		.action( ( opts ) => {
-			processCommand( 'reference', opts );
+			opts = Object.assign( {}, opts, { type: 'reference' } );
+
+			processCommand( opts );
 		} );
 
 	program
@@ -162,9 +190,28 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
+		.addOption( groupOpt )
+		.addOption(
+			new Option(
+				'-o, --output [path-to-report]',
+				'Save static report to a given path. Defaults to the current working directory.',
+				'pixel-report'
+			).preset( './pixel-report' )
+		)
 		.action( ( opts ) => {
-			processCommand( 'test', opts );
+			opts = Object.assign( {}, opts, { type: 'test' } );
+
+			processCommand( opts );
+		} );
+
+	program
+		.command( 'stop' )
+		.description( 'Stops all Docker containers associated with Pixel' )
+		.action( async () => {
+			await batchSpawn.spawn(
+				'docker',
+				[ 'compose', ...getComposeOpts( [ 'stop' ] ) ]
+			);
 		} );
 
 	program.parse();

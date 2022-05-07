@@ -1,0 +1,20 @@
+services:
+  mediawiki:
+    build:
+      context: .
+      dockerfile: Dockerfile.mediawiki
+    volumes:
+      - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
+      - ./src:/src
+  database:
+    build:
+      context: .
+      dockerfile: Dockerfile.database
+    volumes:
+      - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
+  visual-regression:
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-regression
+    volumes:
+      - .:/pixel/

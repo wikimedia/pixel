@@ -1,3 +1,9 @@
 FROM mariadb:10.6.7
 
-RUN apt-get update && apt-get install curl -y
+LABEL project="@nicholasray/pixel"
+
+COPY src/seedDb.sh /docker-entrypoint-initdb.d/
+
+RUN apt-get update && apt-get install -y \
+	curl \
+	&& rm -rf /var/lib/apt/lists/*

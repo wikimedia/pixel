@@ -1,5 +1,4 @@
-const config = require( './config.js' );
-
+const configFactory = require( './configFactory.js' );
 const BASE_URL = process.env.MW_SERVER;
 const tests = [
 	{
@@ -32,14 +31,4 @@ const scenarios = tests.map( ( test ) => {
 	} );
 } );
 
-module.exports = Object.assign( {}, config, {
-	scenarios,
-	paths: Object.assign( {}, config.paths, {
-		// eslint-disable-next-line camelcase
-		bitmaps_reference: 'report/reference-screenshots-mobile',
-		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots',
-		// eslint-disable-next-line camelcase
-		html_report: 'report/mobile'
-	} )
-} );
+module.exports = configFactory( 'mobile', scenarios );

@@ -1,60 +1,56 @@
-version: "3.8"
-
 volumes:
   dbdata:
     name: pixel_dbdata
   mwcode:
+  vrdata:
 services:
   mediawiki:
-    build:
-      context: .
-      dockerfile: Dockerfile.mediawiki
     env_file:
       - .env
     environment:
       COMPOSER_CACHE_DIR: /var/www/html/w/cache/composer
     volumes:
       - mwcode:/var/www/html/w
-      - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
-      - ./src:/src
     depends_on:
       database:
         condition: service_healthy
+    healthcheck:
+      test: [ CMD, php-fpm-healthcheck ]
+      interval: 5s
+      timeout: 1s
   mediawiki-web:
-    image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
-    user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
-    ports:
-      - "${MW_DOCKER_PORT:-8080}:8080"
     env_file:
       - .env
+    image: docker-registry.wikimedia.org/dev/buster-apache2:2.0.0
+    user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
+    ports:
+      - "${MW_DOCKER_PORT}:8080"
     volumes:
       - mwcode:/var/www/html/w
     depends_on:
-      database:
+      mediawiki:
         condition: service_healthy
+    healthcheck:
+      test: [ CMD, curl, -f, http://localhost:8080/wiki/Main_Page ]
+      interval: 5s
+      timeout: 5s
   database:
-    build:
-      context: .
-      dockerfile: Dockerfile.database
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - dbdata:/var/lib/mysql
-      - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
     healthcheck:
       test: [ CMD, mysqladmin, ping, -h, localhost ]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 10
   visual-regression:
-    network_mode: host
-    image: backstopjs/backstopjs:6.0.4
-    working_dir: /pixel
     env_file:
       - .env
+    ports:
+      - "4000:4000"
     volumes:
-      - ./context.json:/pixel/context.json
-      - ./config.js:/pixel/config.js
-      - ./configMobile.js:/pixel/configMobile.js
-      - ./src:/pixel/src
-      - ./report:/pixel/report
+      - vrdata:/vrdata
+    depends_on:
+      mediawiki-web:
+        condition: service_healthy
