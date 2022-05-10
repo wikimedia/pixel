@@ -82,7 +82,7 @@ manually open the file at `report/index.html`.
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
 
-If you want to run the mobile visual regression test suite pass the `--mobile` flag.
+If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
 
 ### Stopping the services
 

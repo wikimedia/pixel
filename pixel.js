@@ -87,7 +87,7 @@ async function processCommand( type, opts ) {
 
 			console.log( `Using latest branch "${opts.branch}"` );
 		}
-		const group = opts.group || 'desktop';
+		const group = opts.group;
 		context[ type ] = opts.branch;
 		context.group = group;
 		// store details of this run.
@@ -139,7 +139,8 @@ function setupCli() {
 	] );
 	const groupOpt = /** @type {const} */ ( [
 		'-g, --group <(mobile|desktop)>',
-		'The group of tests to run. If omitted the group will be desktop.'
+		'The group of tests to run. If omitted the group will be desktop.',
+		'desktop'
 	] );
 
 	program
@@ -151,7 +152,7 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ... groupOpt )
+		.option( ...groupOpt )
 		.action( ( opts ) => {
 			processCommand( 'reference', opts );
 		} );
