@@ -60,7 +60,7 @@ Or if you want the reference to be a certain release branch:
 ./pixel.js reference -b origin/wmf/1.37.0-wmf.19
 ```
 
-If you want to run the mobile visual regression test suite pass the `--mobile` flag.
+If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
 
 ### 2) Take test screenshots with changed code
 

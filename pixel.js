@@ -162,7 +162,7 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ... groupOpt )
+		.option( ...groupOpt )
 		.action( ( opts ) => {
 			processCommand( 'test', opts );
 		} );
