@@ -110,7 +110,7 @@ module.exports = {
 		// eslint-disable-next-line camelcase
 		engine_scripts: 'src/engine-scripts',
 		// eslint-disable-next-line camelcase
-		html_report: 'report',
+		html_report: 'report/desktop',
 		// eslint-disable-next-line camelcase
 		ci_report: 'report/ci-report',
 		// eslint-disable-next-line camelcase

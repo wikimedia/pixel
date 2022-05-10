@@ -60,6 +60,8 @@ Or if you want the reference to be a certain release branch:
 ./pixel.js reference -b origin/wmf/1.37.0-wmf.19
 ```
 
+If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
+
 ### 2) Take test screenshots with changed code
 
 If you want to pull a change or multiple changes down from gerrit, take screenshots with these changes on top of master and then compare these screenshots against the reference screenshots, then
@@ -79,6 +81,8 @@ manually open the file at `report/index.html`.
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
+
+If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
 
 ### Stopping the services
 
@@ -118,6 +122,8 @@ docker builder prune
 All tests are located in [config.js](config.js) and follow
 BackstopJS conventions. For more info on how to change or add tests, please
 refer to the [BackstopJS](https://github.com/garris/BackstopJS) README.
+
+Scenarios for mobile site are defined in configMobile.js.
 
 ### Configuring MediaWiki
 

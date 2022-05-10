@@ -6,7 +6,6 @@ const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
-const REPORT_PATH = 'report/index.html';
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
 let context;
@@ -29,9 +28,11 @@ async function getLatestReleaseBranch() {
 
 /**
  * @param {'test'|'reference'} type
+ * @param {'mobile'|'desktop'} group
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( type ) {
+async function openReportIfNecessary( type, group ) {
+	const REPORT_PATH = `report/${group}/index.html`;
 	const filePathFull = `${__dirname}/${REPORT_PATH}`;
 	const markerString = '<div id="root">';
 	try {
@@ -44,6 +45,7 @@ async function openReportIfNecessary( type ) {
 margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
+<h2>Test group: <strong>${context.group}</strong></h2>
 <p>Comparing ${context.reference} against ${context.test}.</p>
 <p>Test ran on ${new Date()}</p>
 </div>
@@ -55,6 +57,22 @@ ${markerString}`
 		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
 	}
 }
+
+/**
+ * @param {string} groupName
+ * @return {string} path to configuration file.
+ * @throws {Error} for unknown group
+ */
+const getGroupConfig = ( groupName ) => {
+	switch ( groupName ) {
+		case 'desktop':
+			return 'config.js';
+		case 'mobile':
+			return 'configMobile.js';
+		default:
+			throw new Error( `Unknown test group: ${groupName}` );
+	}
+};
 
 /**
  * @param {'test'|'reference'} type
@@ -69,9 +87,12 @@ async function processCommand( type, opts ) {
 
 			console.log( `Using latest branch "${opts.branch}"` );
 		}
+		const group = opts.group;
 		context[ type ] = opts.branch;
+		context.group = group;
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
+		const configFile = getGroupConfig( group );
 
 		// Start docker containers.
 		await batchSpawn.spawn( 'docker-compose', [ 'up', '-d' ] );
@@ -83,9 +104,9 @@ async function processCommand( type, opts ) {
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker-compose',
-			[ 'run', '--rm', 'visual-regression', type, '--config', 'config.js' ]
+			[ 'run', '--rm', 'visual-regression', type, '--config', configFile ]
 		).then( async () => {
-			await openReportIfNecessary( type );
+			await openReportIfNecessary( type, group );
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
@@ -93,7 +114,7 @@ async function processCommand( type, opts ) {
 			}
 
 			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type );
+				return openReportIfNecessary( type, group );
 			}
 
 			throw err;
@@ -116,6 +137,11 @@ function setupCli() {
 		'-c, --change-id <Change-Id...>',
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
+	const groupOpt = /** @type {const} */ ( [
+		'-g, --group <(mobile|desktop)>',
+		'The group of tests to run. If omitted the group will be desktop.',
+		'desktop'
+	] );
 
 	program
 		.name( 'pixel.js' )
@@ -126,6 +152,7 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
+		.option( ...groupOpt )
 		.action( ( opts ) => {
 			processCommand( 'reference', opts );
 		} );
@@ -135,6 +162,7 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
+		.option( ...groupOpt )
 		.action( ( opts ) => {
 			processCommand( 'test', opts );
 		} );
