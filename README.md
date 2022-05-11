@@ -11,7 +11,7 @@ regressions before users see them. It *currently* integrates
 [MediaWiki-Docker](https://www.mediawiki.org/wiki/MediaWiki-Docker), and Docker
 under the hood.
 
-Checkout the hourly reports Pixel has generated at https://pixel.wmcloud.org
+Check out the hourly reports Pixel has generated at https://pixel.wmcloud.org
 which compare the latest release branch against master, and read
 [T302246](https://phabricator.wikimedia.org/T302246) for the motivation behind
 the tool.
