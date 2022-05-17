@@ -9,7 +9,7 @@
  * @param {import("puppeteer").Page} page
  */
 async function fastForwardAnimations( page ) {
-	return page.evaluate( () => {
+	return page.evaluate( async () => {
 		// Adapted from https://github.com/microsoft/playwright/blob/0a401b2d86a39df85e57ad30bcec9ef81618abd0/packages/playwright-core/src/server/screenshotter.ts#L174
 		document.getAnimations().forEach( ( animation ) => {
 			if ( animation.playbackRate === 0 || !animation.effect ) {
@@ -21,6 +21,15 @@ async function fastForwardAnimations( page ) {
 			} else {
 				animation.cancel();
 			}
+		} );
+
+		// Wait until the next frame before resolving.
+		return new Promise( ( resolve ) => {
+			requestAnimationFrame( () => {
+				requestAnimationFrame( () => {
+					resolve();
+				} );
+			} );
 		} );
 	} );
 }

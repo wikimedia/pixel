@@ -5,9 +5,6 @@
  * @param {import("puppeteer").Page} page
  */
 module.exports = async ( page ) => {
-	await page.emulateMediaFeatures( [
-		{ name: 'prefers-reduced-motion', value: 'reduce' }
-	] );
 	await page.evaluate( async () => {
 		// eslint-disable-next-line no-undef
 		const skin = mw.config.get( 'skin' );
