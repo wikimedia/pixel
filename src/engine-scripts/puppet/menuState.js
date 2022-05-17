@@ -33,7 +33,7 @@ const menuState = async ( page, buttonSelector, isClosed ) => {
 	}, buttonSelector, isClosed );
 
 	// Vector-2022 menus currently have transition animations when opened.
-	fastForwardAnimations( page );
+	await fastForwardAnimations( page );
 };
 
 module.exports = menuState;
