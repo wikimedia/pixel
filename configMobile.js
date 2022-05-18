@@ -28,7 +28,8 @@ const scenarios = tests.map( ( test ) => {
 	return Object.assign( {
 		selectors: [ 'viewport' ]
 	}, test, {
-		url: `${BASE_URL}${test.path}`
+		url: `${BASE_URL}${test.path}`,
+		delay: 500
 	} );
 } );
 
