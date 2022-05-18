@@ -113,7 +113,11 @@ async function processQueue( changeQueue, repos ) {
 		commands.push(
 			`cd ${path} && 
 			git fetch origin ${change.revisions[ change.current_revision ].ref} && 
-			git rebase --onto HEAD origin/${change.branch} ${change.current_revision}`
+			{ git rebase --onto HEAD origin/${change.branch} ${change.current_revision} || {
+				e=$?
+				rm -fr .git/rebase-apply
+				exit $e
+			} }`
 		);
 
 		/** @type {RelatedChange[]} */
