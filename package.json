@@ -1,6 +1,6 @@
 {
 	"name": "@nicholasray/pixel",
-	"version": "0.0.0",
+	"version": "0.0.1-prerelease.2",
 	"description": "Catch visual regressions in MediaWiki before users see them",
 	"license": "GPL-2.0-or-later",
 	"bin": {
