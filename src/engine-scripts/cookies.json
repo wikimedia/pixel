@@ -1,14 +1,58 @@
-[
-	{
-		"name": "my_wikiToken",
-		"value": "7cc096f2b26a8207b8363cede71a7ff6"
-	},
-	{
-		"name": "my_wikiUserID",
-		"value": "1"
-	},
-	{
-		"name": "my_wikiUserName",
-		"value": "Admin"
-	}
-]
+{
+	"Admin": [
+		{
+			"name": "my_wikiToken",
+			"value": "7cc096f2b26a8207b8363cede71a7ff6"
+		},
+		{
+			"name": "my_wikiUserID",
+			"value": "1"
+		},
+		{
+			"name": "my_wikiUserName",
+			"value": "Admin"
+		}
+	],
+	"Echo1": [
+		{
+			"name": "my_wikiToken",
+			"value": "eb82f6d4fe3a3b313f10e947b3886d09"
+		},
+		{
+			"name": "my_wikiUserID",
+			"value": "4"
+		},
+		{
+			"name": "my_wikiUserName",
+			"value": "Echo1"
+		}
+	],
+	"Echo1Seen": [
+		{
+			"name": "my_wikiToken",
+			"value": "fcf99bca90d6eb5b1660bcb454d3b565"
+		},
+		{
+			"name": "my_wikiUserID",
+			"value": "6"
+		},
+		{
+			"name": "my_wikiUserName",
+			"value": "Echo1Seen"
+		}
+	],
+	"Echo100": [
+		{
+			"name": "my_wikiToken",
+			"value": "ca24550a1685a1946c18eefc85f5dee3"
+		},
+		{
+			"name": "my_wikiUserID",
+			"value": "5"
+		},
+		{
+			"name": "my_wikiUserName",
+			"value": "Echo100"
+		}
+	]
+}

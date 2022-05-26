@@ -1,9 +1,11 @@
-const strippedCookies = require( '../cookies.json' );
+const allCookies = require( '../cookies.json' );
 
 /**
  * @param {import('puppeteer').Page} page
+ * @param {string} username
  */
-module.exports = async ( page ) => {
+module.exports = async ( page, username ) => {
+	const strippedCookies = allCookies[ username ];
 	const cookies = strippedCookies.map( ( cookie ) => {
 		return {
 			domain: 'localhost',

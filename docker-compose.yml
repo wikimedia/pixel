@@ -55,6 +55,7 @@ services:
     volumes:
       - ./context.json:/pixel/context.json
       - ./config.js:/pixel/config.js
+      - ./configEcho.js:/pixel/configEcho.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./src:/pixel/src
       - ./report:/pixel/report
