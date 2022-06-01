@@ -1,12 +1,17 @@
 module.exports = async ( page, moduleName ) => {
 	await page.evaluate( async ( m ) => {
-		await new Promise( ( resolve ) => {
+		let times = 0;
+		await new Promise( ( resolve, reject ) => {
 			const id = setInterval( () => {
 				// eslint-disable-next-line no-undef
 				if ( mw.loader.getState( m ) === 'ready' ) {
 					clearInterval( id );
-					resolve( true );
+					resolve();
 				}
+				if ( times > 5 ) {
+					reject( 'Cannot find module. Is scenario setup with correct hashtags?' );
+				}
+				times++;
 			}, 500 );
 		} );
 	}, moduleName );
