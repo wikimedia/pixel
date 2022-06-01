@@ -28,7 +28,7 @@ async function getLatestReleaseBranch() {
 
 /**
  * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'} group
+ * @param {'mobile'|'desktop'|'echo'} group
  * @return {Promise<undefined>}
  */
 async function openReportIfNecessary( type, group ) {
@@ -65,6 +65,8 @@ ${markerString}`
  */
 const getGroupConfig = ( groupName ) => {
 	switch ( groupName ) {
+		case 'echo':
+			return 'configEcho.js';
 		case 'desktop':
 			return 'config.js';
 		case 'mobile':
@@ -138,7 +140,7 @@ function setupCli() {
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
 	const groupOpt = /** @type {const} */ ( [
-		'-g, --group <(mobile|desktop)>',
+		'-g, --group <(mobile|desktop|echo)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
 	] );

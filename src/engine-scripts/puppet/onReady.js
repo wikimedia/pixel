@@ -25,6 +25,12 @@ module.exports = async ( page, scenario ) => {
 	}
 
 	// Make sure the main skin JavaScript module has loaded.
-	await require( './jsReady' )( page );
+	await require( './jsReady' )( page, hashtags );
+
+	// Run Echo handlers if necessary.
+	if ( hashtags.includes( '#echo' ) ) {
+		await require( './echo.js' )( page, hashtags );
+	}
+
 	// add more ready handlers here...
 };
