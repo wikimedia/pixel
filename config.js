@@ -57,9 +57,9 @@ const tests = [
 		path: '/w/index.php?title=Test&action=history&useskin=vector'
 	},
 	{
-		label: 'Talk:Test (#vector-2022)',
+		label: 'Talk:Test (#vector)',
 		delay: 1500,
-		path: '/wiki/Talk:Test'
+		path: '/wiki/Talk:Test?useskin=vector'
 	},
 	{
 		label: 'Tree (#vector)',
