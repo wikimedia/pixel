@@ -55,7 +55,7 @@ const makeScenarios = ( hashtags, queryString, additionalConfig = {} ) => {
 			test.hashtags
 		).join( ' ' );
 		return Object.assign( {
-			selectors: [ 'viewport' ]
+			selectors: [ 'html' ]
 		}, test, {
 			label: `${test.label} (${hashtagString})`,
 			url: `${BASE_URL}${test.path}?${queryString}`

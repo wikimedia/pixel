@@ -1,17 +1,6 @@
 const moduleReady = require( './moduleReady' );
 
 /**
- *
- * @param {number} time
- * @return {Promise}
- */
-const delay = ( time ) => {
-	return new Promise( function ( resolve ) {
-		setTimeout( resolve, time );
-	} );
-};
-
-/**
  * Setup Echo notifications
  *
  * @param {import('puppeteer').Page} page
@@ -43,13 +32,12 @@ module.exports = async ( page, hashtags ) => {
 		} );
 		// wait for a notification to appear if we're expecting them.
 		if ( expectsNotifications ) {
-			await page.waitForSelector( '.mw-echo-ui-notificationItemWidget-content, ' );
+			await page.waitForSelector( '.mw-echo-ui-notificationItemWidget-content' );
 		} else {
 			// Check for the "There are no notifications" message.
 			// Annoyingly there is no unique selector we can use, so we must use a delay
 			// to avoid false positives.
-			await delay( 5000 );
+			await page.waitForSelector( '.client-js .mw-echo-ui-placeholderItemWidget' );
 		}
-
 	}
 };
