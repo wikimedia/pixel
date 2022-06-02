@@ -253,3 +253,13 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
 $wgVectorTableOfContents = [
 	"default" => true,
 ];
+
+// For origin/wmf/1.39.0-wmf.14 against master.
+// https://phabricator.wikimedia.org/T308675
+// Can be removed when comparing wmf.15
+$wgMinervaOverflowInPageActions = [
+	"base" => false,
+	"beta" => false,
+	"amc" => true,
+	"loggedin" => true
+];
