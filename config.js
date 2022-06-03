@@ -5,8 +5,14 @@ const tests = [
 		path: '/wiki/Main_Page'
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed, #userMenu-closed)',
-		path: '/wiki/Test'
+		label: 'Test (#vector-2022, #sidebar-open)',
+		path: '/wiki/Test',
+		selectors: [ 'html' ]
+	},
+	{
+		label: 'Test (#vector-2022, #sidebar-closed)',
+		path: '/wiki/Test',
+		selectors: [ 'html' ]
 	},
 	{
 		label: 'Special:BlankPage (#vector-2022, #sidebar-open)',
@@ -49,7 +55,8 @@ const tests = [
 	{
 		label: 'Test (#vector)',
 		delay: 1500,
-		path: '/wiki/Test?useskin=vector'
+		path: '/wiki/Test?useskin=vector',
+		selectors: [ 'html' ]
 	},
 	{
 		label: 'Test?action=History (#vector)',
