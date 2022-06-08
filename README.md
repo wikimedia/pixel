@@ -18,22 +18,17 @@ the tool.
 
 ## Quick Start
 
-First, clone the repo wherever you wish and `cd` into it:
+Install Pixel from npm using Node 15 or later.
 
 ```sh
-git clone https://github.com/nicholasray/pixel.git && cd pixel
+npm i -g @nicholasray/pixel
 ```
 
-Pixel runs in multiple Docker containers to eliminate inconsistent rendering
-issues across environments and also to make local installation a breeze. Please
-install [Docker](https://docs.docker.com/get-docker/) and **make sure it is
-running** prior to using Pixel.
-
-Finally, install the CLI dependency:
-
-```sh
-npm install
-```
+Install [Docker](https://docs.docker.com/get-docker/) and [Docker
+Compose](https://docs.docker.com/compose/install/) and make sure Docker is
+running.  Pixel runs in multiple Docker containers to eliminate inconsistent
+rendering issues across environments and to make it easier to replicate any
+issue locally.
 
 ## Usage
 
@@ -46,57 +41,59 @@ core and all of its installed extensions and skins and then take reference
 screenshots that your test screenshots (step 2) will be compared against, then:
 
 ```sh
-./pixel.js reference
-
+pixel reference
 ```
 
 Or if you want the reference to be the latest release branch:
 
 ```sh
-./pixel.js reference -b latest-release
+pixel reference -b latest-release
 ```
 
 Or if you want the reference to be a certain release branch:
 
 ```sh
-./pixel.js reference -b origin/wmf/1.37.0-wmf.19
+pixel reference -b origin/wmf/1.39.0-wmf.12
 ```
 
-If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
+The `desktop` tests run by default. If you want to run the mobile visual
+regression test suite pass the `--group mobile` flag.
 
 ### 2) Take test screenshots with changed code
 
-If you want to pull a change or multiple changes down from gerrit, take screenshots with these changes on top of master and then compare these screenshots against the reference screenshots, then
+If you want to pull a change or multiple changes down from gerrit, take
+screenshots with these changes on top of master and then compare these
+screenshots against the reference screenshots, then
 
 ```sh
-./pixel.js test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2
+pixel test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2
 ```
 
 Note that although change id `Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2` has a
 `Depends-On` dependency, it is the only change that needs to be passed. Pixel
 will figure out and pull down the rest of the dependencies provided that it has
-the relevant repositories (set in repositories.json).
+the relevant repositories (set in [repositories.json](repositories.json)).
+
+Similar to the `reference` command, the `desktop` tests run by default. If you
+want to run the mobile visual regression test suite pass the `--group mobile`
+flag.
 
 An HTML report of your test results with screenshots will be opened
 automatically in a browser on a Mac after the test completes. If you're not on a
-Mac, you can manually open the report at `http://localhost:4000`. You can also
-optionally save the report to a file path with the `--output` flag:
+Mac, you can manually open the report at `http://localhost:4000`. Additionally,
+if you want to save the report to a file path, you can do so with the `--output`
+flag:
 
 ```sh
-./pixel.js test -c <change-id> --output <path-to-report>
+pixel test -c <change-id> --output <path-to-report>
 ```
-
-Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
-be used to interact with/debug the same server that the tests use.
-
-If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
 
 ### Stopping the services
 
 If you want to stop all of Pixel's services, run:
 
 ```
-./pixel.js stop
+pixel stop
 ```
 
 ### Cleanup
@@ -106,32 +103,19 @@ issues with the containers you just want to throw away everything and start
 Pixel with a clean slate. To do that, run:
 
 ```
-./pixels.js clean
-```
-
-Note that if you've made changes to LocalSettings.php and want to reset that,
-you'll also need to run:
-
-```
-git checkout -- LocalSettings.php
-```
-
-If all else fails and you're still running into problems, you may want to try removing Docker's build cache:
-
-```
-docker builder prune
+pixel clean
 ```
 
 ## Development
 
-### Changing or adding tests
+If you want to change the LocalSettings.php file, add/changes tests, or
+contribute code to Pixel, you'll want to clone this repository and instead run
+the CLI through [./pixel.js](./pixel.js) file. For example, to run the reference
+command make sure you are in the root of this repo's directory and run:
 
-All tests are located in config files in the root directory (e.g.
-configDesktop.js) and follow BackstopJS conventions. For more info on how to
-change or add tests, please refer to the
-[BackstopJS](https://github.com/garris/BackstopJS) README.
-
-Scenarios for mobile site are defined in configMobile.js.
+```sh
+./pixel.js test -c <change-id>
+```
 
 ### Configuring MediaWiki
 
@@ -140,6 +124,15 @@ changed. For example, maybe you are working on a new feature in the `Vector`
 skin that is feature flagged and want to enable it. All changes made in this
 file will be automatically reflected in the Docker services without having to
 restart them.
+
+### Changing or adding tests
+
+Tests are located in config files at the root directory e.g.
+[configDesktop.js](configDesktop.js) and currently follow BackstopJS
+conventions. For more info on how to change or add tests, please refer to the
+[BackstopJS](https://github.com/garris/BackstopJS) README.
+
+Scenarios for mobile site are defined in configMobile.js.
 
 ### Installed extensions and skins
 

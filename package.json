@@ -1,6 +1,29 @@
 {
-	"private": true,
-	"name": "pixel",
+	"name": "@nicholasray/pixel",
+	"version": "0.0.0",
+	"description": "Catch visual regressions in MediaWiki before users see them",
+	"license": "GPL-2.0-or-later",
+	"bin": {
+		"pixel": "./pixel.js"
+	},
+	"files": [
+		"src",
+		"config*.js",
+		"docker-compose.yml",
+		"docker-compose.build.yml",
+		"pixel.js",
+		".env"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nicholasray/pixel.git"
+	},
+	"keywords": [
+		"visual regression",
+		"visual tests",
+		"visual diff",
+		"ui tests"
+	],
 	"scripts": {
 		"bash": "docker compose exec mediawiki bash",
 		"db:save": "docker compose exec database mysql -e 'SET GLOBAL innodb_fast_shutdown=0;' && docker compose stop database && docker compose run --rm -v $(pwd)/backups:/backups database tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql && docker compose up -d database",
@@ -11,7 +34,7 @@
 	},
 	"engines": {
 		"npm": ">=7.21.0",
-		"node": ">=16"
+		"node": ">=15"
 	},
 	"pre-commit": "pre-commit",
 	"devDependencies": {

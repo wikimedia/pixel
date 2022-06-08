@@ -4,17 +4,12 @@ volumes:
   vrdata:
 services:
   mediawiki:
-    build:
-      context: .
-      dockerfile: Dockerfile.mediawiki
     env_file:
       - .env
     environment:
       COMPOSER_CACHE_DIR: /var/www/html/w/cache/composer
     volumes:
       - mwcode:/var/www/html/w
-      - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
-      - ./src:/src
     depends_on:
       database:
         condition: service_healthy
@@ -31,37 +26,22 @@ services:
       database:
         condition: service_healthy
   database:
-    build:
-      context: .
-      dockerfile: Dockerfile.database
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - dbdata:/var/lib/mysql
-      - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
     healthcheck:
       test: [ CMD, mysql, my_wiki, -e, status ]
       interval: 1s
       timeout: 5s
       retries: 20
   visual-regression:
-    build:
-      context: .
-      dockerfile: Dockerfile.visual-regression
     network_mode: host
     env_file:
       - .env
     volumes:
       - vrdata:/pixel/report
-      - ./src:/pixel/src
-      - ./viewports.js:/pixel/viewports.js
-      - ./configDesktop.js:/pixel/configDesktop.js
-      - ./configEcho.js:/pixel/configEcho.js
-      - ./configMobile.js:/pixel/configMobile.js
   visual-regression-reporter:
-    build:
-      context: .
-      dockerfile: Dockerfile.visual-regression-reporter
     env_file:
       - .env
     ports:

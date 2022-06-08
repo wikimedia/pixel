@@ -6,8 +6,15 @@ const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const REPORT_ORIGIN = 'http://localhost:4000';
+const packageJson = require( './package.json' );
 const { program, Option } = require( 'commander' );
 const pathResolve = require( 'path' ).resolve;
+const fs = require( 'fs' );
+// Use the presence of the package-lock.json file as a proxy for whether this
+// script is running as part of a released package. The package-lock.json file
+// is not specified in the `files` list in package.json so it will not exist in
+// releases.
+const IS_BUILD = !fs.existsSync( `${__dirname}/package-lock.json` );
 
 /*
  * @param {string[]} opts
@@ -15,8 +22,10 @@ const pathResolve = require( 'path' ).resolve;
  */
 function getComposeOpts( opts ) {
 	return [
+		...( IS_BUILD ? [ '--project-name', 'pixel-build' ] : [] ),
 		'--project-directory', __dirname,
 		'-f', `${__dirname}/docker-compose.yml`,
+		'-f', IS_BUILD ? `${__dirname}/docker-compose.build.yml` : `${__dirname}/docker-compose.override.yml`,
 		...opts
 	];
 }
@@ -29,7 +38,22 @@ function getComposeOpts( opts ) {
  * @return {Promise}
  */
 async function cleanCommand() {
-	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
+	try {
+		await Promise.all( [
+			batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] ),
+			batchSpawn.spawn( 'docker', [ 'image', 'prune', '-a', '--filter', 'label=@nicholasray/pixel', '-f' ] )
+		] );
+	} catch ( e ) {
+		// The buster-apache2:1.0.0-s1 image is shared between the build and dev
+		// versions of Pixel so ignore errors that complain about not being able to
+		// remove a shared image.
+		if ( e instanceof Error && e.message.includes( 'buster-apache2:1.0.0-s1" (must force)' ) ) {
+			console.info( e );
+			return;
+		}
+
+		throw e;
+	}
 }
 
 /**
@@ -108,6 +132,29 @@ async function resetDb() {
 }
 
 /**
+ * Checks if Pixel is running old Docker images. If it is, remove all
+ * containers, images, and volumes and restart the containers.
+ */
+async function checkVersion() {
+	const imageIds = ( await exec( `docker compose ${getComposeOpts( [ 'images', '-q' ] ).join( ' ' )}` ) ).stdout.trim();
+	const imageTags = await Promise.all( imageIds.map( async ( imageId ) => {
+		return ( imageId === '' ) ? '' : ( await exec( `docker image inspect ${imageId} -f "{{index .RepoTags 0}}"` ) ).stdout.split( ':' )[ 1 ].trim();
+	} ) );
+
+	if ( imageTags.every( ( imageTag ) => imageTag === packageJson.version ) ) {
+		// Each image tag matches the version specified in package.json so return early.
+		return;
+	}
+
+	console.warn( `Docker images associated with ${packageJson.version} were not found. To prepare for this version, all previous data volumes, images, and containers will be removed in 5 seconds (abort with control-c)` );
+	await new Promise( ( resolve ) => {
+		setTimeout( resolve, 5000 );
+	} );
+	await cleanCommand();
+	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'restart' ] ) ] );
+}
+
+/**
  * @param {any} opts
  */
 async function processCommand( opts ) {
@@ -130,6 +177,12 @@ async function processCommand( opts ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'up', '-d' ] ) ]
 		);
+
+		// Check if Pixel is running on old Docker images. If it is, remove previous
+		// images, containers, and volumes and restart.
+		if ( IS_BUILD ) {
+			await checkVersion();
+		}
 
 		// Execute main.js.
 		await batchSpawn.spawn(
@@ -184,7 +237,8 @@ function setupCli() {
 	] );
 
 	program
-		.name( 'pixel.js' )
+		.name( 'pixel' )
+		.version( packageJson.version, '-v, --version', 'output the version number' )
 		.description( 'Welcome to the pixel CLI to perform visual regression testing' );
 
 	program

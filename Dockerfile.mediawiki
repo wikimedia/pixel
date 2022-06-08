@@ -13,3 +13,5 @@ WORKDIR /var/www/html/w
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"
 
 RUN /src/setupRepos.js "$( cat /repositories.json )"
+
+COPY LocalSettings.php  /var/www/html/w/LocalSettings.php
