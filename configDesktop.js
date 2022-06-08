@@ -111,9 +111,9 @@ module.exports = {
 	scenarios,
 	paths: {
 		// eslint-disable-next-line camelcase
-		bitmaps_reference: 'report/reference-screenshots',
+		bitmaps_reference: 'report/reference-screenshots-desktop',
 		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots',
+		bitmaps_test: 'report/test-screenshots-desktop',
 		// eslint-disable-next-line camelcase
 		engine_scripts: 'src/engine-scripts',
 		// eslint-disable-next-line camelcase

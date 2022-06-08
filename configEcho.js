@@ -1,6 +1,18 @@
-const config = require( './config.js' );
+const configDesktop = require( './configDesktop.js' );
 
 const BASE_URL = process.env.MW_SERVER;
+
+/**
+ * @typedef {Object} BaseScenario
+ * @property {string} label
+ * @property {string} path
+ * @property {string[]} hashtags
+ */
+
+/**
+ * @callback BaseScenarioCallback
+ * @param {BaseScenario} baseScenario
+ */
 
 /**
  * Be careful when expanding the list of tests here.
@@ -9,7 +21,7 @@ const BASE_URL = process.env.MW_SERVER;
  * - Vector 2022 skin (mobile + tablet + desktop + desktop wide)
  * - Minerva skin (mobile + tablet + desktop + desktop wide)
  */
-const baseScenarios = [
+const baseScenarios = /** @type {BaseScenario[]} */ ( [
 	{
 		label: 'Echo smoke test with 0 notifications',
 		path: '/wiki/Test',
@@ -39,15 +51,15 @@ const baseScenarios = [
 		path: '/wiki/Test',
 		hashtags: [ '#echo-drawer' ]
 	}
-];
+] );
 
 /**
  * Creates a list of tests with the given query string and hashtags.
  *
- * @param {Array} hashtags additional hashtags
+ * @param {string[]} hashtags additional hashtags
  * @param {string} queryString to add to URL.
  * @param {Object} additionalConfig
- * @return {Array} of scenarios.
+ * @return {BaseScenarioCallback} of scenarios.
  */
 const makeScenarios = ( hashtags, queryString, additionalConfig = {} ) => {
 	return ( test ) => {
@@ -66,8 +78,8 @@ const makeScenarios = ( hashtags, queryString, additionalConfig = {} ) => {
 /**
  * Expands the list of tests so there is one for mobile and one for desktop.
  *
- * @param {Array} tests
- * @return {Array}
+ * @param {BaseScenario[]} tests
+ * @return {import("backstopjs").Scenario[]}
  */
 const makeMobileAndDesktopScenarios = ( tests ) => {
 	return tests.map(
@@ -101,9 +113,9 @@ const makeMobileAndDesktopScenarios = ( tests ) => {
 
 const scenarios = makeMobileAndDesktopScenarios( baseScenarios );
 
-module.exports = Object.assign( {}, config, {
+module.exports = Object.assign( {}, configDesktop, {
 	scenarios,
-	paths: Object.assign( {}, config.paths, {
+	paths: Object.assign( {}, configDesktop.paths, {
 		// eslint-disable-next-line camelcase
 		bitmaps_reference: 'report/reference-screenshots-echo',
 		// eslint-disable-next-line camelcase
