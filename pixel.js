@@ -5,8 +5,9 @@ const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
-const fs = require( 'fs' );
-const CONTEXT_PATH = `${__dirname}/context.json`;
+const REPORT_ORIGIN = 'http://localhost:4000';
+const { program, Option } = require( 'commander' );
+const pathResolve = require( 'path' ).resolve;
 
 /*
  * @param {string[]} opts
@@ -31,16 +32,6 @@ async function cleanCommand() {
 	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
 }
 
-let context;
-if ( fs.existsSync( CONTEXT_PATH ) ) {
-	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
-} else {
-	context = {
-		test: 'unknown',
-		reference: 'unknown'
-	};
-}
-
 /**
  * @return {Promise<string>}
  */
@@ -50,54 +41,46 @@ async function getLatestReleaseBranch() {
 }
 
 /**
- * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'|'echo'} group
- * @return {Promise<undefined>}
+ * @param {string} reportLocation
  */
-async function openReportIfNecessary( type, group ) {
-	const REPORT_PATH = `report/${group}/index.html`;
-	const filePathFull = `${__dirname}/${REPORT_PATH}`;
-	const markerString = '<div id="root">';
+async function copyReportToHost( reportLocation ) {
 	try {
-		if ( type === 'reference' ) {
-			return;
-		}
-		const fileString = fs.readFileSync( filePathFull ).toString().replace(
-			markerString,
-			`<div style="color: #000; box-sizing: border-box;
-margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
-word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
-background-color: #eaecf0; border-color: #a2a9b1;">
-<h2>Test group: <strong>${context.group}</strong></h2>
-<p>Comparing ${context.reference} against ${context.test}.</p>
-<p>Test ran on ${new Date()}</p>
-</div>
-${markerString}`
+		// Save report to host at the location specified by `path`.
+		await batchSpawn.spawn(
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'cp', 'visual-regression-reporter:/pixel/report', reportLocation ] ) ]
 		);
-		fs.writeFileSync( filePathFull, fileString );
-		await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
 	} catch ( e ) {
-		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
+		console.log( 'Could not copy report to host', e );
 	}
 }
 
 /**
- * @param {string} groupName
- * @return {string} path to configuration file.
- * @throws {Error} for unknown group
+ * @param {'test'|'reference'} type
+ * @param {string} group
+ * @param {string} [path] Path that the report should be written.
+ * @return {Promise<undefined>}
  */
-const getGroupConfig = ( groupName ) => {
-	switch ( groupName ) {
-		case 'echo':
-			return 'configEcho.js';
-		case 'desktop':
-			return 'configDesktop.js';
-		case 'mobile':
-			return 'configMobile.js';
-		default:
-			throw new Error( `Unknown test group: ${groupName}` );
+async function openReportIfNecessary( type, group, path ) {
+	const reportUrl = `${REPORT_ORIGIN}/${group}`;
+
+	try {
+		if ( type === 'reference' ) {
+			return;
+		}
+
+		if ( path ) {
+			path = pathResolve( path );
+			copyReportToHost( pathResolve( path ) );
+		}
+
+		await batchSpawn.spawn( 'open', [ reportUrl ] );
+
+		console.log( `Report located at ${reportUrl}${path ? ` and at ${path}` : ''}` );
+	} catch ( e ) {
+		console.log( `Could not open report, but it is located at ${reportUrl}` );
 	}
-};
+}
 
 /**
  * Resets the database to the physical backup downloaded from the
@@ -125,24 +108,17 @@ async function resetDb() {
 }
 
 /**
- * @param {'test'|'reference'} type
  * @param {any} opts
  */
-async function processCommand( type, opts ) {
+async function processCommand( opts ) {
 	try {
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
 
-			console.log( `Using latest branch "${opts.branch}"` );
+			console.log( `Using latest release branch "${opts.branch}"` );
 		}
-		const group = opts.group;
-		context[ type ] = opts.branch;
-		context.group = group;
-		// store details of this run.
-		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
-		const configFile = getGroupConfig( group );
 
 		// Reset the database if `--reset-db` option is passed.
 		if ( opts.resetDb ) {
@@ -163,17 +139,17 @@ async function processCommand( type, opts ) {
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', JSON.stringify( opts ) ] ) ]
 		).then( async () => {
-			await openReportIfNecessary( type, group );
+			await openReportIfNecessary( opts.type, opts.group, opts.output );
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
 				return;
 			}
 
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type, group );
+			if ( err.message === 'Exit with error code 10' ) {
+				return openReportIfNecessary( opts.type, opts.group, opts.output );
 			}
 
 			throw err;
@@ -186,21 +162,22 @@ async function processCommand( type, opts ) {
 }
 
 function setupCli() {
-	const { program } = require( 'commander' );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
-		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
+		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.39.0-wmf.10"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
 		'master'
 	] );
 	const changeIdOpt = /** @type {const} */ ( [
 		'-c, --change-id <Change-Id...>',
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
-	const groupOpt = /** @type {const} */ ( [
+	const groupOpt = new Option(
 		'-g, --group <(mobile|desktop|echo)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
-	] );
+	)
+		.default( 'desktop' )
+		.choices( [ 'mobile', 'desktop', 'echo' ] );
 	const resetDbOpt = /** @type {const} */ ( [
 		'--reset-db',
 		'Reset the database before running the test. This will destroy all data that is currently in the database.'
@@ -215,10 +192,12 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
 		.option( ...resetDbOpt )
+		.addOption( groupOpt )
 		.action( ( opts ) => {
-			processCommand( 'reference', opts );
+			opts = Object.assign( {}, opts, { type: 'reference' } );
+
+			processCommand( opts );
 		} );
 
 	program
@@ -226,10 +205,19 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
 		.option( ...resetDbOpt )
+		.addOption( groupOpt )
+		.addOption(
+			new Option(
+				'-o, --output [path-to-report]',
+				'Save static report to a given path. Defaults to the current working directory.',
+				'pixel-report'
+			).preset( './pixel-report' )
+		)
 		.action( ( opts ) => {
-			processCommand( 'test', opts );
+			opts = Object.assign( {}, opts, { type: 'test' } );
+
+			processCommand( opts );
 		} );
 
 	program

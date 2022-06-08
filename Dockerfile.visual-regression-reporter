@@ -1,0 +1,10 @@
+# Use the same node version that backstop image uses to save space.
+FROM node:14.17.3
+
+RUN npm i -g http-server --only-prod
+
+EXPOSE 4000
+
+WORKDIR /pixel
+
+ENTRYPOINT ["http-server", "/pixel/report", "-p", "4000", "-c-1"]

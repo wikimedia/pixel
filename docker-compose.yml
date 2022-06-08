@@ -1,8 +1,7 @@
-version: "3.8"
-
 volumes:
   dbdata:
   mwcode:
+  vrdata:
 services:
   mediawiki:
     build:
@@ -46,16 +45,26 @@ services:
       timeout: 5s
       retries: 20
   visual-regression:
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-regression
     network_mode: host
-    image: backstopjs/backstopjs:6.0.4
-    working_dir: /pixel
     env_file:
       - .env
     volumes:
-      - ./context.json:/pixel/context.json
+      - vrdata:/pixel/report
+      - ./src:/pixel/src
       - ./viewports.js:/pixel/viewports.js
       - ./configDesktop.js:/pixel/configDesktop.js
       - ./configEcho.js:/pixel/configEcho.js
       - ./configMobile.js:/pixel/configMobile.js
-      - ./src:/pixel/src
-      - ./report:/pixel/report
+  visual-regression-reporter:
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-regression-reporter
+    env_file:
+      - .env
+    ports:
+      - "4000:4000"
+    volumes:
+      - vrdata:/pixel/report

@@ -78,8 +78,13 @@ will figure out and pull down the rest of the dependencies provided that it has
 the relevant repositories (set in repositories.json).
 
 An HTML report of your test results with screenshots will be opened
-automatically on a Mac after the test completes. If you're not on a Mac, you can
-manually open the file at `report/index.html`.
+automatically in a browser on a Mac after the test completes. If you're not on a
+Mac, you can manually open the report at `http://localhost:4000`. You can also
+optionally save the report to a file path with the `--output` flag:
+
+```sh
+./pixel.js test -c <change-id> --output <path-to-report>
+```
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
