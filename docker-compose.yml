@@ -41,10 +41,10 @@ services:
       - dbdata:/var/lib/mysql
       - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
     healthcheck:
-      test: [ CMD, mysqladmin, ping, -h, localhost ]
-      interval: 10s
+      test: [ CMD, mysql, my_wiki, -e, status ]
+      interval: 1s
       timeout: 5s
-      retries: 10
+      retries: 20
   visual-regression:
     network_mode: host
     image: backstopjs/backstopjs:6.0.4

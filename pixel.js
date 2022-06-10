@@ -100,6 +100,31 @@ const getGroupConfig = ( groupName ) => {
 };
 
 /**
+ * Resets the database to the physical backup downloaded from the
+ * Dockerfile.database docker image.
+ */
+async function resetDb() {
+	// Mysql server needs to be shutdown before restoring a physical backup:
+	// See: https://www.percona.com/doc/percona-xtrabackup/2.1/xtrabackup_bin/restoring_a_backup.html
+	await batchSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'stop', 'database' ] ) ]
+	);
+
+	// Run seedDb.sh script which rsyncs the physical backup into the mysql folder.
+	await batchSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'run', '--rm', '--entrypoint', 'bash -c "/docker-entrypoint-initdb.d/seedDb.sh"', 'database' ] ) ]
+	);
+
+	// Start mysql server.
+	await batchSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'up', '-d', 'database' ] ) ]
+	);
+}
+
+/**
  * @param {'test'|'reference'} type
  * @param {any} opts
  */
@@ -118,6 +143,11 @@ async function processCommand( type, opts ) {
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 		const configFile = getGroupConfig( group );
+
+		// Reset the database if `--reset-db` option is passed.
+		if ( opts.resetDb ) {
+			await resetDb();
+		}
 
 		// Start docker containers.
 		await batchSpawn.spawn(
@@ -171,6 +201,10 @@ function setupCli() {
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
 	] );
+	const resetDbOpt = /** @type {const} */ ( [
+		'--reset-db',
+		'Reset the database before running the test. This will destroy all data that is currently in the database.'
+	] );
 
 	program
 		.name( 'pixel.js' )
@@ -182,6 +216,7 @@ function setupCli() {
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
+		.option( ...resetDbOpt )
 		.action( ( opts ) => {
 			processCommand( 'reference', opts );
 		} );
@@ -192,8 +227,16 @@ function setupCli() {
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
+		.option( ...resetDbOpt )
 		.action( ( opts ) => {
 			processCommand( 'test', opts );
+		} );
+
+	program
+		.command( 'reset-db' )
+		.description( 'Destroys all data in the database and resets it.' )
+		.action( async () => {
+			await resetDb();
 		} );
 
 	program
