@@ -68,7 +68,7 @@ const getGroupConfig = ( groupName ) => {
 		case 'echo':
 			return 'configEcho.js';
 		case 'desktop':
-			return 'config.js';
+			return 'configDesktop.js';
 		case 'mobile':
 			return 'configMobile.js';
 		default:

@@ -1,7 +1,7 @@
 {
 	"include": [
 		"src",
-		"config.js"
+		"config*.js"
 	],
 	"exclude": [
 		"src/engine-scripts",

@@ -53,7 +53,7 @@ services:
       - .env
     volumes:
       - ./context.json:/pixel/context.json
-      - ./config.js:/pixel/config.js
+      - ./configDesktop.js:/pixel/configDesktop.js
       - ./configEcho.js:/pixel/configEcho.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./src:/pixel/src

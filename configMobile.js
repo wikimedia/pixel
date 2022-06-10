@@ -1,4 +1,4 @@
-const config = require( './config.js' );
+const configDesktop = require( './configDesktop.js' );
 
 const BASE_URL = process.env.MW_SERVER;
 const tests = [
@@ -32,13 +32,13 @@ const scenarios = tests.map( ( test ) => {
 	} );
 } );
 
-module.exports = Object.assign( {}, config, {
+module.exports = Object.assign( {}, configDesktop, {
 	scenarios,
-	paths: Object.assign( {}, config.paths, {
+	paths: Object.assign( {}, configDesktop.paths, {
 		// eslint-disable-next-line camelcase
 		bitmaps_reference: 'report/reference-screenshots-mobile',
 		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots',
+		bitmaps_test: 'report/test-screenshots-mobile',
 		// eslint-disable-next-line camelcase
 		html_report: 'report/mobile'
 	} )

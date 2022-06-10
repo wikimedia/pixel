@@ -121,9 +121,10 @@ docker builder prune
 
 ### Changing or adding tests
 
-All tests are located in [config.js](config.js) and follow
-BackstopJS conventions. For more info on how to change or add tests, please
-refer to the [BackstopJS](https://github.com/garris/BackstopJS) README.
+All tests are located in config files in the root directory (e.g.
+configDesktop.js) and follow BackstopJS conventions. For more info on how to
+change or add tests, please refer to the
+[BackstopJS](https://github.com/garris/BackstopJS) README.
 
 Scenarios for mobile site are defined in configMobile.js.
 
