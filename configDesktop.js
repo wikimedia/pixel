@@ -27,6 +27,11 @@ const tests = [
 		path: '/wiki/Special:SpecialPages'
 	},
 	{
+		label: 'Test sticky header (#vector-2022, #scroll)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
 		path: '/wiki/Special:BlankPage'
 	},
