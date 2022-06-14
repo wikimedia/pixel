@@ -8,6 +8,18 @@ const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
+/*
+ * @param {string[]} opts
+ * @return {string[]}
+ */
+function getComposeOpts( opts ) {
+	return [
+		'--project-directory', __dirname,
+		'-f', `${__dirname}/docker-compose.yml`,
+		...opts
+	];
+}
+
 let context;
 if ( fs.existsSync( CONTEXT_PATH ) ) {
 	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
@@ -97,16 +109,20 @@ async function processCommand( type, opts ) {
 		const configFile = getGroupConfig( group );
 
 		// Start docker containers.
-		await batchSpawn.spawn( 'docker-compose', [ 'up', '-d' ] );
+		await batchSpawn.spawn(
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'up', '-d' ] ) ]
+		);
+
 		// Execute main.js.
 		await batchSpawn.spawn(
-			'docker-compose',
-			[ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ]
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
-			'docker-compose',
-			[ 'run', '--rm', 'visual-regression', type, '--config', configFile ]
+			'docker',
+			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
 			await openReportIfNecessary( type, group );
 		}, async ( /** @type {Error} */ err ) => {
