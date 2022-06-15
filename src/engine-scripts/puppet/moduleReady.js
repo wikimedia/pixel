@@ -9,7 +9,7 @@ module.exports = async ( page, moduleName ) => {
 					resolve();
 				}
 				if ( times > 5 ) {
-					reject( 'Cannot find module. Is scenario setup with correct hashtags?' );
+					reject( 'Cannot find module. Is scenario setup with correct hashtags? ' +  mw.loader.getState( m ) );
 				}
 				times++;
 			}, 500 );
