@@ -4,6 +4,7 @@ const moduleReady = require( './moduleReady' );
  * Focuses the search input and types test
  *
  * @param {import('puppeteer').Page} page
+ * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {
 	const isOffline = hashtags.includes( '#search-offline' );
@@ -13,7 +14,7 @@ module.exports = async ( page, hashtags ) => {
 
 	// Click toggle if necessary to reveal input
 	const button = await page.waitForSelector( '.search-toggle' );
-	await button.boxModel().then(async ( box ) => {
+	await button.boxModel().then( async ( box ) => {
 		// If bounding box is null then the button is hidden on the page.
 		if ( box !== null ) {
 			await button.click();
