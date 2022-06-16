@@ -24,8 +24,6 @@ const tests = [
 	{
 		label: 'Test (#vector-2022, #search-focus, #search-offline)',
 		path: '/wiki/Test',
-		// account for mismatch due to border color change animation
-		misMatchThreshold: 0.5,
 		selectors: [ 'html' ]
 	},
 	{

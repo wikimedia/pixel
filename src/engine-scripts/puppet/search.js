@@ -37,13 +37,13 @@ module.exports = async ( page, hashtags ) => {
 		await page.waitForSelector( '.search-form__loader', {
 			visible: true
 		} );
+		await fastForwardAnimations( page );
 	} else {
 		// Wait for Vue to load.
 		await moduleReady( page, 'vue' );
 		// focus and type into the newly added input
 		await page.focus( selectorSearchInput );
-		await page.keyboard.type( 't' );
-		await page.keyboard.type( 'est' );
+		await page.keyboard.type( 'test' );
 		// Wait for a search result to display.
 		await page.waitForSelector( selectorSearchSuggestion, {
 			visible: true,
