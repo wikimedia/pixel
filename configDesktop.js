@@ -1,4 +1,11 @@
 const BASE_URL = process.env.MW_SERVER;
+const {
+	VIEWPORT_PHONE,
+	VIEWPORT_TABLET,
+	VIEWPORT_DESKTOP,
+	VIEWPORT_DESKTOP_WIDE
+} = require( './viewports' );
+
 const tests = [
 	{
 		label: 'Main_Page (#vector-2022)',
@@ -20,6 +27,15 @@ const tests = [
 		// account for mismatch due to border color change animation
 		misMatchThreshold: 0.5,
 		selectors: [ 'html' ]
+	},
+	{
+		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// No search icon present if no sticky header present, so limit to this viewport
+		viewports: [
+			VIEWPORT_DESKTOP_WIDE
+		]
 	},
 	{
 		label: 'Test (#vector-2022, #sidebar-closed)',
@@ -102,26 +118,10 @@ const scenarios = tests.map( ( test ) => {
 module.exports = {
 	id: 'MediaWiki',
 	viewports: [
-		{
-			label: 'phone',
-			width: 320,
-			height: 480
-		},
-		{
-			label: 'tablet',
-			width: 720,
-			height: 768
-		},
-		{
-			label: 'desktop',
-			width: 1000,
-			height: 900
-		},
-		{
-			label: 'desktop-wide',
-			width: 1792,
-			height: 900
-		}
+		VIEWPORT_PHONE,
+		VIEWPORT_TABLET,
+		VIEWPORT_DESKTOP,
+		VIEWPORT_DESKTOP_WIDE
 	],
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
