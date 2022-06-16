@@ -1,4 +1,5 @@
 const moduleReady = require( './moduleReady' );
+const fastForwardAnimations = require( './fastForwardAnimations' );
 
 /**
  * Focuses the search input and types test
