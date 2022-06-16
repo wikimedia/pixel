@@ -91,7 +91,7 @@ If you want to run the mobile visual regression test suite pass the `--group mob
 If you want to stop all of Pixel's services, run:
 
 ```
-npm stop
+./pixel.js stop
 ```
 
 ### Cleanup
@@ -101,7 +101,7 @@ issues with the containers you just want to throw away everything and start
 Pixel with a clean slate. To do that, run:
 
 ```
-npm run clean
+./pixels.js clean
 ```
 
 Note that if you've made changes to LocalSettings.php and want to reset that,

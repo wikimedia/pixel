@@ -2,9 +2,6 @@
 	"private": true,
 	"name": "pixel",
 	"scripts": {
-		"start": "docker compose up -d",
-		"stop": "docker compose down",
-		"clean": "docker compose down --rmi all -v --remove-orphans",
 		"bash": "docker compose exec mediawiki bash",
 		"db:save": "docker compose run -v $(pwd)/backups:/backups database tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql",
 		"lint": "eslint --cache .",
