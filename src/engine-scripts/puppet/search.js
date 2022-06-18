@@ -33,7 +33,7 @@ module.exports = async ( page, hashtags ) => {
 	await page.focus( selectorSearchInput );
 	if ( isOffline ) {
 		// type into the server side rendered input
-		page.keyboard.type( 'test' );
+		page.keyboard.type( 't' );
 		// Wait for the loader to display
 		await page.waitForSelector( '.search-form__loader', {
 			visible: true
