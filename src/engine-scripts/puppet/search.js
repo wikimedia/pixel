@@ -44,7 +44,7 @@ module.exports = async ( page, hashtags ) => {
 		await moduleReady( page, 'vue' );
 		// focus and type into the newly added input
 		await page.focus( selectorSearchInput );
-		await page.keyboard.type( 'test' );
+		await page.keyboard.type( 't' );
 		// Wait for a search result to display.
 		await page.waitForSelector( selectorSearchSuggestion, {
 			visible: true,
