@@ -32,5 +32,8 @@ module.exports = async ( page, scenario ) => {
 		await require( './echo.js' )( page, hashtags );
 	}
 
+	if ( hashtags.includes( '#search-focus' ) ) {
+		await require( './search.js' )( page, hashtags );
+	}
 	// add more ready handlers here...
 };

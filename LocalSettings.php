@@ -263,3 +263,7 @@ $wgMinervaOverflowInPageActions = [
 	"amc" => true,
 	"loggedin" => true
 ];
+
+// Disable ULS IME keyboard tool.
+// This leads to false positives in tests and is not a feature maintained by web team.
+$wgULSIMEEnabled = false;
