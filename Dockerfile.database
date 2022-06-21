@@ -1,3 +1,13 @@
 FROM mariadb:10.6.7
 
-RUN apt-get update && apt-get install curl -y
+COPY src/seedDb.sh /docker-entrypoint-initdb.d/
+
+ARG database="database_2022-06-13_12-27-44-0600(MDT).tar.gz"
+
+RUN apt-get update && apt-get install -y \
+	curl \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& mkdir -p /var/lib/mysql_backup \
+	&& curl -SL "https://nicholasray.github.io/pixel-seed-data/$database" \
+	| tar -C /var/lib/mysql_backup --strip-components=3 -xzv \
+	&& chown mysql:mysql /var/lib/mysql_backup
