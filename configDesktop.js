@@ -55,7 +55,22 @@ const tests = [
 	{
 		label: 'Test sticky header (#vector-2022, #scroll)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ]
+		selectors: [ 'viewport' ],
+		// No search icon present if no sticky header present, so limit to this viewport
+		viewports: [
+			VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
+		label: 'Test sticky header scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// Smoke test sticky header scroll with the sidebar open. Limit to desktop
+		// wide viewport to minimize duplication with other tests.  See T309807 for
+		// an example bug.
+		viewports: [
+			VIEWPORT_DESKTOP_WIDE
+		]
 	},
 	{
 		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
@@ -107,10 +122,10 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
-	return Object.assign( {}, test, {
+	return Object.assign( {
 		url: `${BASE_URL}${test.path}`,
 		misMatchThreshold: 0.04
-	} );
+	}, test );
 } );
 
 module.exports = {
