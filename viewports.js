@@ -1,9 +1,3 @@
-const VIEWPORT_DESKTOP_WIDE = {
-	label: 'desktop-wide',
-	width: 1792,
-	height: 900
-};
-
 const VIEWPORT_PHONE = {
 	label: 'phone',
 	width: 320,
@@ -12,13 +6,19 @@ const VIEWPORT_PHONE = {
 
 const VIEWPORT_TABLET = {
 	label: 'tablet',
-	width: 720,
+	width: 721,
 	height: 768
 };
 
 const VIEWPORT_DESKTOP = {
 	label: 'desktop',
-	width: 1000,
+	width: 1001,
+	height: 900
+};
+
+const VIEWPORT_DESKTOP_WIDE = {
+	label: 'desktop-wide',
+	width: 1792,
 	height: 900
 };
 
