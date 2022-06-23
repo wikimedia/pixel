@@ -67,7 +67,7 @@ const makeScenarios = ( hashtags, queryString, additionalConfig = {} ) => {
 			test.hashtags
 		).join( ' ' );
 		return Object.assign( {
-			hideSelectors: [
+			removeSelectors: [
 				'.skin-vector-2022 .mw-workspace-container',
 				'.skin-vector #content',
 				'.skin-vector #mw-panel',
