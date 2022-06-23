@@ -58,6 +58,17 @@ const tests = [
 		selectors: [ 'viewport' ]
 	},
 	{
+		label: 'Test sticky header scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// Smoke test sticky header scroll with the sidebar open. Limit to desktop
+		// wide viewport to minimize duplication with other tests.  See T309807 for
+		// an example bug.
+		viewports: [
+			VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
 		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
 		path: '/wiki/Special:BlankPage'
 	},
@@ -107,10 +118,10 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
-	return Object.assign( {}, test, {
+	return Object.assign( {
 		url: `${BASE_URL}${test.path}`,
 		misMatchThreshold: 0.04
-	} );
+	}, test );
 } );
 
 module.exports = {
