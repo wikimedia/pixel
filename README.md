@@ -113,6 +113,9 @@ which pulls down the latest code. Then run:
 ./pixel.js clean
 ```
 
+The `clean` command destroys all Docker images, containers, and volumes
+associated with Pixel and ensures that the necessary Docker images are rebuilt with the latest.
+
 ### Cleanup
 
 Sometimes after making MediaWiki code changes, database changes, or having
@@ -128,9 +131,6 @@ You can also reset Pixel's database to its original state with:
 ```
 ./pixel.js reset-db
 ```
-
-The `clean` command destroys all Docker images, containers, and volumes
-associated with Pixel and ensures that the necessary Docker images are rebuilt with the latest.
 
 ## Development
 
