@@ -2,7 +2,7 @@
 
 ![Visual regression HTML reporter showing failing and passing tests](reporter.png)
 
-🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous.** 🚨
+🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous. 🚨
 
 Pixel is a visual regression tool for MediaWiki developers/QA engineers that
 helps you replace manual testing with automated tests that catch web ui
@@ -25,15 +25,16 @@ git clone https://github.com/nicholasray/pixel.git && cd pixel
 ```
 
 Pixel runs in multiple Docker containers to eliminate inconsistent rendering
-issues across environments and also to make local installation a breeze. Please
-install [Docker](https://docs.docker.com/get-docker/) and **make sure it is
-running** prior to using Pixel.
+issues across environments. Please install [Docker](https://docs.docker.com/get-docker/) and 
+**make sure it is running** prior to using Pixel.
 
 Finally, install the CLI dependency:
 
 ```sh
 npm install
 ```
+
+Running Pixel for the first time can take a long time (e.g. 5 minutes) as it clones MediaWiki core (> 2GB) and a number of extensions/skins. It will be much faster on subsequent runs as this data has already been downloaded.
 
 ## Usage
 
@@ -141,3 +142,8 @@ restart them.
 Pixel ships with a number of MediaWiki extensions and skins already installed.
 Please reference the [repositories.json](repositories.json) file to see a
 list of these.
+
+### Known Issues
+
+* Pixel has only been tested on machines running on x86 chips. It does not currently work with `arm64` (e.g. Macbooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300 
+* Updating Pixel (`git pull`) when its Docker images have changed is currently more of a hassle than it should be. It requires `git pull` followed by destroying all Docker containers, Docker images, and Docker volumes with `./pixel.js clean` so that the new Docker images can get rebuilt.
