@@ -215,7 +215,7 @@ $wgSharedTables = [ 'user' ]; // Note that 'user_properties' is not included.
 $wgHooks['SkinTemplateNavigation::Universal'][] = function ( $skinTemplate, &$links ) {
         $links['user-menu']['extension'] = [
                 'link-class' => [ 'ext' ],
-                'class' => [ 'ext' ],
+                'class' => [ 'mw-ui-icon mw-ui-icon-before mw-ui-icon- mw-ui-icon-wikimedia-ext' ],
                 'text' => 'I am an extension',
                 'href' => 'https://mediawiki.org'
         ];
