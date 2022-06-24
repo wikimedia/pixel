@@ -101,21 +101,17 @@ If you want to stop all of Pixel's services, run:
 
 ### Updates
 
-Updating Pixel is more of a hassle than it should be. It requires two steps:
+Updating Pixel to the latest version is more of a hassle than it should be. It
+requires:
 
 ```sh
-git pull
+./pixel.js update
 ```
 
-which pulls down the latest code. Then run:
-
-```sh
-./pixel.js clean
-```
-
-The `clean` command destroys all Docker images, containers, and volumes
-associated with Pixel and ensures that the necessary Docker images are rebuilt with the latest.
-If the Docker images are updated and you don't run this command, you will likely get errors.
+This command will pull the latest code and destroy all Docker images,
+containers, and volumes associated with Pixel to ensure that it is using the
+latest database seed data and that the necessary Docker images are rebuilt with
+the latest code. As a result, updates can take awhile.
 
 ### Cleanup
 

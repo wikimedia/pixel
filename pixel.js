@@ -252,6 +252,17 @@ function setupCli() {
 		} );
 
 	program
+		.command( 'update' )
+		.description( 'Updates Pixel to the latest version. This command also destroys all containers, images, networks, and volumes associated with Pixel to ensure it is using the latest code.' )
+		.action( async () => {
+			await batchSpawn.spawn(
+				'git',
+				[ '-C', __dirname, 'fetch', 'origin', 'main:main' ]
+			);
+			await cleanCommand();
+		} );
+
+	program
 		.command( 'clean' )
 		.description( 'Removes all containers, images, networks, and volumes associated with Pixel so that it can start with a clean slate. If Pixel is throwing errors, try running this command.' )
 		.action( async () => {
