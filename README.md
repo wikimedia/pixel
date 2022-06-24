@@ -36,7 +36,9 @@ Finally, install the CLI dependency:
 npm install
 ```
 
-Running Pixel for the first time can take a long time (e.g. 5 minutes) as it clones MediaWiki core (> 2GB) and a number of extensions/skins. It will be much faster on subsequent runs as this data has already been downloaded.
+Running Pixel for the first time can take a long time (e.g. 5 minutes) as it downloads Docker images, 
+clones MediaWiki core (> 2GB) and a number of extensions/skins. It will be much faster on subsequent 
+runs as this data has already been downloaded.
 
 ## Usage
 
