@@ -109,17 +109,10 @@ Pixel with a clean slate. To do that, run:
 ./pixels.js clean
 ```
 
-Note that if you've made changes to LocalSettings.php and want to reset that,
-you'll also need to run:
+You can also reset Pixel's database to its original state with:
 
 ```
-git checkout -- LocalSettings.php
-```
-
-If all else fails and you're still running into problems, you may want to try removing Docker's build cache:
-
-```
-docker builder prune
+./pixel.js reset-db
 ```
 
 ### Updates
