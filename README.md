@@ -1,3 +1,5 @@
+[![Push or PR workflow](https://github.com/nicholasray/pixel/actions/workflows/push.yml/badge.svg)](https://github.com/nicholasray/pixel/actions/workflows/push.yml)
+
 # Pixel
 
 ![Visual regression HTML reporter showing failing and passing tests](reporter.png)
