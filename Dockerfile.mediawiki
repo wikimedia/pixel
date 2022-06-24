@@ -1,9 +1,7 @@
-FROM node:16.15.0-buster AS node
 FROM docker-registry.wikimedia.org/dev/buster-php72-fpm:2.0.0-s1
 
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+	&& apt-get install -y nodejs
 
 COPY src /src
 COPY repositories.json /repositories.json
