@@ -115,6 +115,7 @@ which pulls down the latest code. Then run:
 
 The `clean` command destroys all Docker images, containers, and volumes
 associated with Pixel and ensures that the necessary Docker images are rebuilt with the latest.
+If the Docker images are updated and you don't run this command, you will likely get errors.
 
 ### Cleanup
 
