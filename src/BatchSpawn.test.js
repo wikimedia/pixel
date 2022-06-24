@@ -73,7 +73,7 @@ describe( 'BatchSpawn.js', () => {
 			expect( spawnSpy ).toHaveBeenCalledTimes( 4 );
 
 			cp3.emit( 'exit', 1 );
-			await expect( bs3 ).rejects.toEqual( new Error( 'Exit with error code 1' ) );
+			await expect( bs3 ).rejects.toEqual( new Error( 'BatchSpawn: Exit with error code 1' ) );
 			expect( spawnSpy ).toHaveBeenNthCalledWith( 5, 'ls', [ 'five' ], { stdio: 'inherit' } );
 			expect( spawnSpy ).toHaveBeenCalledTimes( 5 );
 		} );

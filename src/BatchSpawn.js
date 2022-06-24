@@ -67,7 +67,7 @@ class BatchSpawn {
 					return;
 				}
 
-				reject( new Error( `Exit with error code ${code}` ) );
+				reject( new Error( `BatchSpawn: Exit with error code ${code}` ) );
 			} );
 
 		} );

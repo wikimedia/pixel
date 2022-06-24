@@ -162,13 +162,9 @@ async function processCommand( type, opts ) {
 		).then( async () => {
 			await openReportIfNecessary( type, group );
 		}, async ( /** @type {Error} */ err ) => {
-			if ( err.message.includes( '130' ) ) {
-				// If user ends subprocess with a sigint, exit early.
-				return;
-			}
-
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type, group );
+			// This is most likely to occur from visual differences that were found.
+			if ( err.message.endsWith( 'Exit with error code 1' ) ) {
+				await openReportIfNecessary( type, group );
 			}
 
 			throw err;
@@ -181,6 +177,13 @@ async function processCommand( type, opts ) {
 		} );
 
 	} catch ( err ) {
+		// If error is coming from BatchSpawn, exit with error code 1 rather than
+		// printing the error a second time.
+		if ( err instanceof Error && err.message.includes( 'BatchSpawn' ) ) {
+			// eslint-disable-next-line no-process-exit
+			process.exit( 1 );
+		}
+
 		console.error( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
