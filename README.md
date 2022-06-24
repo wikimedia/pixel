@@ -95,7 +95,7 @@ If you want to run the mobile visual regression test suite pass the `--group mob
 
 If you want to stop all of Pixel's services, run:
 
-```
+```sh
 ./pixel.js stop
 ```
 
@@ -103,13 +103,13 @@ If you want to stop all of Pixel's services, run:
 
 Updating Pixel is more of a hassle than it should be. It requires two steps:
 
-```
+```sh
 git pull
 ```
 
 which pulls down the latest code. Then run:
 
-```
+```sh
 ./pixel.js clean
 ```
 
@@ -122,13 +122,13 @@ Sometimes after making MediaWiki code changes, database changes, or having
 issues with the containers you just want to throw away everything and start
 Pixel with a clean slate. To do that, run:
 
-```
+```sh
 ./pixels.js clean
 ```
 
 You can also reset Pixel's database to its original state with:
 
-```
+```sh
 ./pixel.js reset-db
 ```
 
