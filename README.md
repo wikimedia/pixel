@@ -99,6 +99,20 @@ If you want to stop all of Pixel's services, run:
 ./pixel.js stop
 ```
 
+### Updates
+
+Updating Pixel is more of a hassle than it should be. It requires two steps:
+
+```
+git pull
+```
+
+which pulls down the latest code. Then run:
+
+```
+./pixel.js clean
+```
+
 ### Cleanup
 
 Sometimes after making MediaWiki code changes, database changes, or having
@@ -113,20 +127,6 @@ You can also reset Pixel's database to its original state with:
 
 ```
 ./pixel.js reset-db
-```
-
-### Updates
-
-Updating Pixel is more of a hassle than it should be. It requires two steps:
-
-```
-git pull
-```
-
-which pulls down the latest code. Then run:
-
-```
-./pixel.js clean
 ```
 
 The `clean` command destroys all Docker images, containers, and volumes
