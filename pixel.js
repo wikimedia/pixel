@@ -144,11 +144,6 @@ async function processCommand( type, opts ) {
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 		const configFile = getGroupConfig( group );
 
-		// Reset the database if `--reset-db` option is passed.
-		if ( opts.resetDb ) {
-			await resetDb();
-		}
-
 		// Start docker containers.
 		await batchSpawn.spawn(
 			'docker',
@@ -177,7 +172,14 @@ async function processCommand( type, opts ) {
 			}
 
 			throw err;
+		} ).finally( async () => {
+			// Reset the database if `--reset-db` option is passed.
+			if ( opts.resetDb ) {
+				console.log( 'Resetting database state...' );
+				await resetDb();
+			}
 		} );
+
 	} catch ( err ) {
 		console.error( err );
 		// eslint-disable-next-line no-process-exit
@@ -203,7 +205,7 @@ function setupCli() {
 	] );
 	const resetDbOpt = /** @type {const} */ ( [
 		'--reset-db',
-		'Reset the database before running the test. This will destroy all data that is currently in the database.'
+		'Reset the database after running a test group. This will destroy all data that is currently in the database.'
 	] );
 
 	program
