@@ -122,6 +122,23 @@ If all else fails and you're still running into problems, you may want to try re
 docker builder prune
 ```
 
+### Updates
+
+Updating Pixel is more of a hassle than it should be. It requires two steps:
+
+```
+git pull
+```
+
+which pulls down the latest code. Then run:
+
+```
+./pixel.js clean
+```
+
+The `clean` command destroys all Docker images, containers, and volumes
+associated with Pixel and ensures that the necessary Docker images are rebuilt with the latest.
+
 ## Development
 
 ### Changing or adding tests
@@ -149,5 +166,4 @@ list of these.
 
 ## Known Issues
 
-* Pixel has only been tested on machines running on `x86` chips. It does not currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300 
-* Updating Pixel (`git pull`) when its Docker images have changed is currently more of a hassle than it should be. It requires `git pull` followed by destroying all Docker containers, Docker images, and Docker volumes with `./pixel.js clean` so that the new Docker images can get rebuilt.
+* Pixel has only been tested on machines running on `x86` chips. It does not currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300
