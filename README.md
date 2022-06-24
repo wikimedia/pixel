@@ -143,7 +143,7 @@ Pixel ships with a number of MediaWiki extensions and skins already installed.
 Please reference the [repositories.json](repositories.json) file to see a
 list of these.
 
-### Known Issues
+## Known Issues
 
 * Pixel has only been tested on machines running on x86 chips. It does not currently work with `arm64` (e.g. Macbooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300 
 * Updating Pixel (`git pull`) when its Docker images have changed is currently more of a hassle than it should be. It requires `git pull` followed by destroying all Docker containers, Docker images, and Docker volumes with `./pixel.js clean` so that the new Docker images can get rebuilt.
