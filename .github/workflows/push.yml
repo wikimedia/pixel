@@ -29,4 +29,4 @@ jobs:
     - name: Run visual regression
       shell: 'script -q -e -c "bash {0}"'
       run: |
-        script -e -c "./pixel.js reference && ./pixel.js test"
+        script -e -c "./pixel.js reference -g all && ./pixel.js test -g all"

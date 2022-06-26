@@ -1,10 +1,29 @@
 #!/usr/bin/env node
+const { program, Option } = require( 'commander' );
 const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
+const fs = require( 'fs' );
+const groups =
+	fs.readdirSync( __dirname, { withFileTypes: true } )
+		.filter( ( file ) => {
+			if ( file.isDirectory() ) {
+				return false;
+			}
+
+			const regex = new RegExp( /^config.+\.js$/ );
+			return regex.test( file.name );
+		} )
+		.map( ( file ) => {
+			const name = file.name
+				.split( 'config' )[ 1 ]
+				.split( '.' )[ 0 ];
+
+			return name.charAt( 0 ).toLowerCase() + name.slice( 1 );
+		} );
 
 /*
  * @param {string[]} opts
@@ -39,11 +58,11 @@ async function getLatestReleaseBranch() {
 
 /**
  * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'|'echo'} group
+ * @param {string} group
  * @return {Promise<undefined>}
  */
 async function openReportIfNecessary( type, group ) {
-	const REPORT_PATH = `${__dirname}/report/${group}/index.html`;
+	const REPORT_PATH = group === 'all' ? `${__dirname}/report/index.html` : `${__dirname}/report/${group}/index.html`;
 	try {
 		if ( type === 'reference' ) {
 			return;
@@ -106,30 +125,45 @@ async function processCommand( opts ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
-		// Execute Visual regression tests.
-		await batchSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', JSON.stringify( opts ) ] ) ]
-		).then( async () => {
-			await openReportIfNecessary( opts.type, opts.group );
-		}, async ( /** @type {Error} */ err ) => {
-			if ( err.message.includes( '130' ) ) {
-				// If user ends subprocess with a sigint, exit early.
-				return;
-			}
 
-			if ( err.message === 'Exit with error code 10' ) {
-				return openReportIfNecessary( opts.type, opts.group );
-			}
+		// Execute Visual regression tests for each test group.
+		const queue = opts.group === 'all' ? [ ...groups ] : [ opts.group ];
+		const errors = [];
+		while ( queue.length ) {
+			const group = queue.shift();
 
-			throw err;
-		} ).finally( async () => {
-			// Reset the database if `--reset-db` option is passed.
-			if ( opts.resetDb ) {
-				console.log( 'Resetting database state...' );
-				await resetDb();
+			try {
+				await batchSpawn.spawn(
+					'docker',
+					[ 'compose', ...getComposeOpts(
+						[ 'run', '--rm', 'visual-regression', JSON.stringify( { ...opts, group } ) ]
+					) ]
+				)
+					.finally( async () => {
+						// Reset the database if `--reset-db` option is passed.
+						if ( opts.resetDb ) {
+							console.log( 'Resetting database state...' );
+							await resetDb();
+						}
+					} );
+
+			} catch ( e ) {
+				if ( e instanceof Error && e.message.includes( '130' ) ) {
+					// If user ends subprocess with a sigint, exit early.
+					// eslint-disable-next-line no-process-exit
+					process.exit( 1 );
+				}
+
+				// When running multiple groups, we don't want one group's failure to
+				// cause downstream groups to fail. Therefore, store the errors in an
+				// array but continue running test groups.
+				errors.push( e );
 			}
-		} );
+		}
+
+		await openReportIfNecessary( opts.type, opts.group );
+		// eslint-disable-next-line no-process-exit
+		process.exit( errors.length ? 1 : 0 );
 
 	} catch ( err ) {
 		console.error( err );
@@ -139,7 +173,6 @@ async function processCommand( opts ) {
 }
 
 function setupCli() {
-	const { program } = require( 'commander' );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
 		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
@@ -149,11 +182,13 @@ function setupCli() {
 		'-c, --change-id <Change-Id...>',
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
-	const groupOpt = /** @type {const} */ ( [
-		'-g, --group <(mobile|desktop|echo)>',
+	const groupOpt = new Option(
+		'-g, --group <group-name>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
-	] );
+	)
+		.default( 'desktop' )
+		.choices( [ 'all', ...groups ] );
 	const resetDbOpt = /** @type {const} */ ( [
 		'--reset-db',
 		'Reset the database after running a test group. This will destroy all data that is currently in the database.'
@@ -168,7 +203,7 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
+		.addOption( groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
 			opts = Object.assign( {}, opts, { type: 'reference' } );
@@ -181,7 +216,7 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...changeIdOpt )
-		.option( ...groupOpt )
+		.addOption( groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
 			opts = Object.assign( {}, opts, { type: 'test' } );
