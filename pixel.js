@@ -150,10 +150,12 @@ async function processCommand( type, opts ) {
 			[ 'compose', ...getComposeOpts( [ 'up', '-d' ] ) ]
 		);
 
-		// Execute main.js.
+		// Execute main.js. Pass the `-T` flag if the `NONINTERACTIVE` env variable
+		// is set. This might be needed when Pixel is running inside a cron job, for
+		// example.
 		await batchSpawn.spawn(
 			'docker',
-			[ 'compose', ...getComposeOpts( [ 'exec', '-T', 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
+			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
