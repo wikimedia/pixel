@@ -5,8 +5,6 @@ const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
 const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
-const fs = require( 'fs' );
-const CONTEXT_PATH = `${__dirname}/context.json`;
 
 /*
  * @param {string[]} opts
@@ -31,16 +29,6 @@ async function cleanCommand() {
 	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
 }
 
-let context;
-if ( fs.existsSync( CONTEXT_PATH ) ) {
-	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
-} else {
-	context = {
-		test: 'unknown',
-		reference: 'unknown'
-	};
-}
-
 /**
  * @return {Promise<string>}
  */
@@ -55,49 +43,17 @@ async function getLatestReleaseBranch() {
  * @return {Promise<undefined>}
  */
 async function openReportIfNecessary( type, group ) {
-	const REPORT_PATH = `report/${group}/index.html`;
-	const filePathFull = `${__dirname}/${REPORT_PATH}`;
-	const markerString = '<div id="root">';
+	const REPORT_PATH = `${__dirname}/report/${group}/index.html`;
 	try {
 		if ( type === 'reference' ) {
 			return;
 		}
-		const fileString = fs.readFileSync( filePathFull ).toString().replace(
-			markerString,
-			`<div style="color: #000; box-sizing: border-box;
-margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
-word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
-background-color: #eaecf0; border-color: #a2a9b1;">
-<h2>Test group: <strong>${context.group}</strong></h2>
-<p>Comparing ${context.reference} against ${context.test}.</p>
-<p>Test ran on ${new Date()}</p>
-</div>
-${markerString}`
-		);
-		fs.writeFileSync( filePathFull, fileString );
+
 		await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
 	} catch ( e ) {
 		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
 	}
 }
-
-/**
- * @param {string} groupName
- * @return {string} path to configuration file.
- * @throws {Error} for unknown group
- */
-const getGroupConfig = ( groupName ) => {
-	switch ( groupName ) {
-		case 'echo':
-			return 'configEcho.js';
-		case 'desktop':
-			return 'configDesktop.js';
-		case 'mobile':
-			return 'configMobile.js';
-		default:
-			throw new Error( `Unknown test group: ${groupName}` );
-	}
-};
 
 /**
  * Resets the database to the physical backup downloaded from the
@@ -125,10 +81,9 @@ async function resetDb() {
 }
 
 /**
- * @param {'test'|'reference'} type
  * @param {any} opts
  */
-async function processCommand( type, opts ) {
+async function processCommand( opts ) {
 	try {
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
@@ -137,12 +92,6 @@ async function processCommand( type, opts ) {
 
 			console.log( `Using latest branch "${opts.branch}"` );
 		}
-		const group = opts.group;
-		context[ type ] = opts.branch;
-		context.group = group;
-		// store details of this run.
-		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
-		const configFile = getGroupConfig( group );
 
 		// Start docker containers.
 		await batchSpawn.spawn(
@@ -160,17 +109,17 @@ async function processCommand( type, opts ) {
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+			[ 'compose', ...getComposeOpts( [ 'run', '--rm', 'visual-regression', JSON.stringify( opts ) ] ) ]
 		).then( async () => {
-			await openReportIfNecessary( type, group );
+			await openReportIfNecessary( opts.type, opts.group );
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
 				return;
 			}
 
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type, group );
+			if ( err.message === 'Exit with error code 10' ) {
+				return openReportIfNecessary( opts.type, opts.group );
 			}
 
 			throw err;
@@ -222,7 +171,9 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			processCommand( 'reference', opts );
+			opts = Object.assign( {}, opts, { type: 'reference' } );
+
+			processCommand( opts );
 		} );
 
 	program
@@ -233,7 +184,9 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			processCommand( 'test', opts );
+			opts = Object.assign( {}, opts, { type: 'test' } );
+
+			processCommand( opts );
 		} );
 
 	program
