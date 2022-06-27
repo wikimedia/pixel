@@ -78,6 +78,11 @@ const tests = [
 		selectors: [ 'viewport' ]
 	},
 	{
+		label: 'Edit (#vector-2022)',
+		path: '/wiki/Test?action=edit',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Test?action=History (#vector-2022)',
 		path: '/w/index.php?title=Test&action=history'
 	},
@@ -118,7 +123,17 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
+	// On mobile, short pages will cause false positives on some patchsets e.g. the switchover to grid CSS.
+	// To avoid this use the viewport selector when not defined.
+	const isShortPage = [
+		'/wiki/Main_Page',
+		'/wiki/Tree',
+		'/wiki/Special:BlankPage'
+	].includes( test.path );
+
 	return Object.assign( {
+		selectors: isShortPage ? [ 'viewport' ] : undefined
+	}, test, {
 		url: `${BASE_URL}${test.path}`,
 		misMatchThreshold: 0.04
 	}, test );
