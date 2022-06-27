@@ -78,6 +78,16 @@ const tests = [
 		selectors: [ 'viewport' ]
 	},
 	{
+		label: 'Edit (#vector-2022)',
+		path: '/wiki/Test?action=edit',
+		selectors: [ 'viewport' ]
+	},
+	{
+		label: 'Visual edit (#vector-2022)',
+		path: '/wiki/Test?veaction=edit',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Test?action=History (#vector-2022)',
 		path: '/w/index.php?title=Test&action=history'
 	},
