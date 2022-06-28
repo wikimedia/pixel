@@ -7,6 +7,7 @@ const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
+const releaseOverrides = require( './latestReleaseOverrides.json' );
 
 /*
  * @param {string[]} opts
@@ -42,11 +43,14 @@ if ( fs.existsSync( CONTEXT_PATH ) ) {
 }
 
 /**
- * @return {Promise<string>}
+ * @return {Promise<Object>}
  */
-async function getLatestReleaseBranch() {
+async function getLatestRelease() {
 	const { stdout } = await exec( 'git ls-remote -h --sort="-version:refname" https://gerrit.wikimedia.org/r/mediawiki/core | head -1' );
-	return `origin/${stdout.split( 'refs/heads/' )[ 1 ].trim()}`;
+	const branch = `origin/${stdout.split( 'refs/heads/' )[ 1 ].trim()}`;
+	// Check for any manual overrides.
+	const changeId = releaseOverrides[ branch ];
+	return changeId ? { changeId } : { branch };
 }
 
 /**
@@ -133,9 +137,16 @@ async function processCommand( type, opts ) {
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
-			opts.branch = await getLatestReleaseBranch();
+			const release = await getLatestRelease();
+			console.log('got', release);
+			if ( release.branch ) {
+				opts.branch = release.branch;
+			} else {
+				delete opts.branch;
+				opts.changeId = release.changeId;
+			}
 
-			console.log( `Using latest branch "${opts.branch}"` );
+			console.log( `Using latest branch "${opts.branch || opts.changeId}"` );
 		}
 		const group = opts.group;
 		context[ type ] = opts.branch;
