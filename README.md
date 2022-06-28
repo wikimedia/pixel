@@ -1,4 +1,4 @@
-[![Push or PR workflow](https://github.com/nicholasray/pixel/actions/workflows/push.yml/badge.svg)](https://github.com/nicholasray/pixel/actions/workflows/push.yml)
+[![Push or PR workflow](https://github.com/wikimedia/pixel/actions/workflows/push.yml/badge.svg)](https://github.com/wikimedia/pixel/actions/workflows/push.yml)
 
 # Pixel
 
@@ -23,7 +23,7 @@ the tool.
 First, clone the repo wherever you wish and `cd` into it:
 
 ```sh
-git clone https://github.com/nicholasray/pixel.git && cd pixel
+git clone https://github.com/wikimedia/pixel.git && cd pixel
 ```
 
 Pixel runs in multiple Docker containers to eliminate inconsistent rendering
