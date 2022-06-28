@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install -y \
 	curl \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& mkdir -p /var/lib/mysql_backup \
-	&& curl -SL "https://nicholasray.github.io/pixel-seed-data/$database" \
+	&& curl -SL "https://wikimedia.github.io/pixel-seed-data/$database" \
 	| tar -C /var/lib/mysql_backup --strip-components=3 -xzv \
 	&& chown mysql:mysql /var/lib/mysql_backup
