@@ -166,11 +166,14 @@ async function processCommand( type, opts ) {
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
-				return;
+				// eslint-disable-next-line no-process-exit
+				process.exit( 1 );
 			}
 
 			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				return openReportIfNecessary( type, group );
+				await openReportIfNecessary( type, group );
+				// eslint-disable-next-line no-process-exit
+				process.exit( 1 );
 			}
 
 			throw err;
