@@ -118,8 +118,9 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
-	// On mobile, short pages will cause false positives on some patchsets e.g. the switchover to grid CSS.
-	// To avoid this use the viewport selector when not defined.
+	// On mobile, short pages will cause false positives on some patchsets e.g.
+	// the switchover to grid CSS.  To avoid this use the viewport selector when
+	// not defined.
 	const isShortPage = [
 		'/wiki/Main_Page',
 		'/wiki/Tree',

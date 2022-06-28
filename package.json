@@ -4,7 +4,7 @@
 	"scripts": {
 		"bash": "docker compose exec mediawiki bash",
 		"db:save": "docker compose exec database mysql -e 'SET GLOBAL innodb_fast_shutdown=0;' && docker compose stop database && docker compose run --rm -v $(pwd)/backups:/backups database tar cvfz /backups/database_$(date '+%Y-%m-%d_%H-%M-%S%z(%Z)').tar.gz var/lib/mysql && docker compose up -d database",
-		"lint": "eslint --cache .",
+		"lint": "eslint --max-warnings 0 --cache .",
 		"test": "npm -s run lint && tsc && npm run test:unit",
 		"test:unit": "jest",
 		"pre-commit": "[ \"${PRE_COMMIT:-1}\" -eq 0 ] || npm -s t"
