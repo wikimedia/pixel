@@ -51,7 +51,7 @@ async function getLatestReleaseBranch() {
 
 /**
  * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'|'echo'} group
+ * @param {'mobile'|'desktop'|'desktop-dev'|'echo'} group
  * @return {Promise<undefined>}
  */
 async function openReportIfNecessary( type, group ) {
@@ -90,6 +90,8 @@ const getGroupConfig = ( groupName ) => {
 	switch ( groupName ) {
 		case 'echo':
 			return 'configEcho.js';
+		case 'desktop-dev':
+			return 'configDesktopDev.js';
 		case 'desktop':
 			return 'configDesktop.js';
 		case 'mobile':
