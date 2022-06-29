@@ -47,7 +47,12 @@ services:
       retries: 20
   visual-regression:
     network_mode: host
-    image: backstopjs/backstopjs:6.0.4
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-regression
+      args:
+        - BACKSTOPJS_VERSION=6.0.4
     working_dir: /pixel
     env_file:
       - .env
