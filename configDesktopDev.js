@@ -17,6 +17,5 @@ module.exports = Object.assign( {}, configDesktop, {
 		ci_report: 'report/ci-report-dev',
 		// eslint-disable-next-line camelcase
 		json_report: 'report/json-report-dev'
-	},
+	}
 } );
-
