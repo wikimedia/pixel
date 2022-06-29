@@ -47,7 +47,6 @@ services:
       retries: 20
   visual-regression:
     network_mode: host
-    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.visual-regression
