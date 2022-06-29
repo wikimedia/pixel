@@ -35,10 +35,7 @@ let context;
 if ( fs.existsSync( CONTEXT_PATH ) ) {
 	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
 } else {
-	context = {
-		test: 'unknown',
-		reference: 'unknown'
-	};
+	context = {};
 }
 
 /**
@@ -68,8 +65,8 @@ async function openReportIfNecessary( type, group ) {
 margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
-<h2>Test group: <strong>${context.group}</strong></h2>
-<p>Comparing ${context.reference} against ${context.test}.</p>
+<h2>Test group: <strong>${group}</strong></h2>
+<p>Comparing ${context[ group ].reference} against ${context[ group ].test}.</p>
 <p>Test ran on ${new Date()}</p>
 </div>
 ${markerString}`
@@ -140,8 +137,10 @@ async function processCommand( type, opts ) {
 			console.log( `Using latest branch "${opts.branch}"` );
 		}
 		const group = opts.group;
-		context[ type ] = opts.branch;
-		context.group = group;
+		if ( !context[ group ] ) {
+			context[ group ] = {};
+		}
+		context[ group ][ type ] = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 		const configFile = getGroupConfig( group );
