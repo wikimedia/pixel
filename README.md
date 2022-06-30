@@ -4,7 +4,7 @@
 
 ![Visual regression HTML reporter showing failing and passing tests](reporter.png)
 
-🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous. 🚨
+🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous.** 🚨
 
 Pixel is a visual regression tool for MediaWiki developers/QA engineers that
 helps you replace manual testing with automated tests that catch web ui
@@ -27,7 +27,8 @@ git clone https://github.com/wikimedia/pixel.git && cd pixel
 ```
 
 Pixel runs in multiple Docker containers to eliminate inconsistent rendering
-issues across environments. Please install [Docker](https://docs.docker.com/get-docker/) and 
+issues across environments. Please install
+[Docker](https://docs.docker.com/get-docker/) and 
 **make sure it is running** prior to using Pixel.
 
 Finally, install the CLI dependency:
@@ -36,9 +37,10 @@ Finally, install the CLI dependency:
 npm install
 ```
 
-Running Pixel for the first time can take a long time (e.g. 5 minutes) as it downloads Docker images, 
-clones MediaWiki core (> 2GB) and a number of extensions/skins. It will be much faster on subsequent 
-runs as this data has already been downloaded.
+Running Pixel for the first time can take a long time (e.g. 5 minutes) as it
+downloads Docker images, clones MediaWiki core (> 2GB) and a number of
+extensions/skins. It will be much faster on subsequent runs as this data has
+already been downloaded.
 
 ## Usage
 
@@ -67,11 +69,14 @@ Or if you want the reference to be a certain release branch:
 ./pixel.js reference -b origin/wmf/1.39.0-wmf.18
 ```
 
-If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
+If you want to run the mobile visual regression test suite pass the `--group
+mobile` flag.
 
 ### 2) Take test screenshots with changed code
 
-If you want to pull a change or multiple changes down from gerrit, take screenshots with these changes on top of master and then compare these screenshots against the reference screenshots, then
+If you want to pull a change or multiple changes down from gerrit, take
+screenshots with these changes on top of master and then compare these
+screenshots against the reference screenshots, then
 
 ```sh
 ./pixel.js test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2
@@ -89,7 +94,8 @@ manually open the file at `report/index.html`.
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
 
-If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
+If you want to run the mobile visual regression test suite pass the `--group
+mobile` flag.
 
 ### Stopping the services
 
@@ -101,17 +107,17 @@ If you want to stop all of Pixel's services, run:
 
 ### Updates
 
-Updating Pixel to the latest version is more of a hassle than it should be. It
-requires:
+Updating Pixel to the latest version can be done with the following command when
+you are on the `main` branch:
 
 ```sh
-git checkout main && ./pixel.js update
+./pixel.js update
 ```
 
-This command will pull the latest code and destroy all Docker images,
-containers, and volumes associated with Pixel to ensure that it is using the
-latest database seed data and that the necessary Docker images are rebuilt with
-the latest code. As a result, updates can take a long time.
+This command will `git pull` the latest code from the `main` branch and destroy
+all Docker containers, volumes, and networks associated with Pixel. It will also
+rebuild any Docker images that need to be rebuilt to ensure that it is using the
+latest database seed data and code.
 
 ### Cleanup
 
@@ -176,8 +182,7 @@ skin that is feature flagged and want to enable it.
 Pixel gets its seed data from MariaDB backups hosted at
 https://github.com/wikimedia/pixel-seed-data.
 
-Please follow the
-[README.md](https://github.com/wikimedia/pixel-seed-data/blob/main/README.md) in
+Please follow the [README.md](https://github.com/wikimedia/pixel-seed-data) in
 that repo for step-by-step instructions on how to make database changes.
 
 ### Adding new extensions or skins
@@ -198,4 +203,7 @@ can be rebuilt) and then `./pixel.js reference` to rebuild everything
 
 ## Known Issues
 
-* Pixel has only been tested on machines running on `x86_64` chips. It does not currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300 and [T311573](https://phabricator.wikimedia.org/T311573) for more information.
+* Pixel has only been tested on machines running on `x86_64` chips. It does not
+currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow
+https://github.com/garris/BackstopJS/issues/1300 and
+[T311573](https://phabricator.wikimedia.org/T311573) for more information.
