@@ -105,7 +105,7 @@ Updating Pixel to the latest version is more of a hassle than it should be. It
 requires:
 
 ```sh
-./pixel.js update
+git checkout main && ./pixel.js update
 ```
 
 This command will pull the latest code and destroy all Docker images,
