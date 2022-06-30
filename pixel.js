@@ -261,11 +261,21 @@ function setupCli() {
 		.command( 'update' )
 		.description( 'Updates Pixel to the latest version. This command also destroys all containers, images, networks, and volumes associated with Pixel to ensure it is using the latest code.' )
 		.action( async () => {
+			// Git pull the latest.
 			await batchSpawn.spawn(
 				'git',
 				[ '-C', __dirname, 'pull', 'origin', 'main' ]
 			);
-			await cleanCommand();
+			// Stops and removes Docker containers, networks, and volumes.
+			await batchSpawn.spawn(
+				'docker',
+				[ 'compose', ...getComposeOpts( [ 'down', '--volumes', '--remove-orphans' ] ) ]
+			);
+			// Build or rebuild services.
+			await batchSpawn.spawn(
+				'docker',
+				[ 'compose', ...getComposeOpts( [ 'build' ] ) ]
+			);
 		} );
 
 	program
