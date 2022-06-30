@@ -64,7 +64,7 @@ Or if you want the reference to be the latest release branch:
 Or if you want the reference to be a certain release branch:
 
 ```sh
-./pixel.js reference -b origin/wmf/1.37.0-wmf.19
+./pixel.js reference -b origin/wmf/1.39.0-wmf.18
 ```
 
 If you want to run the mobile visual regression test suite pass the `--group mobile` flag.
@@ -111,7 +111,7 @@ requires:
 This command will pull the latest code and destroy all Docker images,
 containers, and volumes associated with Pixel to ensure that it is using the
 latest database seed data and that the necessary Docker images are rebuilt with
-the latest code. As a result, updates can take awhile.
+the latest code. As a result, updates can take a long time.
 
 ### Cleanup
 
@@ -134,26 +134,68 @@ You can also reset Pixel's database to its original state with:
 ### Changing or adding tests
 
 All tests are located in config files in the root directory (e.g.
-configDesktop.js) and follow BackstopJS conventions. For more info on how to
-change or add tests, please refer to the
-[BackstopJS](https://github.com/garris/BackstopJS) README.
+configDesktop.js, configMobile.js, configEcho.js, etc).
 
-Scenarios for mobile site are defined in configMobile.js.
+For example, to test a new url in the `mobile` group:
+
+1) Add a new object to the `tests` array in [configMobile.js](configMobile.js) with
+the name of your test and its url path:
+
+```js
+{
+	label: "<descriptive-name-of-your-test>",
+	path: "<url-path-of-page>"
+}
+```
+
+2) Run the tests with:
+
+```sh
+./pixel.js reference -g mobile -b latest-release
+./pixel.js test -g mobile -b latest-release
+```
+
+This should always pass if the tests are deterministic as it is testing the same
+code in MediaWiki (no changes).
+
+For more info on how to change or add test config, please refer to the
+[BackstopJS](https://github.com/garris/BackstopJS) README.
 
 ### Configuring MediaWiki
 
 All mediawiki config is in [LocalSettings.php](LocalSettings.php) and can be
-changed. For example, maybe you are working on a new feature in the `Vector`
-skin that is feature flagged and want to enable it. All changes made in this
-file will be automatically reflected in the Docker services without having to
-restart them.
+changed. For example, perhaps you are working on a new feature in the `Vector`
+skin that is feature flagged and want to enable it.
 
-### Installed extensions and skins
+1) Edit [LocalSettings.php](LocalSettings.php)
+2) Check that your config is usable at `localhost:3000`
+3) Commit these changes and open a pull request in this repo with these changes
+
+### Updating the database
+
+Pixel gets its seed data from MariaDB backups hosted at
+https://github.com/wikimedia/pixel-seed-data.
+
+Please follow the
+[README.md](https://github.com/wikimedia/pixel-seed-data/blob/main/README.md) in
+that repo for step-by-step instructions on how to make database changes.
+
+### Adding new extensions or skins
 
 Pixel ships with a number of MediaWiki extensions and skins already installed.
 Please reference the [repositories.json](repositories.json) file to see a
 list of these.
 
+To add a skin or extension that isn't currently supported:
+
+1) Add it to the [repositories.json](repositories.json) file
+2) Make Pixel rebuild its code volume by running `./pixel.js clean` (this will
+destroy every container, image, volume, network associated with Pixel so they
+can be rebuilt) and then `./pixel.js reference` to rebuild everything
+3) Configure it in [LocalSettings.php](LocalSettings.php)
+4) Check that your extension or skin is usable at `localhost:3000`
+5) Commit these changes and open a pull request in this repo with these changes
+
 ## Known Issues
 
-* Pixel has only been tested on machines running on `x86` chips. It does not currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300
+* Pixel has only been tested on machines running on `x86_64` chips. It does not currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow https://github.com/garris/BackstopJS/issues/1300 and [T311573](https://phabricator.wikimedia.org/T311573) for more information.
