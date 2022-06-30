@@ -123,6 +123,7 @@ const scenarios = tests.map( ( test ) => {
 	// not defined.
 	const isShortPage = [
 		'/wiki/Main_Page',
+		'/wiki/Talk:Test',
 		'/wiki/Tree',
 		'/wiki/Special:BlankPage'
 	].includes( test.path );
