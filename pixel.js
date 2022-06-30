@@ -263,7 +263,7 @@ function setupCli() {
 		.action( async () => {
 			await batchSpawn.spawn(
 				'git',
-				[ '-C', __dirname, 'fetch', '-u', 'origin', 'main:main' ]
+				[ '-C', __dirname, 'pull', 'origin', 'main' ]
 			);
 			await cleanCommand();
 		} );
