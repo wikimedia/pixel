@@ -1,7 +1,10 @@
-const spawn = require( 'child_process' ).spawn;
+const { spawn } = require( 'child_process' );
+const util = require( 'util' );
+const exec = util.promisify( require( 'child_process' ).exec );
 
 /**
  * @typedef {Object} Command
+ * @property {'exec'|'spawn'} method
  * @property {Function} resolve
  * @property {string} command
  * @property {string[]} args
@@ -9,7 +12,7 @@ const spawn = require( 'child_process' ).spawn;
  */
 
 /**
- * Extends Node's spawn function to enable parallel processing of commands
+ * Extends Node's spawn and exec functions to enable parallel processing of commands
  * limited by a batch size.
  */
 class BatchSpawn {
@@ -25,8 +28,38 @@ class BatchSpawn {
 	}
 
 	/**
+	 * Promisify Node's exec function. If the number of commands that are
+	 * currently being processed has exceeded the `batchSize`, the command will
+	 * be queued until the number of parallel commands is less than the batchSize.
+	 *
+	 * @param {string} command
+	 * @return {Promise<{stdout: string, stderr: string}>}
+	 */
+	exec( command ) {
+		if ( this.#promiseMap.size >= this.#batchSize ) {
+			return new Promise( ( resolve ) => {
+				this.#commandQueue.push( {
+					method: 'exec',
+					resolve,
+					command,
+					args: [],
+					opts: {}
+				} );
+			} );
+		}
+
+		const promise = exec( command ).finally( () => {
+			this.#dequeue( promise );
+		} );
+
+		this.#promiseMap.set( promise, true );
+
+		return promise;
+	}
+
+	/**
 	 * Promisify Node's spawn function. If the number of commands that are
-	 * currently being processed has exceeded the  `batchSize`, the command will
+	 * currently being processed has exceeded the `batchSize`, the command will
 	 * be queued until the number of parallel commands is less than the batchSize.
 	 *
 	 * @param {string} command
@@ -38,6 +71,7 @@ class BatchSpawn {
 		if ( this.#promiseMap.size >= this.#batchSize ) {
 			return new Promise( ( resolve ) => {
 				this.#commandQueue.push( {
+					method: 'spawn',
 					resolve,
 					command,
 					args,
@@ -88,7 +122,9 @@ class BatchSpawn {
 
 		if ( this.#commandQueue.length ) {
 			const command = /** @type {Command} */ ( this.#commandQueue.shift() );
-			command.resolve( this.spawn( command.command, command.args, command.opts ) );
+			command.resolve(
+				this[ command.method ]( command.command, command.args, command.opts )
+			);
 		}
 	}
 
