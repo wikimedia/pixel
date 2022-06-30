@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// IMPORTANT: Any local dependency listed here MUST have a `COPY` command in
+// Dockerfile.mediawiki before this file is executed.
 const { performance } = require( 'perf_hooks' );
 const CORE_GIT = 'https://gerrit.wikimedia.org/r/mediawiki/core.git';
 const CORE_NAME = 'mediawiki/core';

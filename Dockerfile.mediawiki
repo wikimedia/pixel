@@ -3,11 +3,21 @@ FROM docker-registry.wikimedia.org/dev/buster-php72-fpm:2.0.0-s1
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
 	&& apt-get install -y nodejs
 
-COPY src /src
-COPY repositories.json /repositories.json
-
 WORKDIR /var/www/html/w
 
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"
 
+# IMPORTANT: Any local dependency that `setupRepos.js` needs MUST have a `COPY`
+# statement here before `setupRepos.js` is executed. We copy individual files
+# instead of copying the entire `src` directory so that Docker's build cache
+# isn't unnecessarily busted each time a file in the `src` directory changes.
+# See:
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
+COPY src/BatchSpawn.js /src/BatchSpawn.js
+COPY src/setupRepos.js /src/setupRepos.js
+COPY repositories.json /repositories.json
+
 RUN /src/setupRepos.js "$( cat /repositories.json )"
+
+# Now we can copy the entire src directory since setupRepos.js has executed.
+COPY src /src
