@@ -276,6 +276,11 @@ function setupCli() {
 				'docker',
 				[ 'compose', ...getComposeOpts( [ 'build' ] ) ]
 			);
+			// Remove any dangling images.
+			await batchSpawn.spawn(
+				'docker',
+				[ 'image', 'prune', '-f' ]
+			);
 		} );
 
 	program
