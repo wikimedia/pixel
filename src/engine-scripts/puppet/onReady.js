@@ -1,4 +1,5 @@
 const fastForwardAnimations = require( './fastForwardAnimations' );
+const waitForIdle = require( './waitForIdle' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
@@ -39,7 +40,9 @@ module.exports = async ( page, scenario ) => {
 	}
 	// add more ready handlers here...
 
-	// Note: This should always be last.
+	// Note: These calls should always be last.
 	// Fast forward through any css transitions/web animations that are happening.
 	await fastForwardAnimations( page );
+	// Wait for the main thread to have an idle period.
+	await waitForIdle( page );
 };
