@@ -1,3 +1,5 @@
+const fastForwardAnimations = require( './fastForwardAnimations' );
+
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
  *
@@ -36,4 +38,8 @@ module.exports = async ( page, scenario ) => {
 		await require( './search.js' )( page, hashtags );
 	}
 	// add more ready handlers here...
+
+	// Note: This should always be last.
+	// Fast forward through any css transitions/web animations that are happening.
+	await fastForwardAnimations( page );
 };
