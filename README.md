@@ -167,6 +167,28 @@ code in MediaWiki (no changes).
 For more info on how to change or add test config, please refer to the
 [BackstopJS](https://github.com/garris/BackstopJS) README.
 
+#### Groups
+
+There are several groups of tests that can be run:
+
+##### echo
+
+UI checks on the mobile and desktop site limited to the Echo (notifications feature).
+
+##### desktop
+
+UI checks on the desktop site.
+
+##### desktop-dev
+
+UI checks on the desktop site with various feature flags enabled. Feature flags must be manually
+updated inside [configDesktopDev.js](configDesktopDev.js).
+
+##### mobile
+
+UI checks on the mobile site.
+
+
 ### Configuring MediaWiki
 
 All mediawiki config is in [LocalSettings.php](LocalSettings.php) and can be
