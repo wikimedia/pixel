@@ -38,6 +38,10 @@ module.exports = async ( page, scenario ) => {
 	if ( hashtags.includes( '#search-focus' ) ) {
 		await require( './search.js' )( page, hashtags );
 	}
+
+	if ( hashtags.includes( '#toc-open' ) ) {
+		await require( './menuState' )( page, '#vector-toc-collapsed-button', false );
+	}
 	// add more ready handlers here...
 
 	// Note: These calls should always be last.

@@ -17,6 +17,15 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
+		label: 'Test table of contents open (#vector-2022, #toc-open)',
+		path: '/wiki/Test',
+		selectors: [ 'html' ]
+	},
+	{
+		label: 'Test table of contents and sidebar open (#vector-2022, #sidebar-open, #toc-open)',
+		path: '/wiki/Special:BlankPage'
+	},
+	{
 		label: 'Test (#vector-2022, #search-focus)',
 		path: '/wiki/Test',
 		selectors: [ 'html' ]
