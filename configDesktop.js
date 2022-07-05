@@ -53,15 +53,15 @@ const tests = [
 		path: '/wiki/Special:SpecialPages'
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #scroll)',
+		label: 'Test anon scroll (#vector-2022, #scroll)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ]
 	},
 	{
-		label: 'Test sticky header scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
+		label: 'Test anon scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
-		// Smoke test sticky header scroll with the sidebar open. Limit to desktop
+		// Smoke test anon scroll with the sidebar open. Limit to desktop
 		// wide viewport to minimize duplication with other tests.  See T309807 for
 		// an example bug.
 		viewports: [
