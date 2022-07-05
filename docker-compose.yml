@@ -54,8 +54,10 @@ services:
     volumes:
       - ./context.json:/pixel/context.json
       - ./viewports.js:/pixel/viewports.js
+      - ./utils.js:/pixel/utils.js
       - ./configDesktop.js:/pixel/configDesktop.js
       - ./configDesktopDev.js:/pixel/configDesktopDev.js
+      - ./configDesktopDevTest.js:/pixel/configDesktopDevTest.js
       - ./configEcho.js:/pixel/configEcho.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./src:/pixel/src

@@ -80,15 +80,16 @@ ${markerString}`
 
 /**
  * @param {string} groupName
+ * @param {'test'|'reference'} type
  * @return {string} path to configuration file.
  * @throws {Error} for unknown group
  */
-const getGroupConfig = ( groupName ) => {
+const getGroupConfig = ( groupName, type ) => {
 	switch ( groupName ) {
 		case 'echo':
 			return 'configEcho.js';
 		case 'desktop-dev':
-			return 'configDesktopDev.js';
+			return type === 'reference' ? 'configDesktopDev.js' : 'configDesktopDevTest.js';
 		case 'desktop':
 			return 'configDesktop.js';
 		case 'mobile':
@@ -143,7 +144,7 @@ async function processCommand( type, opts ) {
 		context[ group ][ type ] = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
-		const configFile = getGroupConfig( group );
+		const configFile = getGroupConfig( group, type );
 
 		// Start docker containers.
 		await batchSpawn.spawn(

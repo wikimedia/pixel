@@ -1,4 +1,5 @@
 const BASE_URL = process.env.MW_SERVER;
+const utils = require( './utils' );
 const {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
@@ -147,20 +148,7 @@ module.exports = {
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
 	scenarios,
-	paths: {
-		// eslint-disable-next-line camelcase
-		bitmaps_reference: 'report/reference-screenshots-desktop',
-		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots-desktop',
-		// eslint-disable-next-line camelcase
-		engine_scripts: 'src/engine-scripts',
-		// eslint-disable-next-line camelcase
-		html_report: 'report/desktop',
-		// eslint-disable-next-line camelcase
-		ci_report: 'report/ci-report',
-		// eslint-disable-next-line camelcase
-		json_report: 'report/json-report'
-	},
+	paths: utils.makePaths( 'desktop' ),
 	report: [],
 	engine: 'puppeteer',
 	engineOptions: {

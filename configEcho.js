@@ -1,4 +1,5 @@
 const configDesktop = require( './configDesktop.js' );
+const utils = require( './utils' );
 
 const BASE_URL = process.env.MW_SERVER;
 
@@ -125,12 +126,5 @@ const scenarios = makeMobileAndDesktopScenarios( baseScenarios );
 
 module.exports = Object.assign( {}, configDesktop, {
 	scenarios,
-	paths: Object.assign( {}, configDesktop.paths, {
-		// eslint-disable-next-line camelcase
-		bitmaps_reference: 'report/reference-screenshots-echo',
-		// eslint-disable-next-line camelcase
-		bitmaps_test: 'report/test-screenshots-echo',
-		// eslint-disable-next-line camelcase
-		html_report: 'report/echo'
-	} )
+	paths: utils.makePaths( 'echo' )
 } );
