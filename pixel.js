@@ -9,7 +9,9 @@ const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
 const BRANCH_OVERRIDES = {
-	'origin/wmf/1.39.0-wmf.19': '808059'
+	'origin/wmf/1.39.0-wmf.19': {
+		desktop: '808059'
+	}
 };
 
 /*
@@ -136,23 +138,24 @@ async function resetDb() {
 async function processCommand( type, opts ) {
 	try {
 		let description = '';
+		const group = opts.group;
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
 			console.log( `Using latest branch "${opts.branch}"` );
 
-			const overrideChangeId = BRANCH_OVERRIDES[ opts.branch ];
-			if ( overrideChangeId ) {
+			let overrideChangeId = BRANCH_OVERRIDES[ opts.branch ] || {};
+			overrideChangeId = overrideChangeId[ group ];
+			if ( overrideChangeId && type === 'reference' ) {
 				description = `(Fastforward of "${opts.branch}")`;
 				opts.branch = 'master';
 				opts.changeId = [ overrideChangeId ];
 				console.log( `Using ${opts.changeId} (this branch has been fastforwarded due to expected visual changes)` );
 			}
 		}
-		const group = opts.group;
 		if ( !context[ group ] ) {
-			context[ group ] = {};
+			context[ group ] = { description };
 		}
 		if ( type === 'reference' ) {
 			context[ group ].description = description;
