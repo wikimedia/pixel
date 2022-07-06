@@ -125,10 +125,11 @@ const scenarios = tests.map( ( test ) => {
 	const urlParts = test.path.split( '?' );
 	const urlPath = urlParts[ 0 ];
 	const urlQueryString = urlParts[ 1 ] || '';
-	const isShortPage = [
+	const useViewportSelector = [
 		'/wiki/Main_Page',
 		'/wiki/Talk:Test',
 		'/wiki/Tree',
+		'/wiki/Special:SpecialPages',
 		'/wiki/Special:BlankPage'
 	].includes( urlPath ) || (
 		[
@@ -137,7 +138,7 @@ const scenarios = tests.map( ( test ) => {
 	).length > 0;
 
 	return Object.assign( {
-		selectors: isShortPage ? [ 'viewport' ] : undefined
+		selectors: useViewportSelector ? [ 'viewport' ] : undefined
 	}, test, {
 		url: `${BASE_URL}${test.path}`,
 		misMatchThreshold: 0.04
