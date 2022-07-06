@@ -1,6 +1,6 @@
 const VIEWPORT_DESKTOP_WIDE = {
 	label: 'desktop-wide',
-	width: 1792,
+	width: 1200,
 	height: 900
 };
 
