@@ -8,6 +8,10 @@ const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
+const BRANCH_OVERRIDES = {
+	'origin/wmf/1.39.0-wmf.19': '808059'
+};
+
 /*
  * @param {string[]} opts
  * @return {string[]}
@@ -59,6 +63,7 @@ async function openReportIfNecessary( type, group ) {
 		if ( type === 'reference' ) {
 			return;
 		}
+		const ctx = context[ group ];
 		const fileString = fs.readFileSync( filePathFull ).toString().replace(
 			markerString,
 			`<div style="color: #000; box-sizing: border-box;
@@ -66,7 +71,7 @@ margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
 <h2>Test group: <strong>${group}</strong></h2>
-<p>Comparing ${context[ group ].reference} against ${context[ group ].test}.</p>
+<p>Comparing ${ctx.reference} against ${ctx.test}. ${ctx.description}</p>
 <p>Test ran on ${new Date()}</p>
 </div>
 ${markerString}`
@@ -130,16 +135,27 @@ async function resetDb() {
  */
 async function processCommand( type, opts ) {
 	try {
+		let description = '';
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
-
 			console.log( `Using latest branch "${opts.branch}"` );
+
+			const overrideChangeId = BRANCH_OVERRIDES[ opts.branch ];
+			if ( overrideChangeId ) {
+				description = `(Fastforward of "${opts.branch}")`;
+				opts.branch = 'master';
+				opts.changeId = [ overrideChangeId ];
+				console.log( `Using ${opts.changeId} (this branch has been fastforwarded due to expected visual changes)` );
+			}
 		}
 		const group = opts.group;
 		if ( !context[ group ] ) {
 			context[ group ] = {};
+		}
+		if ( type === 'reference' ) {
+			context[ group ].description = description;
 		}
 		context[ group ][ type ] = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
 		// store details of this run.
