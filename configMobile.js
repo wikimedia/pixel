@@ -1,4 +1,3 @@
-const path = require('path');
 const configDesktop = require( './configDesktop.js' );
 const utils = require( './utils' );
 
