@@ -13,6 +13,14 @@ const tests = [
 		path: '/wiki/Main_Page'
 	},
 	{
+		label: 'Testing user page (#vector-2022)',
+		path: '/wiki/User:Admin'
+	},
+	{
+		label: 'Testing empty user page (#vector-2022)',
+		path: '/wiki/User:Echo1'
+	},
+	{
 		label: 'Testing user sub pages (#vector-2022)',
 		path: '/wiki/User:Admin/common.js'
 	},
