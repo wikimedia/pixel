@@ -24,15 +24,15 @@ const tests = [
 		path: '/wiki/Test?useskin=minerva&useformat=mobile'
 	},
 	{
-		label: 'Filled in user page (#minerva #mobile #logged-in)',
+		label: 'Filled in user page (#minerva #mobile)',
 		path: '/wiki/User:Admin'
 	},
 	{
-		label: 'User subpage (#minerva #mobile #logged-in)',
+		label: 'User subpage (#minerva #mobile)',
 		path: '/wiki/User:Admin/common.js'
 	},
 	{
-		label: 'Non-existent user page (#minerva #mobile #logged-in)',
+		label: 'Non-existent user page (#minerva #mobile)',
 		path: '/wiki/User:Echo1'
 	}
 ];
