@@ -11,6 +11,10 @@ const CONTEXT_PATH = `${__dirname}/context.json`;
 const BRANCH_OVERRIDES = {
 	'origin/wmf/1.39.0-wmf.19': {
 		desktop: '808059'
+	},
+	// WVUI=>Codex and layout changes
+	'origin/wmf/1.39.0-wmf.21': {
+		desktop: '4ab2b1b'
 	}
 };
 
