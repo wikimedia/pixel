@@ -14,7 +14,7 @@ const BRANCH_OVERRIDES = {
 	},
 	// WVUI=>Codex and layout changes
 	'origin/wmf/1.39.0-wmf.21': {
-		desktop: '4ab2b1b'
+		desktop: '815323'
 	}
 };
 
