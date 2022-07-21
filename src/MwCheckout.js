@@ -219,7 +219,7 @@ class MwCheckout {
 			}
 
 			commands[ change.project ] = commands[ change.project ] || [];
-			branch = branch ? branch : `origin/${change.branch}`;
+			branch = branch || `origin/${change.branch}`;
 			commands[ change.project ].unshift(
 				`
 				git -C "${path}" fetch origin ${change.revisions[ change.current_revision ].ref} && 
