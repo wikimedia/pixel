@@ -59,6 +59,7 @@ services:
       - ./configDesktopDev.js:/pixel/configDesktopDev.js
       - ./configDesktopDevTest.js:/pixel/configDesktopDevTest.js
       - ./configEcho.js:/pixel/configEcho.js
+      - ./configWebMaintained.js:/pixel/configWebMaintained.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./src:/pixel/src
       - ./report:/pixel/report

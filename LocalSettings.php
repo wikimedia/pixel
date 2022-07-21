@@ -134,6 +134,10 @@ $wgDefaultSkin = "vector-2022";
 # The following skins were automatically enabled:
 wfLoadSkin( 'MinervaNeue' );
 wfLoadSkin( 'Vector' );
+wfLoadSkin( 'Modern' );
+wfLoadSkin( 'CologneBlue' );
+wfLoadSkin( 'MonoBook' );
+wfLoadSkin( 'Timeless' );
 
 
 # Enabled extensions. Most of the extensions are enabled by adding
@@ -145,6 +149,7 @@ wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Echo' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
+wfLoadExtension( 'QuickSurveys' );
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
@@ -262,3 +267,96 @@ $wgULSIMEEnabled = false;
 // Enable Nearby in main menu
 // https://phabricator.wikimedia.org/T312864
 $wgMFNearby = true;
+
+const QS_ANSWERS_MULTI_CHOICE =  [
+	'ext-quicksurveys-example-internal-survey-answer-positive',
+	'ext-quicksurveys-example-internal-survey-answer-neutral',
+	'ext-quicksurveys-example-internal-survey-answer-negative'
+];
+
+// Applies to all surveys
+const QS_DEFAULTS = [
+	// Who is the survey for? All fields are optional.
+	'audience' => [
+		'minEdits' => 0,
+		'anons' => false,
+		'maxEdits' => 500,
+		'registrationStart' => '2018-01-01',
+		'registrationEnd' => '2080-01-31',
+		// You must have CentralNotice extension installed in order to limit audience by country
+		// 'countries' => [ 'US', 'UK' ]
+	],
+	// The i18n key of the privacy policy text
+	'privacyPolicy' => 'ext-quicksurveys-example-external-survey-privacy-policy',
+	// Whether the survey is enabled
+	'enabled' => true,
+	'shuffleAnswersDisplay' => false,
+	// Percentage of users that will see the survey
+	'coverage' => 0,
+	// For each platform (desktop, mobile), which version of it is targeted
+	'platforms' => [
+		'desktop' => [ 'stable' ],
+		'mobile' => [ 'stable' ]
+	],
+];
+
+$wgQuickSurveysConfig = [
+	// Example of an internal survey
+	[
+		// Survey name
+		'name' => 'internal example survey',
+		// Internal or external link survey?
+		'type' => 'internal',
+		// The respondent can choose one answer from a list.
+		'layout' => 'single-answer',
+		// Survey question message key
+		'question' => 'ext-quicksurveys-example-internal-survey-question',
+		// The message key of the description of the survey. Displayed immediately below the survey question.
+		//'description' => 'ext-quicksurveys-example-internal-survey-description',
+		// Possible answer message keys for positive, neutral, and negative
+		'answers' => QS_ANSWERS_MULTI_CHOICE,
+		// Label for the optional free form text answer
+		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+	] + QS_DEFAULTS,
+
+	[
+		// Survey name
+		'name' => 'internal multi answer example survey',
+		// Internal or external link survey?
+		'type' => 'internal',
+		// The respondent can choose one answer from a list.
+		'layout' => 'multiple-answer',
+		// Survey question message key
+		'question' => 'ext-quicksurveys-example-internal-survey-question',
+		// The message key of the description of the survey. Displayed immediately below the survey question.
+		//'description' => 'ext-quicksurveys-example-internal-survey-description',
+		// Possible answer message keys for positive, neutral, and negative
+		'answers' => QS_ANSWERS_MULTI_CHOICE,
+		// Label for the optional free form text answer
+		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+	] + QS_DEFAULTS,
+	// Example of an external survey
+	[
+		'name' => 'external example survey',
+		// Internal or external link survey
+		'type' => 'external',
+		// Survey question message key
+		'question' => 'ext-quicksurveys-example-external-survey-question',
+		// The i18n key of the description of the survey
+		'description' => 'ext-quicksurveys-example-external-survey-description',
+		// External link to the survey
+		'link' => 'ext-quicksurveys-example-external-survey-link',
+		// Parameter to add to external link
+		'instanceTokenParameterName' => 'parameterName',
+	] + QS_DEFAULTS,
+];
+
+// Temporary workaround for origin/wmf/1.39.0-wmf.21
+// Can be removed when origin/wmf/1.39.0-wmf.22 is the current release
+$wgHooks['ResourceLoaderRegisterModules'] = function ( ResourceLoader $resourceLoader ) {
+	$resourceLoader->register([
+		'ext.eventLogging' => [
+			'targets' => [ 'desktop', 'mobile' ],
+		],
+	] );
+};
