@@ -292,7 +292,7 @@ const QS_DEFAULTS = [
 	'enabled' => true,
 	'shuffleAnswersDisplay' => false,
 	// Percentage of users that will see the survey
-	'coverage' => 1,
+	'coverage' => 0,
 	// For each platform (desktop, mobile), which version of it is targeted
 	'platforms' => [
 		'desktop' => [ 'stable' ],
