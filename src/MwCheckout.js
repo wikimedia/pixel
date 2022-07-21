@@ -79,7 +79,7 @@ class MwCheckout {
 			// Apply Gerrit patches, if any.
 			// @ts-ignore
 			if ( patchCommands[ repoId ] ) {
-				// Fastforward to master before applying commands since the commands will be a rebase
+				// Fastforward to master before applying commands to support rebase command
 				await this.#checkoutBranch( path, 'origin/master', repoId );
 				for ( const command of patchCommands[ repoId ] ) {
 					// Execute patch command.
