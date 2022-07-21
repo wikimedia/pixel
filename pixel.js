@@ -14,7 +14,8 @@ const BRANCH_OVERRIDES = {
 	},
 	// WVUI=>Codex and layout changes
 	'origin/wmf/1.39.0-wmf.21': {
-		desktop: '815323'
+		desktop: '815323',
+		'web-maintained': '815387'
 	}
 };
 
@@ -97,6 +98,8 @@ ${markerString}`
  */
 const getGroupConfig = ( groupName, type ) => {
 	switch ( groupName ) {
+		case 'web-maintained':
+			return 'configWebMaintained.js';
 		case 'echo':
 			return 'configEcho.js';
 		case 'desktop-dev':

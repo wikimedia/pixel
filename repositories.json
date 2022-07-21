@@ -5,6 +5,9 @@
 	"mediawiki/extensions/GlobalPreferences": {
 		"path": "extensions/GlobalPreferences"
 	},
+	"mediawiki/extensions/QuickSurveys": {
+		"path": "extensions/QuickSurveys"
+	},
 	"mediawiki/extensions/VisualEditor": {
 		"path": "extensions/VisualEditor"
 	},
@@ -37,6 +40,18 @@
 	},
 	"mediawiki/skins/Vector": {
 		"path": "skins/Vector"
+	},
+	"mediawiki/skins/Modern": {
+		"path": "skins/Modern"
+	},
+	"mediawiki/skins/MonoBook": {
+		"path": "skins/MonoBook"
+	},
+	"mediawiki/skins/Timeless": {
+		"path": "skins/Timeless"
+	},
+	"mediawiki/skins/CologneBlue": {
+		"path": "skins/CologneBlue"
 	},
 	"mediawiki/core": {
 		"path": "."

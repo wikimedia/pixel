@@ -1,3 +1,5 @@
+const BASE_URL = process.env.MW_SERVER;
+
 /**
  * @param {Object} featureFlags
  * @return {string}
@@ -45,7 +47,38 @@ const addFeatureFlagQueryStringsToScenario = ( scenario, featureFlags ) => {
 	} );
 };
 
+/**
+ * @typedef {Object} Test
+ * @property {string} path
+ * @property {Object} [query]
+ * @property {string[]} [hashtags]
+ * @property {string} label
+ * @property {string[]} selectors
+ *
+ * @param {Test[]} tests
+ * @param {string[]} skins to test on
+ * @return {Object[]} scenarios
+ */
+const makeScenariosForSkins = ( tests, skins ) => {
+	let /** @type {Object[]} */ scenarios = [];
+	skins.forEach( ( useskin ) => {
+		scenarios = scenarios.concat(
+			tests.map( ( test ) => {
+				const hashtagString = `${( test.hashtags || [] ).join( ' ' )} #${useskin}`.trim();
+				const query = Object.assign( {}, test.query, { useskin } );
+				const qs = Object.keys( query ).length ? `?${getFeatureQueryString( query )}` : '';
+				return Object.assign( {}, test, {
+					label: `${test.label} (${hashtagString})`,
+					url: `${BASE_URL}${test.path}${qs}`
+				} );
+			} )
+		);
+	} );
+	return scenarios;
+};
+
 module.exports = {
+	makeScenariosForSkins,
 	makePaths,
 	addFeatureFlagQueryStringsToScenario
 };
