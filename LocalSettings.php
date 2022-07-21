@@ -149,7 +149,8 @@ wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Echo' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
-wfLoadExtension( 'QuickSurveys' );
+// @todo: Uncomment when origin/wmf/1.39.0-wmf.22 is the latest release.
+// wfLoadExtension( 'QuickSurveys' );
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
@@ -350,13 +351,3 @@ $wgQuickSurveysConfig = [
 		'instanceTokenParameterName' => 'parameterName',
 	] + QS_DEFAULTS,
 ];
-
-// Temporary workaround for origin/wmf/1.39.0-wmf.21
-// Can be removed when origin/wmf/1.39.0-wmf.22 is the current release
-$wgHooks['ResourceLoaderRegisterModules'] = function ( ResourceLoader $resourceLoader ) {
-	$resourceLoader->register([
-		'ext.eventLogging' => [
-			'targets' => [ 'desktop', 'mobile' ],
-		],
-	] );
-};
