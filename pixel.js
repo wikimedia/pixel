@@ -156,7 +156,6 @@ async function processCommand( type, opts ) {
 			overrideChangeId = overrideChangeId[ group ];
 			if ( overrideChangeId && type === 'reference' ) {
 				description = `(Fastforward of "${opts.branch}")`;
-				opts.branch = 'master';
 				opts.changeId = [ overrideChangeId ];
 				console.log( `Using ${opts.changeId} (this branch has been fastforwarded due to expected visual changes)` );
 			}
