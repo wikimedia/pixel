@@ -187,7 +187,8 @@ class MwCheckout {
 	 *
 	 * @param {string[]} changeQueue
 	 * @param {Repos} repos
-	 * @param {string} branch rebase the change of a specific branch. If not defined uses change branch (master)
+	 * @param {string} branch rebase the change of a specific branch. If not defined
+	 *  uses change branch (master)
 	 * @return {Promise<PatchCommands>} patchCommands
 	 */
 	async #getPatchCommands( changeQueue, repos, branch = '' ) {
