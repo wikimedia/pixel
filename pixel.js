@@ -9,13 +9,14 @@ const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
 const BRANCH_OVERRIDES = {
-	'origin/wmf/1.39.0-wmf.19': {
-		desktop: '808059'
-	},
 	// WVUI=>Codex and layout changes
+	// Introduction of QuickSurveys means we need to make sure EventLogging install is optional
 	'origin/wmf/1.39.0-wmf.21': {
-		desktop: '815323',
-		'web-maintained': '815387'
+		desktop: [ '815323', '815387' ],
+		echo: [ '815387' ],
+		mobile: [ '815387' ],
+		'desktop-dev': [ '815387' ],
+		'web-maintained': [ '815387', '815387' ]
 	}
 };
 
@@ -156,8 +157,8 @@ async function processCommand( type, opts ) {
 			overrideChangeId = overrideChangeId[ group ];
 			if ( overrideChangeId && type === 'reference' ) {
 				description = `(Fastforward of "${opts.branch}")`;
-				opts.changeId = [ overrideChangeId ];
-				console.log( `Using ${opts.changeId} (this branch has been fastforwarded due to expected visual changes)` );
+				opts.changeId = overrideChangeId;
+				console.log( `Using ${opts.changeId.join( ',' )} (this branch has been fastforwarded due to expected visual changes)` );
 			}
 		}
 		if ( !context[ group ] ) {
