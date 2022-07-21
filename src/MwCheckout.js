@@ -69,7 +69,7 @@ class MwCheckout {
 		}
 
 		// Get list of gerrit patch commands that can be executed later.
-		const patchCommands = await this.#getPatchCommands( changeIds, this.#repos );
+		const patchCommands = await this.#getPatchCommands( changeIds, this.#repos, branch );
 
 		await Promise.all( Object.keys( this.#repos ).map( async ( repoId ) => {
 			const path = this.#repos[ repoId ].path;
@@ -79,8 +79,6 @@ class MwCheckout {
 			// Apply Gerrit patches, if any.
 			// @ts-ignore
 			if ( patchCommands[ repoId ] ) {
-				// Fastforward to master before applying commands to support rebase command
-				await this.#checkoutBranch( path, 'origin/master', repoId );
 				for ( const command of patchCommands[ repoId ] ) {
 					// Execute patch command.
 					await this.#batchSpawn.spawn(
@@ -189,9 +187,10 @@ class MwCheckout {
 	 *
 	 * @param {string[]} changeQueue
 	 * @param {Repos} repos
+	 * @param {string} branch rebase the change of a specific branch. If not defined uses change branch (master)
 	 * @return {Promise<PatchCommands>} patchCommands
 	 */
-	async #getPatchCommands( changeQueue, repos ) {
+	async #getPatchCommands( changeQueue, repos, branch = '' ) {
 		const commands = /** @type {PatchCommands} */ ( {} );
 
 		while ( changeQueue.length ) {
@@ -220,10 +219,11 @@ class MwCheckout {
 			}
 
 			commands[ change.project ] = commands[ change.project ] || [];
+			branch = branch ? branch : `origin/${change.branch}`;
 			commands[ change.project ].unshift(
 				`
 				git -C "${path}" fetch origin ${change.revisions[ change.current_revision ].ref} && 
-				{ git -C "${path}"  rebase --onto HEAD origin/${change.branch} ${change.current_revision} || {
+				{ git -C "${path}"  rebase --onto HEAD ${branch} ${change.current_revision} || {
 					e=$?
 					rm -fr ${path}/.git/rebase-apply
 					exit $e
