@@ -62,16 +62,23 @@ async function openReportIfNecessary( type, group ) {
 			return;
 		}
 		const ctx = context[ group ];
+		const date = new Date();
 		const fileString = fs.readFileSync( filePathFull ).toString().replace(
 			markerString,
-			`<div style="color: #000; box-sizing: border-box;
+			`<div id="mw-message-box" style="color: #000; box-sizing: border-box;
 margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
 <h2>Test group: <strong>${group}</strong></h2>
 <p>Comparing ${ctx.reference} against ${ctx.test}. ${ctx.description}</p>
-<p>Test ran on ${new Date()}</p>
+<p>Test ran on ${date}</p>
 </div>
+<script>
+const daysElapsed = ( new Date() - new Date('${date}') ) / ( 1000 * 60 * 60 * 24);
+if ( daysElapsed > 1 ) {
+  document.getElementById( 'mw-messagebox' ).style.backgroundColor = 'red';
+}
+</script>
 ${markerString}`
 		);
 		fs.writeFileSync( filePathFull, fileString );
