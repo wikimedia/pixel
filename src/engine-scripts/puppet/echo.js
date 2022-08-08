@@ -24,20 +24,13 @@ module.exports = async ( page, hashtags ) => {
 			page,
 			hashtags.includes( '#mobile' ) ? 'ext.echo.mobile' : 'ext.echo.ui.desktop'
 		);
-		const expectsNotifications = hashtags.includes( '#echo-100' ) || hashtags.includes( '#echo-1' );
 
 		// Wait for the OOUI pending element to disappear.
 		await page.waitForSelector( '.oo-ui-pendingElement-pending', {
 			hidden: true
 		} );
 		// wait for a notification to appear if we're expecting them.
-		if ( expectsNotifications ) {
-			await page.waitForSelector( '.mw-echo-ui-notificationItemWidget-content' );
-		} else {
-			// Check for the "There are no notifications" message.
-			// Annoyingly there is no unique selector we can use, so we must use a delay
-			// to avoid false positives.
-			await page.waitForSelector( '.client-js .mw-echo-ui-placeholderItemWidget' );
-		}
+		// There should always be notifications, even for Admin user (one shows after first edit)
+		await page.waitForSelector( '.mw-echo-ui-notificationItemWidget-content' );
 	}
 };
