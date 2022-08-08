@@ -149,8 +149,7 @@ wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Echo' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
-// @todo: Uncomment when origin/wmf/1.39.0-wmf.22 is the latest release.
-// wfLoadExtension( 'QuickSurveys' );
+wfLoadExtension( 'QuickSurveys' );
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
