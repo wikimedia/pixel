@@ -188,7 +188,7 @@ async function processCommand( type, opts ) {
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? '--no-TTY' : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
 			await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
 		}, async ( /** @type {Error} */ err ) => {
