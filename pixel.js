@@ -55,9 +55,10 @@ async function getLatestReleaseBranch() {
 /**
  * @param {'test'|'reference'} type
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo'} group
+ * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( type, group ) {
+async function openReportIfNecessary( type, group, nonInteractive ) {
 	const REPORT_PATH = `report/${group}/index.html`;
 	const filePathFull = `${__dirname}/${REPORT_PATH}`;
 	const markerString = '<div id="root">';
@@ -79,7 +80,9 @@ background-color: #eaecf0; border-color: #a2a9b1;">
 ${markerString}`
 		);
 		fs.writeFileSync( filePathFull, fileString );
-		await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
+		if ( !nonInteractive ) {
+			await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
+		}
 	} catch ( e ) {
 		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
 	}
@@ -183,7 +186,7 @@ async function processCommand( type, opts ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? '--no-TTY' : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
-			await openReportIfNecessary( type, group );
+			await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
@@ -192,7 +195,7 @@ async function processCommand( type, opts ) {
 			}
 
 			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				await openReportIfNecessary( type, group );
+				await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
 				// eslint-disable-next-line no-process-exit
 				process.exit( 1 );
 			}
