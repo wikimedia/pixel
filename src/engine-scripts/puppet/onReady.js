@@ -20,6 +20,7 @@ module.exports = async ( page, scenario ) => {
 	if ( hashtags.includes( '#vector-2022' ) ) {
 		await require( './sidebarState' )( page, hashtags );
 		await require( './userMenuState' )( page, hashtags );
+		await require( './collapsedTocState' )( page, hashtags );
 	}
 
 	// These only apply to Minerva

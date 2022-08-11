@@ -58,6 +58,25 @@ const tests = [
 		path: '/wiki/Special:BlankPage'
 	},
 	{
+		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-closed)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// Limit to large viewports to minimize duplication
+		viewports: [
+			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
+		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-open)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
+	},
+	{
+		label: 'Test (#vector-2022, #sidebar-open, #collapsed-toc-open)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Special:BlankPage (#vector-2022, #userMenu-open)',
 		path: '/wiki/Special:BlankPage'
 	},
@@ -89,6 +108,24 @@ const tests = [
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ]
+	},
+	{
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-closed)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// Limit to viewports where the sticky header is visible
+		viewports: [
+			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-open)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// Limit to viewports where the sticky header is visible
+		viewports: [
+			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
+		]
 	},
 	{
 		label: 'Test?action=History (#vector-2022)',
