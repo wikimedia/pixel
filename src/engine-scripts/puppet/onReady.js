@@ -11,7 +11,7 @@ module.exports = async ( page, scenario ) => {
 	console.log( 'SCENARIO > ' + scenario.label );
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
-	
+
 	// Make sure the main skin JavaScript module has loaded.
 	await require( './jsReady' )( page, hashtags );
 
