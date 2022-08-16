@@ -11,6 +11,9 @@ module.exports = async ( page, scenario ) => {
 	console.log( 'SCENARIO > ' + scenario.label );
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
+	
+	// Make sure the main skin JavaScript module has loaded.
+	await require( './jsReady' )( page, hashtags );
 
 	if ( hashtags.includes( '#scroll' ) ) {
 		require( './scroll.js' )( page );
@@ -27,9 +30,6 @@ module.exports = async ( page, scenario ) => {
 	if ( hashtags.includes( '#minerva' ) ) {
 		await require( './minerva/mainMenuState' )( page, hashtags );
 	}
-
-	// Make sure the main skin JavaScript module has loaded.
-	await require( './jsReady' )( page, hashtags );
 
 	// Run Echo handlers if necessary.
 	if ( hashtags.includes( '#echo' ) ) {
