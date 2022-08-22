@@ -1,3 +1,9 @@
+const VIEWPORT_DESKTOP_WIDEST = {
+	label: 'desktop-wide',
+	width: 1920,
+	height: 900
+};
+
 const VIEWPORT_DESKTOP_WIDE = {
 	label: 'desktop-wide',
 	width: 1200,
@@ -26,5 +32,6 @@ module.exports = {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
 	VIEWPORT_DESKTOP,
-	VIEWPORT_DESKTOP_WIDE
+	VIEWPORT_DESKTOP_WIDE,
+	VIEWPORT_DESKTOP_WIDEST
 };
