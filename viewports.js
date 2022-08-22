@@ -1,6 +1,8 @@
 const VIEWPORT_DESKTOP_WIDE = {
 	label: 'desktop-wide',
-	width: 1200,
+	// The actual threshold is 1200px, but the main purpose of this breakpoint is
+	// to indicate "large displays". We pick a larger threshold for testing (T315690)
+	width: 1920,
 	height: 900
 };
 
