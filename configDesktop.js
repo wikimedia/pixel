@@ -4,7 +4,8 @@ const {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
 	VIEWPORT_DESKTOP,
-	VIEWPORT_DESKTOP_WIDE
+	VIEWPORT_DESKTOP_WIDE,
+	VIEWPORT_DESKTOP_WIDEST
 } = require( './viewports' );
 
 const tests = [
@@ -200,7 +201,8 @@ module.exports = {
 		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
 		VIEWPORT_DESKTOP,
-		VIEWPORT_DESKTOP_WIDE
+		VIEWPORT_DESKTOP_WIDE,
+		VIEWPORT_DESKTOP_WIDEST
 	],
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
