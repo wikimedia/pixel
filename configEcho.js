@@ -72,7 +72,7 @@ const makeScenarios = ( hashtags, queryString, additionalConfig = {} ) => {
 				'.skin-vector-2022 .mw-workspace-container',
 				'.skin-vector #content',
 				'.skin-vector #mw-panel',
-				'mw-table-of-contents-container',
+				'.mw-table-of-contents-container',
 				'.skin-vector #footer',
 				'.skin-vector #left-navigation',
 				'.skin-vector #right-navigation',
