@@ -31,6 +31,10 @@ issues across environments. Please install
 [Docker](https://docs.docker.com/get-docker/) and 
 **make sure it is running** prior to using Pixel.
 
+Make sure you are running a compatible version of Node.js. The required version of Node is noted
+in the [package.json](package.json#L14) file. We recommend using [NVM](https://github.com/nvm-sh/nvm#install--update-script) for managing different versions
+of Node.js.
+
 Finally, install the CLI dependency:
 
 ```sh
