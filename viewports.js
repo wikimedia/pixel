@@ -1,5 +1,5 @@
 const VIEWPORT_DESKTOP_WIDEST = {
-	label: 'desktop-wide',
+	label: 'desktop-widest',
 	width: 1920,
 	height: 900
 };
