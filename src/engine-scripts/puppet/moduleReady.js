@@ -12,7 +12,7 @@ module.exports = async ( page, moduleName ) => {
 					reject( `Cannot find module ${m}. Is scenario setup with correct hashtags?` );
 				}
 				times++;
-			}, 500 );
+			}, 1000 );
 		} );
 	}, moduleName );
 };
