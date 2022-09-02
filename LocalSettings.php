@@ -350,3 +350,17 @@ $wgQuickSurveysConfig = [
 		'instanceTokenParameterName' => 'parameterName',
 	] + QS_DEFAULTS,
 ];
+
+
+// The following CSS overrides can be used to "vet" changes by forcing Pixel to
+// apply additional styles to match expectations.
+$wgHooks['BeforePageDisplay'][] = function ( $out ) {
+	$css = <<<HTML
+<style type="text/css">
+	/* https://phabricator.wikimedia.org/T313409 */
+	.mw-special-Specialpages #ca-nstab-special,
+	.mw-special-Blankpage #ca-nstab-special { display: none; }
+</style>
+HTML;
+	$out->addHTML( $css );
+};
