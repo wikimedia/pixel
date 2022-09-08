@@ -8,7 +8,11 @@ const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
-const BRANCH_OVERRIDES = {};
+const BRANCH_OVERRIDES = {
+	'origin/wmf/1.39.0-wmf.28': {
+		desktop: [ '829039' ]
+	}
+};
 
 /*
  * @param {string[]} opts
