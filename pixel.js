@@ -156,7 +156,7 @@ async function processCommand( type, opts ) {
 			}
 			active = opts.branch;
 		} else {
-			active = opts.changeId[ 0 ];
+			active = opts.branch || ( opts.changeId ? opts.changeId[ 0 ] : 'unknown' );
 		}
 		if ( !context[ group ] ) {
 			context[ group ] = { description };
