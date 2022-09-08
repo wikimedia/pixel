@@ -155,8 +155,13 @@ async function processCommand( type, opts ) {
 				description = ` (Includes ${opts.changeId.join( ',' )})`;
 			}
 			active = opts.branch;
+		} else if ( opts.branch !== 'master' ) {
+			active = opts.branch;
+			if ( opts.changeId ) {
+				description = ` (Includes ${opts.changeId.join( ',' )})`;
+			}
 		} else {
-			active = opts.branch || ( opts.changeId ? opts.changeId[ 0 ] : 'unknown' );
+			active = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
 		}
 		if ( !context[ group ] ) {
 			context[ group ] = { description };
