@@ -8,8 +8,6 @@ const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
-const BRANCH_OVERRIDES = {};
-
 /*
  * @param {string[]} opts
  * @return {string[]}
@@ -152,14 +150,6 @@ async function processCommand( type, opts ) {
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
 			console.log( `Using latest branch "${opts.branch}"` );
-
-			let overrideChangeId = BRANCH_OVERRIDES[ opts.branch ] || {};
-			overrideChangeId = overrideChangeId[ group ];
-			if ( overrideChangeId && type === 'reference' ) {
-				description = `(Fastforward of "${opts.branch}")`;
-				opts.changeId = overrideChangeId;
-				console.log( `Using ${opts.changeId.join( ',' )} (this branch has been fastforwarded due to expected visual changes)` );
-			}
 		}
 		if ( !context[ group ] ) {
 			context[ group ] = { description };
