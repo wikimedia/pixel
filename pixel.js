@@ -8,8 +8,6 @@ const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 
-const BRANCH_OVERRIDES = {};
-
 /*
  * @param {string[]} opts
  * @return {string[]}
@@ -71,7 +69,7 @@ margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
 <h2>Test group: <strong>${group}</strong></h2>
-<p>Comparing ${ctx.reference} against ${ctx.test}. ${ctx.description}</p>
+<p>Comparing ${ctx.reference}${ctx.description} against ${ctx.test}.</p>
 <p>Test ran on ${date}</p>
 </div>
 <script>
@@ -145,6 +143,7 @@ async function resetDb() {
  */
 async function processCommand( type, opts ) {
 	try {
+		let active;
 		let description = '';
 		const group = opts.group;
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
@@ -152,14 +151,17 @@ async function processCommand( type, opts ) {
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
 			console.log( `Using latest branch "${opts.branch}"` );
-
-			let overrideChangeId = BRANCH_OVERRIDES[ opts.branch ] || {};
-			overrideChangeId = overrideChangeId[ group ];
-			if ( overrideChangeId && type === 'reference' ) {
-				description = `(Fastforward of "${opts.branch}")`;
-				opts.changeId = overrideChangeId;
-				console.log( `Using ${opts.changeId.join( ',' )} (this branch has been fastforwarded due to expected visual changes)` );
+			if ( opts.changeId ) {
+				description = ` (Includes ${opts.changeId.join( ',' )})`;
 			}
+			active = opts.branch;
+		} else if ( opts.branch !== 'master' ) {
+			active = opts.branch;
+			if ( opts.changeId ) {
+				description = ` (Includes ${opts.changeId.join( ',' )})`;
+			}
+		} else {
+			active = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
 		}
 		if ( !context[ group ] ) {
 			context[ group ] = { description };
@@ -167,7 +169,7 @@ async function processCommand( type, opts ) {
 		if ( type === 'reference' ) {
 			context[ group ].description = description;
 		}
-		context[ group ][ type ] = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
+		context[ group ][ type ] = active;
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 		const configFile = getGroupConfig( group, type );
