@@ -152,7 +152,7 @@ async function processCommand( type, opts ) {
 			opts.branch = await getLatestReleaseBranch();
 			console.log( `Using latest branch "${opts.branch}"` );
 			if ( opts.changeId ) {
-				description = ` (Includes ${opts.changeId.join(',')})`;
+				description = ` (Includes ${opts.changeId.join( ',' )})`;
 			}
 			active = opts.branch;
 		} else {
