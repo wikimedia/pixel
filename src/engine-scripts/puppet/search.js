@@ -21,8 +21,15 @@ module.exports = async ( page, hashtags ) => {
 	const selectorSearchSuggestion = isStickyHeaderScenario ?
 		'#vector-sticky-header .vector-search-box-vue li a' : '#searchform li a';
 
+	// Check the sticky header has loaded if necessary.
+	if ( isStickyHeaderScenario ) {
+		await page.waitForSelector( '.vector-sticky-header-visible' );
+	}
+
 	// Click toggle if necessary to reveal input
-	const button = await page.waitForSelector( selectorSearchToggle );
+	const button = await page.waitForSelector( selectorSearchToggle, {
+		visible: true
+	} );
 	await button.boxModel().then( async ( box ) => {
 		// If bounding box is null then the button is hidden on the page.
 		if ( box !== null ) {
@@ -40,6 +47,8 @@ module.exports = async ( page, hashtags ) => {
 		} );
 		await fastForwardAnimations( page );
 	} else {
+		// Make sure Codex kicked in.
+		await page.waitForSelector( '.cdx-typeahead-search' );
 		// Wait for Vue to load.
 		await moduleReady( page, 'vue' );
 		// focus and type into the newly added input
