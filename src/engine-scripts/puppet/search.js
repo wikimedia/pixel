@@ -13,9 +13,13 @@ module.exports = async ( page, hashtags ) => {
 		await page.setOfflineMode( true );
 	}
 
+	const viewportWidth = page.viewport().width;
 	const isStickyHeaderScenario = hashtags.includes( '#search-sticky' );
 	const selectorSearchToggle = isStickyHeaderScenario ?
-		'.vector-sticky-header-search-toggle' : '.search-toggle';
+		'.vector-sticky-header-search-toggle' :
+		// If not sticky header scenario either the search toggle or the search input
+		// must be visible before continuing the test.
+		( viewportWidth < 1000 ) ? '.search-toggle' : '#p-search input';
 	const selectorSearchInput = isStickyHeaderScenario ?
 		'#vector-sticky-header input[name="search"]' : 'input[name="search"]';
 	const selectorSearchSuggestion = isStickyHeaderScenario ?
@@ -30,12 +34,7 @@ module.exports = async ( page, hashtags ) => {
 	const button = await page.waitForSelector( selectorSearchToggle, {
 		visible: true
 	} );
-	await button.boxModel().then( async ( box ) => {
-		// If bounding box is null then the button is hidden on the page.
-		if ( box !== null ) {
-			await button.click();
-		}
-	} );
+	await button.click();
 	// Focus the server side rendered search to trigger the loading of Vue.
 	await page.focus( selectorSearchInput );
 	if ( isOffline ) {
