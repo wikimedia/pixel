@@ -4,7 +4,7 @@
 
 ![Visual regression HTML reporter showing failing and passing tests](reporter.png)
 
-🚨 **Pixel is a work in progress and experimental. Only use it when you're feeling dangerous.** 🚨
+🚨 **Pixel is currently an experimental proof of concept working towards becoming a more stable and useful solution. Only use it when you're feeling dangerous.** 🚨
 
 Pixel is a visual regression tool for MediaWiki developers/QA engineers that
 helps you replace manual testing with automated tests that catch web ui
