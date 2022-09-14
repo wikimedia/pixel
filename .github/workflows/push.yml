@@ -30,5 +30,3 @@ jobs:
       shell: 'script -q -e -c "bash {0}"'
       run: |
         script -e -c "./pixel.js reference && ./pixel.js test"
-        script -e -c "./pixel.js reference -g echo && ./pixel.js test -g echo"
-        script -e -c "./pixel.js reference -g mobile && ./pixel.js test -g mobile"
