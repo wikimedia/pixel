@@ -11,7 +11,10 @@ services:
     env_file:
       - .env
     environment:
-      COMPOSER_CACHE_DIR: /var/www/html/w/cache/composer
+      - COMPOSER_CACHE_DIR=/var/www/html/w/cache/composer
+      - XDEBUG_CONFIG=
+      - XDEBUG_ENABLE=false
+      - XHPROF_ENABLE=false
     volumes:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
@@ -21,11 +24,14 @@ services:
         condition: service_healthy
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
-    user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
     ports:
-      - "${MW_DOCKER_PORT:-8080}:8080"
+      - "${PIXEL_MW_DOCKER_PORT}:8080"
     env_file:
       - .env
+    environment:
+      - XDEBUG_CONFIG=
+      - XDEBUG_ENABLE=false
+      - XHPROF_ENABLE=false
     volumes:
       - mwcode:/var/www/html/w
     depends_on:

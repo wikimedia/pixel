@@ -1,4 +1,4 @@
-const BASE_URL = process.env.MW_SERVER;
+const BASE_URL = process.env.PIXEL_MW_SERVER;
 
 /**
  * @param {Object} featureFlags
