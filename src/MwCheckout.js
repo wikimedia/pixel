@@ -62,8 +62,9 @@ class MwCheckout {
 	 * `main` are passed, these will be converted to `origin/master` and
 	 * `origin/main`, respectively.
 	 * @param {string[]} changeIds An array of Gerrit Change-Ids
+	 * @param {boolean} [ignoreIntentional=false]
 	 */
-	async checkout( branch, changeIds ) {
+	async checkout( branch, changeIds, ignoreIntentional = false ) {
 		if ( branch === 'master' || branch === 'main' ) {
 			branch = `origin/${branch}`;
 		}
@@ -89,6 +90,11 @@ class MwCheckout {
 				}
 			}
 
+			// Ignore intentional changes.
+			if ( ignoreIntentional ) {
+				await this.#ignoreIntentional( path, branch );
+			}
+
 			await this.#updateComposer( path );
 		} ) );
 
@@ -99,6 +105,53 @@ class MwCheckout {
 			[],
 			{ shell: true }
 		);
+	}
+
+	/**
+	 * @param {string} path
+	 */
+	async #getDefaultBranch( path ) {
+		const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
+		const branches = stdout.split( '\n' );
+		if ( branches.includes( 'origin/master' ) ) {
+			return 'origin/master';
+		}
+
+		if ( branches.includes( 'origin/main' ) ) {
+			return 'origin/main';
+		}
+
+		throw new Error( `Could not determine default branch. Did not find "origin/master or "origin/main" branches in ${path}.` );
+	}
+
+	/**
+	 * @param {string} path
+	 * @param {string} branch
+	 */
+	async #ignoreIntentional( path, branch ) {
+		const defaultBranch = await this.#getDefaultBranch( path );
+		const commits = await this.#batchSpawn.exec(
+			`
+				git -C "${path}" rev-list -i --reverse --grep 'visual changes' ${branch}..${defaultBranch}
+				`
+		);
+		if ( !commits.stdout ) {
+			return;
+		}
+
+		await this.#batchSpawn.spawn(
+			`
+			echo Ignoring intentional changes in ${commits.stdout}
+			{ git -C "${path}" cherry-pick ${commits.stdout.trim().replace( '\n', ' ' )} || {
+				e=$?
+				git cherry-pick --abort
+				exit $e
+			} }
+			`,
+			[],
+			{ shell: true }
+		);
+
 	}
 
 	/**

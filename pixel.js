@@ -254,6 +254,11 @@ function setupCli() {
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
+		.option(
+			'--ignore-intentional',
+			'Ignore intentional tags',
+			false
+		)
 		.action( ( opts ) => {
 			processCommand( 'reference', opts );
 		} );

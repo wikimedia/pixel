@@ -21,7 +21,7 @@ async function init() {
 	benchmark( async () => {
 		const batchSpawn = new BatchSpawn( await getProcessingUnitsAvailable() );
 		const mwCheckout = new MwCheckout( repos, batchSpawn );
-		await mwCheckout.checkout( opts.branch, opts.changeId ?? [] );
+		await mwCheckout.checkout( opts.branch, opts.changeId ?? [], opts.ignoreIntentional );
 	} );
 }
 
