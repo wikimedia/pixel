@@ -41,6 +41,8 @@ module.exports = async ( page, scenario ) => {
 	}
 	// add more ready handlers here...
 
+	// Wait for any images to finish loading.
+	await page.waitForNetworkIdle();
 	// Note: These calls should always be last.
 	// Fast forward through any css transitions/web animations that are happening.
 	await fastForwardAnimations( page );
