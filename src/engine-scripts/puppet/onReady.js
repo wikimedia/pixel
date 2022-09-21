@@ -59,7 +59,7 @@ module.exports = async ( page, scenario ) => {
 			'.sidebar-toc-list-item-active'
 		).forEach( ( node ) => {
 			node.classList.remove(
-				'sidebar-toc-list-item-active'
+				'sidebar-toc-list-item-active', 'sidebar-toc-level-1-active'
 			);
 		} );
 		return true;
