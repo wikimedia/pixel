@@ -34,6 +34,7 @@ module.exports = async ( page, hashtags ) => {
 	const button = await page.waitForSelector( selectorSearchToggle, {
 		visible: true
 	} );
+	await fastForwardAnimations( page );
 	await button.click();
 	// Focus the server side rendered search to trigger the loading of Vue.
 	await page.focus( selectorSearchInput );
