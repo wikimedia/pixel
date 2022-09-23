@@ -29,12 +29,12 @@ $wgMetaNamespace = "Mediawiki";
 ## For more information on customizing the URLs
 ## (like /w/index.php/Page_title to /wiki/Page_title) please see:
 ## https://www.mediawiki.org/wiki/Manual:Short_URL
-$wgScriptPath = getenv('MW_SCRIPT_PATH');
+$wgScriptPath = getenv('PIXEL_MW_SCRIPT_PATH');
 
-$PORT = getenv('MW_DOCKER_PORT');
+$PORT = getenv('PIXEL_MW_DOCKER_PORT');
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = getenv('MW_SERVER');
+$wgServer = getenv('PIXEL_MW_SERVER');
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
