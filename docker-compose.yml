@@ -52,12 +52,13 @@ services:
       timeout: 5s
       retries: 20
   visual-regression:
+    init: true
     network_mode: host
     build:
       context: .
       dockerfile: Dockerfile.visual-regression
       args:
-        - BACKSTOPJS_VERSION=6.0.4
+        - BACKSTOPJS_VERSION=6.1.1
     working_dir: /pixel
     env_file:
       - .env

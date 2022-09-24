@@ -215,7 +215,7 @@ module.exports = {
 			'--no-sandbox'
 		]
 	},
-	asyncCaptureLimit: 5,
+	asyncCaptureLimit: 10,
 	asyncCompareLimit: 50,
 	debug: false,
 	debugWindow: false
