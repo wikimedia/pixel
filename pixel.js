@@ -295,6 +295,11 @@ function setupCli() {
 				'git',
 				[ '-C', __dirname, 'pull', 'origin', 'main' ]
 			);
+			// Install npm dependencies.
+			await batchSpawn.spawn(
+				'npm',
+				[ 'i' ]
+			);
 			// Stops and removes Docker containers, networks, and volumes.
 			await batchSpawn.spawn(
 				'docker',

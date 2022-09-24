@@ -227,14 +227,6 @@ can be rebuilt) and then `./pixel.js reference` to rebuild everything
 4) Check that your extension or skin is usable at `localhost:3000`
 5) Commit these changes and open a pull request in this repo with these changes
 
-## Known Issues
-
-* Pixel has only been tested on machines running on `x86_64` chips. It does not
-currently work with `arm64` (e.g. MacBooks with M1 or M2 chips). Please follow
-https://github.com/garris/BackstopJS/issues/1300 and
-[T311573](https://phabricator.wikimedia.org/T311573) for more information.
-
-
-## New Issues
+## Issues
 
 Please file all bugs, requests, and issues on the [web team's visual regression phabricator board](https://phabricator.wikimedia.org/project/board/5933/)
