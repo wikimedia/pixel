@@ -357,10 +357,12 @@ $wgQuickSurveysConfig = [
 $wgHooks['BeforePageDisplay'][] = function ( $out ) {
 	$css = <<<HTML
 <style type="text/css">
-	/* https://phabricator.wikimedia.org/T313409 */
-	.mw-special-Specialpages #ca-nstab-special,
-	.mw-special-Blankpage #ca-nstab-special { display: none; }
 </style>
 HTML;
 	$out->addHTML( $css );
 };
+
+$wgVectorLanguageAlertInSidebar = [
+	"logged_in" => true,
+	"logged_out" => true
+];
