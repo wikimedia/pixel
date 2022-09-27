@@ -151,6 +151,7 @@ wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
 wfLoadExtension( 'QuickSurveys' );
 wfLoadExtension( 'MobileFrontend' );
+wfLoadExtension( 'NearbyPages' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
 wfLoadExtension( 'SandboxLink' );
@@ -263,10 +264,6 @@ $wgMinervaOverflowInPageActions = [
 // Disable ULS IME keyboard tool.
 // This leads to false positives in tests and is not a feature maintained by web team.
 $wgULSIMEEnabled = false;
-
-// Enable Nearby in main menu
-// https://phabricator.wikimedia.org/T312864
-$wgMFNearby = true;
 
 const QS_ANSWERS_MULTI_CHOICE =  [
 	'ext-quicksurveys-example-internal-survey-answer-positive',

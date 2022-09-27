@@ -26,6 +26,9 @@
 	"mediawiki/extensions/MobileFrontend": {
 		"path": "extensions/MobileFrontend"
 	},
+	"mediawiki/extensions/NearbyPages": {
+		"path": "extensions/NearbyPages"
+	},
 	"mediawiki/extensions/Popups": {
 		"path": "extensions/Popups"
 	},

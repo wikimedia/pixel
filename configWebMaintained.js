@@ -43,7 +43,29 @@ const quickSurveyScenarios = utils.makeScenariosForSkins(
 	[ 'vector', 'vector-2022', 'minerva' ]
 );
 
+const nearbyScenarios = utils.makeScenariosForSkins(
+	[
+		{
+			label: 'Nearby the WMF office',
+			path: '/wiki/Special:Nearby',
+			hash: '#/coord/37.789167,-122.403333',
+			hashtags: [ '#nearby' ],
+			selectors: [ '#mw-content-text' ]
+		},
+		{
+			label: 'Nearby error state',
+			path: '/wiki/Special:Nearby',
+			hash: '#/coord/0,-700',
+			hashtags: [ '#nearby' ],
+			selectors: [ '.mw-content-container' ]
+		}
+	],
+	[ 'vector', 'vector-2022', 'minerva' ]
+);
+
 module.exports = Object.assign( {}, configDesktop, {
-	scenarios: skinScenarios.concat( quickSurveyScenarios ),
+	scenarios: skinScenarios.concat( quickSurveyScenarios ).concat(
+		nearbyScenarios
+	),
 	paths: utils.makePaths( 'web-maintained' )
 } );
