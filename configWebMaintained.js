@@ -1,4 +1,4 @@
-const configDesktop = require( './configDesktop.js' );
+9const configDesktop = require( './configDesktop.js' );
 const utils = require( './utils' );
 
 const skinScenarios = utils.makeScenariosForSkins( [
@@ -57,7 +57,7 @@ const nearbyScenarios = utils.makeScenariosForSkins(
 			path: '/wiki/Special:Nearby',
 			hash: '#/coord/0,-700',
 			hashtags: [ '#nearby' ],
-			selectors: [ '.mw-content-container' ]
+			selectors: [ '#mw-context-text' ]
 		}
 	],
 	[ 'vector', 'vector-2022', 'minerva' ]
