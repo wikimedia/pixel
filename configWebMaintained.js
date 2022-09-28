@@ -1,4 +1,4 @@
-9const configDesktop = require( './configDesktop.js' );
+const configDesktop = require( './configDesktop.js' );
 const utils = require( './utils' );
 
 const skinScenarios = utils.makeScenariosForSkins( [
