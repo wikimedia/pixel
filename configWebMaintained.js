@@ -57,7 +57,7 @@ const nearbyScenarios = utils.makeScenariosForSkins(
 			path: '/wiki/Special:Nearby',
 			hash: '#/coord/0,-700',
 			hashtags: [ '#nearby' ],
-			selectors: [ '#mw-context-text' ]
+			selectors: [ '#mw-content-text' ]
 		}
 	],
 	[ 'vector', 'vector-2022', 'minerva' ]
