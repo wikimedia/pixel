@@ -10,7 +10,7 @@ module.exports = async ( page, moduleName ) => {
 				}
 				if ( times > 10 ) {
 					// eslint-disable-next-line no-undef
-					const debug = `codex=${mw.loader.getState( '@wikimedia/codex' )}vector=${mw.loader.getState( 'skins.vector.search' )}`;
+					const debug = `codex=${mw.loader.getState( '@wikimedia/codex' )}, ${moduleName}=${mw.loader.getState( moduleName )}`;
 					reject( `Cannot find module ${m} (${debug}). Is scenario setup with correct hashtags?` );
 				}
 				times++;

@@ -50,6 +50,7 @@ const addFeatureFlagQueryStringsToScenario = ( scenario, featureFlags ) => {
 /**
  * @typedef {Object} Test
  * @property {string} path
+ * @property {string} [hash]
  * @property {Object} [query]
  * @property {string[]} [hashtags]
  * @property {string} label
@@ -67,9 +68,10 @@ const makeScenariosForSkins = ( tests, skins ) => {
 				const hashtagString = `${( test.hashtags || [] ).join( ' ' )} #${useskin}`.trim();
 				const query = Object.assign( {}, test.query, { useskin } );
 				const qs = Object.keys( query ).length ? `?${getFeatureQueryString( query )}` : '';
+				const hash = test.hash || '';
 				return Object.assign( {}, test, {
 					label: `${test.label} (${hashtagString})`,
-					url: `${BASE_URL}${test.path}${qs}`
+					url: `${BASE_URL}${test.path}${qs}${hash}`
 				} );
 			} )
 		);
