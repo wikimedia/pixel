@@ -1,4 +1,4 @@
-FROM docker-registry.wikimedia.org/dev/buster-php72-fpm:2.0.0-s1
+FROM docker-registry.wikimedia.org/dev/buster-php74-fpm:1.0.0-s3
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
 	&& apt-get install -y nodejs

@@ -23,7 +23,7 @@ services:
       database:
         condition: service_healthy
   mediawiki-web:
-    image: docker-registry.wikimedia.org/dev/buster-apache2:1.0.0-s1
+    image: docker-registry.wikimedia.org/dev/buster-apache2:2.0.0-s1
     ports:
       - "${PIXEL_MW_DOCKER_PORT}:8080"
     env_file:
