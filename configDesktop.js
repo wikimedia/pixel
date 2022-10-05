@@ -41,15 +41,6 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
-		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
-		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
-		// No search icon present if no sticky header present, so limit to this viewport
-		viewports: [
-			VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
 		label: 'Test (#vector-2022, #sidebar-closed)',
 		path: '/wiki/Test',
 		selectors: [ 'html' ]
@@ -102,6 +93,32 @@ const tests = [
 		]
 	},
 	{
+		label: 'Test?action=History (#vector-2022)',
+		path: '/w/index.php?title=Test&action=history'
+	},
+	{
+		label: 'Talk:Test (#vector-2022)',
+		path: '/wiki/Talk:Test'
+	},
+	{
+		label: 'Tree (#vector-2022)',
+		path: '/wiki/Tree'
+	},
+	{
+		label: 'Test (#vector-2022, #logged-in)',
+		path: '/wiki/Test',
+		selectors: [ 'html' ]
+	},
+	{
+		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		// No search icon present if no sticky header present, so limit to this viewport
+		viewports: [
+			VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
 		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
 		path: '/wiki/Special:BlankPage'
 	},
@@ -127,18 +144,6 @@ const tests = [
 		viewports: [
 			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
 		]
-	},
-	{
-		label: 'Test?action=History (#vector-2022)',
-		path: '/w/index.php?title=Test&action=history'
-	},
-	{
-		label: 'Talk:Test (#vector-2022)',
-		path: '/wiki/Talk:Test'
-	},
-	{
-		label: 'Tree (#vector-2022)',
-		path: '/wiki/Tree'
 	},
 	{
 		label: 'Main_Page (#vector)',
