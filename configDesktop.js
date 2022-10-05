@@ -1,4 +1,4 @@
-const BASE_URL = process.env.PIXEL_MW_SERVER;
+const BASE_URL = 'http://localhost:3000';
 const utils = require( './utils' );
 const {
 	VIEWPORT_PHONE,

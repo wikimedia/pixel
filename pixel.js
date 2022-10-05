@@ -188,33 +188,18 @@ async function processCommand( type, opts ) {
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 		// Execute Visual regression tests.
+
 		await batchSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
-		).then( async () => {
+			'backstop',
+			[ type, '--config', configFile ]
+		).finally( async () => {
 			await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
-		}, async ( /** @type {Error} */ err ) => {
-			if ( err.message.includes( '130' ) ) {
-				// If user ends subprocess with a sigint, exit early.
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
-			}
-
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
-			}
-
-			throw err;
-		} ).finally( async () => {
 			// Reset the database if `--reset-db` option is passed.
 			if ( opts.resetDb ) {
 				console.log( 'Resetting database state...' );
 				await resetDb();
 			}
 		} );
-
 	} catch ( err ) {
 		console.error( err );
 		// eslint-disable-next-line no-process-exit
