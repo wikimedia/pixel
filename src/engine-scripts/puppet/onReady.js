@@ -40,14 +40,14 @@ module.exports = async ( page, scenario ) => {
 		await require( './search.js' )( page, hashtags );
 	}
 	// add more ready handlers here...
+	// Note: These calls should always be last.
 
 	// Wait for any images to finish loading.
 	await page.waitForNetworkIdle();
-	// Note: These calls should always be last.
-	// Fast forward through any css transitions/web animations that are happening.
-	await fastForwardAnimations( page );
 	// Wait for the main thread to have an idle period.
 	await waitForIdle( page );
+	// Fast forward through any css transitions/web animations that are happening.
+	await fastForwardAnimations( page );
 
 	/**
 	 * Remove the .sidebar-toc-list-item-active class from the item in the toc
