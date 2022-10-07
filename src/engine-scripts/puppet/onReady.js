@@ -16,7 +16,7 @@ module.exports = async ( page, scenario ) => {
 	await require( './jsReady' )( page, hashtags );
 
 	if ( hashtags.includes( '#scroll' ) ) {
-		require( './scroll.js' )( page );
+		await require( './scroll.js' )( page );
 	}
 
 	// These only apply to Vector 2022
