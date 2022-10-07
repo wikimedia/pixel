@@ -12,8 +12,8 @@ module.exports = async ( page, scenario ) => {
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
 
-	// Make sure the main skin JavaScript module has loaded.
-	await require( './jsReady' )( page, hashtags );
+	// Wait for async js to finish loading.
+	await page.waitForNetworkIdle();
 
 	if ( hashtags.includes( '#scroll' ) ) {
 		await require( './scroll.js' )( page );
