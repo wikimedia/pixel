@@ -1,27 +1,21 @@
 {
-	"mediawiki/extensions/Echo": {
-		"path": "extensions/Echo"
-	},
-	"mediawiki/extensions/GlobalPreferences": {
-		"path": "extensions/GlobalPreferences"
-	},
-	"mediawiki/extensions/QuickSurveys": {
-		"path": "extensions/QuickSurveys"
-	},
-	"mediawiki/extensions/VisualEditor": {
-		"path": "extensions/VisualEditor"
+	"mediawiki/extensions/BetaFeatures": {
+		"path": "extensions/BetaFeatures"
 	},
 	"mediawiki/extensions/Cite": {
 		"path": "extensions/Cite"
 	},
-	"mediawiki/extensions/RelatedArticles": {
-		"path": "extensions/RelatedArticles"
-	},
-	"mediawiki/extensions/BetaFeatures": {
-		"path": "extensions/BetaFeatures"
+	"mediawiki/extensions/Echo": {
+		"path": "extensions/Echo"
 	},
 	"mediawiki/extensions/Gadgets": {
 		"path": "extensions/Gadgets"
+	},
+	"mediawiki/extensions/GlobalPreferences": {
+		"path": "extensions/GlobalPreferences"
+	},
+	"mediawiki/extensions/GrowthExperiments": {
+		"path": "extensions/GrowthExperiments"
 	},
 	"mediawiki/extensions/MobileFrontend": {
 		"path": "extensions/MobileFrontend"
@@ -32,17 +26,26 @@
 	"mediawiki/extensions/Popups": {
 		"path": "extensions/Popups"
 	},
+	"mediawiki/extensions/QuickSurveys": {
+		"path": "extensions/QuickSurveys"
+	},
+	"mediawiki/extensions/RelatedArticles": {
+		"path": "extensions/RelatedArticles"
+	},
 	"mediawiki/extensions/SandboxLink": {
 		"path": "extensions/SandboxLink"
 	},
 	"mediawiki/extensions/UniversalLanguageSelector": {
 		"path": "extensions/UniversalLanguageSelector"
 	},
+	"mediawiki/extensions/VisualEditor": {
+		"path": "extensions/VisualEditor"
+	},
+	"mediawiki/skins/CologneBlue": {
+		"path": "skins/CologneBlue"
+	},
 	"mediawiki/skins/MinervaNeue": {
 		"path": "skins/MinervaNeue"
-	},
-	"mediawiki/skins/Vector": {
-		"path": "skins/Vector"
 	},
 	"mediawiki/skins/Modern": {
 		"path": "skins/Modern"
@@ -50,11 +53,11 @@
 	"mediawiki/skins/MonoBook": {
 		"path": "skins/MonoBook"
 	},
+	"mediawiki/skins/Vector": {
+		"path": "skins/Vector"
+	},
 	"mediawiki/skins/Timeless": {
 		"path": "skins/Timeless"
-	},
-	"mediawiki/skins/CologneBlue": {
-		"path": "skins/CologneBlue"
 	},
 	"mediawiki/core": {
 		"path": "."

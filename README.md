@@ -220,12 +220,20 @@ list of these.
 To add a skin or extension that isn't currently supported:
 
 1) Add it to the [repositories.json](repositories.json) file
-2) Make Pixel rebuild its code volume by running `./pixel.js clean` (this will
+2) Make Pixel rebuild its code volume by running `./pixel.js clean`. This will
 destroy every container, image, volume, network associated with Pixel so they
-can be rebuilt) and then `./pixel.js reference` to rebuild everything
-3) Configure it in [LocalSettings.php](LocalSettings.php)
+can be rebuilt. 
+3) Configure the extension or skin in [LocalSettings.php](LocalSettings.php).
+4) Run `./pixel.js reference` to rebuild everything. This will also run the
+`maintenance/update.php` script which executes any needed database schema
+changes. This will take awhile as Mediawiki core, extensions, and skins get
+downloaded again.
 4) Check that your extension or skin is usable at `localhost:3000`
-5) Commit these changes and open a pull request in this repo with these changes
+5) If there were any database changes involved, you'll need to update the seed
+data that is shared amongst users of Pixel. To do this, please follow steps 3
+through 9 on the [https://github.com/wikimedia/pixel-seed-data](Pixel seed data)
+repo.
+6) Commit these changes and open a pull request in this repo with these changes
 
 ## Issues
 
