@@ -146,6 +146,11 @@ const tests = [
 		]
 	},
 	{
+		label: 'Special:Homepage (#vector-2022, #logged-in)',
+		path: '/wiki/Special:Homepage',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Main_Page (#vector)',
 		delay: 1500,
 		path: '/wiki/Main_Page?useskin=vector'
