@@ -238,3 +238,10 @@ repo.
 ## Issues
 
 Please file all bugs, requests, and issues on the [web team's visual regression phabricator board](https://phabricator.wikimedia.org/project/board/5933/)
+
+
+## Roadmap
+
+Future plans can be seen by visiting the [web team's visual regression
+phabricator board](https://phabricator.wikimedia.org/project/board/5933/) under
+the "Roadmap (Epics)" column.
