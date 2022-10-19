@@ -185,7 +185,7 @@ $wgLocalisationCacheConf = [
 
 # Show the enwiki logo.
 $wgLogos = [
-	'icon' => 'https://en.wikipedia.org/static/images/mobile/copyright/wikipedia.png',
+	'icon' => 'https://en.wikipedia.org/static/images/icons/wikipedia.png',
 	'tagline' => [
 		'src' => 'https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg',
 		'width' => 117,
