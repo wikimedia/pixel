@@ -14,7 +14,7 @@ const tests = [
 	},
 	{
 		label: 'Test (#minerva #mobile #logged-in)',
-		path: '/wiki/Test?useskin=minerva&useformat=mobile'
+		path: '/wiki/Test'
 	},
 	{
 		label: 'Test (#minerva #mobile #mainmenu-open)',
@@ -52,7 +52,10 @@ const scenarios = tests.map( ( test ) => {
 	return utils.addFeatureFlagQueryStringsToScenario(
 		Object.assign( {
 			url: `${BASE_URL}${test.path}`,
-			selectors: [ 'viewport' ]
+			// Using 'html' instead of 'viewport' due to flakiness of toolbar's text
+			// color. This is likely caused by a bug in either backstopjs or
+			// puppeteer.
+			selectors: [ 'html' ]
 		}, test ),
 		flags
 	);
