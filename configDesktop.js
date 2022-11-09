@@ -169,6 +169,10 @@ const tests = [
 	{
 		label: 'Tree (#vector)',
 		path: '/wiki/Tree?useskin=vector'
+	},
+	{
+		label: 'Test (#vector, #logged-in)',
+		path: '/wiki/Test?useskin=vector'
 	}
 ];
 
