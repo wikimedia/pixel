@@ -137,6 +137,14 @@ async function resetDb() {
 }
 
 /**
+ * @param {string} configFile name of config file.
+ */
+function removeTestFolder( configFile ) {
+	const config = require( `${__dirname}/${configFile}` );
+	fs.rmSync( `${__dirname}/${config.paths.bitmaps_test}`, { recursive: true, force: true } );
+}
+
+/**
  * @param {'test'|'reference'} type
  * @param {any} opts
  */
@@ -186,6 +194,14 @@ async function processCommand( type, opts ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
+
+		// Remove test screenshots folder (if present) so that its size doesn't
+		// increase with each `test` run. BackstopJS automatically removes the
+		// reference folder when the `reference` command is run, but not the test
+		// folder when the `test` command is run.
+		if ( type === 'test' ) {
+			removeTestFolder( configFile );
+		}
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker',
