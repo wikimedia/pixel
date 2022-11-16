@@ -22,6 +22,6 @@ module.exports = async ( page, hashtags ) => {
 		btn.click();
 	}, collapseTocButton );
 
-	const tocButtonSelector = isStickyHeader ? '#p-sticky-header-toc-checkbox' : '#vector-toc-collapsed-button';
+	const tocButtonSelector = isStickyHeader ? '#vector-sticky-header-toc-checkbox' : '#vector-toc-collapsed-button';
 	await menuState( page, tocButtonSelector, isClosed );
 };
