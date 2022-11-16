@@ -15,7 +15,8 @@ module.exports = async ( page, hashtags ) => {
 		return;
 	}
 
-	const collapseTocButton = '.vector-toc-collapse-button';
+	// vector-pinnable-header-toggle-button is used in VectorPageTools=1
+	const collapseTocButton = '.vector-toc-collapse-button,.vector-pinnable-header-toggle-button';
 	await page.waitForSelector( collapseTocButton );
 	await page.evaluate( ( selector ) => {
 		const btn = document.querySelector( selector );
