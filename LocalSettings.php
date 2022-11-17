@@ -360,6 +360,9 @@ HTML;
 	$out->addHTML( $css );
 };
 
+// Use production bundle of Vue to silence noisy warnings in console.
+$wgVueDevelopmentMode = false;
+
 $wgVectorLanguageAlertInSidebar = [
 	"logged_in" => true,
 	"logged_out" => true
