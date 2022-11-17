@@ -49,12 +49,12 @@ async function getLatestReleaseBranch() {
 /**
  * @param {'test'|'reference'} type
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo'} group
+ * @param {string} relativePath Relative path to report.
  * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( type, group, nonInteractive ) {
-	const REPORT_PATH = `report/${group}/index.html`;
-	const filePathFull = `${__dirname}/${REPORT_PATH}`;
+async function openReportIfNecessary( type, group, relativePath, nonInteractive ) {
+	const filePathFull = `${__dirname}/${relativePath}/index.html`;
 	const markerString = '<div id="root">';
 	try {
 		if ( type === 'reference' ) {
@@ -82,10 +82,10 @@ ${markerString}`
 		);
 		fs.writeFileSync( filePathFull, fileString );
 		if ( !nonInteractive ) {
-			await batchSpawn.spawn( 'open', [ REPORT_PATH ] );
+			await batchSpawn.spawn( 'open', [ filePathFull ] );
 		}
 	} catch ( e ) {
-		console.log( `Could not open report, but it is located at ${REPORT_PATH}` );
+		console.log( `Could not open report, but it is located at ${filePathFull}` );
 	}
 }
 
@@ -137,11 +137,10 @@ async function resetDb() {
 }
 
 /**
- * @param {string} configFile name of config file.
+ * @param {string} relativePath Relative path to folder.
  */
-function removeTestFolder( configFile ) {
-	const config = require( `${__dirname}/${configFile}` );
-	fs.rmSync( `${__dirname}/${config.paths.bitmaps_test}`, { recursive: true, force: true } );
+function removeFolder( relativePath ) {
+	fs.rmSync( `${__dirname}/${relativePath}`, { recursive: true, force: true } );
 }
 
 /**
@@ -180,6 +179,7 @@ async function processCommand( type, opts ) {
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 		const configFile = getGroupConfig( group );
+		const config = require( `${__dirname}/${configFile}` );
 
 		// Start docker containers.
 		await batchSpawn.spawn(
@@ -200,14 +200,16 @@ async function processCommand( type, opts ) {
 		// reference folder when the `reference` command is run, but not the test
 		// folder when the `test` command is run.
 		if ( type === 'test' ) {
-			removeTestFolder( configFile );
+			removeFolder( config.paths.bitmaps_test );
 		}
 		// Execute Visual regression tests.
 		await batchSpawn.spawn(
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
-			await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
+			await openReportIfNecessary(
+				type, group, config.paths.html_report, process.env.NONINTERACTIVE
+			);
 		}, async ( /** @type {Error} */ err ) => {
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
@@ -216,7 +218,9 @@ async function processCommand( type, opts ) {
 			}
 
 			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				await openReportIfNecessary( type, group, process.env.NONINTERACTIVE );
+				await openReportIfNecessary(
+					type, group, config.paths.html_report, process.env.NONINTERACTIVE
+				);
 				// eslint-disable-next-line no-process-exit
 				process.exit( 1 );
 			}
