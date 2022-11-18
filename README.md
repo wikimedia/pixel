@@ -231,7 +231,7 @@ downloaded again.
 4) Check that your extension or skin is usable at `localhost:3000`
 5) If there were any database changes involved, you'll need to update the seed
 data that is shared amongst users of Pixel. To do this, please follow steps 3
-through 9 on the [https://github.com/wikimedia/pixel-seed-data](Pixel seed data)
+through 9 on the [Pixel seed data](https://github.com/wikimedia/pixel-seed-data)
 repo.
 6) Commit these changes and open a pull request in this repo with these changes
 
