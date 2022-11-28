@@ -1,6 +1,5 @@
 const configDesktop = require( './configDesktop.js' );
 const utils = require( './utils' );
-const { VIEWPORT_PHONE } = require( './viewports.js' );
 
 const BASE_URL = process.env.PIXEL_MW_SERVER;
 const tests = [
@@ -63,9 +62,5 @@ const scenarios = tests.map( ( test ) => {
 
 module.exports = Object.assign( {}, configDesktop, {
 	scenarios,
-	paths: utils.makePaths( 'mobile' ),
-	viewports: [
-		VIEWPORT_PHONE,
-		...configDesktop.viewports
-	]
+	paths: utils.makePaths( 'mobile' )
 } );
