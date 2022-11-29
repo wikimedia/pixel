@@ -1,6 +1,7 @@
 const BASE_URL = process.env.PIXEL_MW_SERVER;
 const utils = require( './utils' );
 const {
+	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
 	VIEWPORT_DESKTOP,
 	VIEWPORT_DESKTOP_WIDE,
@@ -151,24 +152,31 @@ const tests = [
 	},
 	{
 		label: 'Main_Page (#vector)',
-		path: '/wiki/Main_Page?useskin=vector'
+		path: '/wiki/Main_Page?useskin=vector',
+		// FIXME: Delay is needed to wait for legacy Vector's dancing tabs to stop
+		// dancing.
+		delay: 1500
 	},
 	{
 		label: 'Test (#vector)',
 		path: '/wiki/Test?useskin=vector',
-		selectors: [ 'html' ]
+		selectors: [ 'html' ],
+		delay: 1500
 	},
 	{
 		label: 'Test?action=History (#vector)',
-		path: '/w/index.php?title=Test&action=history&useskin=vector'
+		path: '/w/index.php?title=Test&action=history&useskin=vector',
+		delay: 1500
 	},
 	{
 		label: 'Talk:Test (#vector)',
-		path: '/wiki/Talk:Test?useskin=vector'
+		path: '/wiki/Talk:Test?useskin=vector',
+		delay: 1500
 	},
 	{
 		label: 'Tree (#vector)',
-		path: '/wiki/Tree?useskin=vector'
+		path: '/wiki/Tree?useskin=vector',
+		delay: 1500
 	}
 ];
 
@@ -202,6 +210,7 @@ const scenarios = tests.map( ( test ) => {
 module.exports = {
 	id: 'MediaWiki',
 	viewports: [
+		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
 		VIEWPORT_DESKTOP,
 		VIEWPORT_DESKTOP_WIDE,
