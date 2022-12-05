@@ -77,9 +77,23 @@ const tests = [
 		path: '/wiki/Special:SpecialPages'
 	},
 	{
+		label: 'Test anon floating TOC (#vector-2022, #scroll, #collapsed-toc-open)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		viewports: [
+			VIEWPORT_TABLET,
+			VIEWPORT_PHONE
+		]
+	},
+	{
 		label: 'Test anon scroll (#vector-2022, #scroll)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ]
+		selectors: [ 'viewport' ],
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
 	},
 	{
 		label: 'Test anon scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
