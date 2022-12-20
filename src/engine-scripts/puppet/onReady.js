@@ -21,7 +21,7 @@ module.exports = async ( page, scenario ) => {
 
 	// These only apply to Vector 2022
 	if ( hashtags.includes( '#vector-2022' ) ) {
-		await require( './sidebarState' )( page, hashtags );
+		await require( './mainMenuState' )( page, hashtags );
 		await require( './userMenuState' )( page, hashtags );
 		await require( './collapsedTocState' )( page, hashtags );
 	}
