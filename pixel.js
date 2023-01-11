@@ -108,6 +108,8 @@ const getGroupConfig = ( groupName ) => {
 			return 'configMobile.js';
 		case 'campaign-events':
 			return 'configCampaignEvents.js';
+		case 'codex':
+			return 'configCodex.js';
 		default:
 			throw new Error( `Unknown test group: ${groupName}` );
 	}

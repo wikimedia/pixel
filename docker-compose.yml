@@ -72,5 +72,6 @@ services:
       - ./configCampaignEvents.js:/pixel/configCampaignEvents.js
       - ./configWebMaintained.js:/pixel/configWebMaintained.js
       - ./configMobile.js:/pixel/configMobile.js
+      - ./configCodex.js:/pixel/configCodex.js
       - ./src:/pixel/src
       - ./report:/pixel/report

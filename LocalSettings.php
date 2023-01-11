@@ -159,6 +159,7 @@ wfLoadExtension( 'SandboxLink' );
 wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'GrowthExperiments' );
+wfLoadExtension( 'VueTest' );
 
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)
 // last indefinitely.
