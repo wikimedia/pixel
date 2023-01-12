@@ -26,6 +26,10 @@ module.exports = async ( page, scenario ) => {
 		await require( './collapsedTocState' )( page, hashtags );
 	}
 
+	if ( hashtags.includes( '#scroll-toc' ) ) {
+		await require( './scrollToc.js' )( page );
+	}
+
 	// These only apply to Minerva
 	if ( hashtags.includes( '#minerva' ) ) {
 		await require( './minerva/mainMenuState' )( page, hashtags );
