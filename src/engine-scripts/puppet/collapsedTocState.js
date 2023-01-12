@@ -23,6 +23,6 @@ module.exports = async ( page, hashtags ) => {
 		btn.click();
 	}, collapseTocButton );
 
-	const tocButtonSelector = isStickyHeader ? '#vector-sticky-header-toc-label' : '#vector-page-titlebar-toc-label,.vector-toc-collapsed #vector-toc-collapsed-button,.vector-toc-not-collapsed #vector-toc-collapsed-button';
+	const tocButtonSelector = isStickyHeader ? '#vector-sticky-header-toc-label, #vector-toc-label' : '#vector-page-titlebar-toc-label,.vector-toc-collapsed #vector-toc-collapsed-button,.vector-toc-not-collapsed #vector-toc-collapsed-button';
 	await menuState( page, tocButtonSelector, isClosed );
 };
