@@ -46,6 +46,15 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
+		label: 'Test expanded scrolled TOC (#vector-2022, #sidebar-closed, #scroll-toc)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ],
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE
+		]
+	},
+	{
 		label: 'Special:BlankPage (#vector-2022, #sidebar-open)',
 		path: '/wiki/Special:BlankPage'
 	},
