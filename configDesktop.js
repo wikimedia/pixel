@@ -46,7 +46,7 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
-		label: 'Test expanded scrolled TOC (#vector-2022, #sidebar-closed, #toggle-toc-subsections)',
+		label: 'Test expanded TOC (#vector-2022, #sidebar-closed, #toggle-toc-subsections)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
 		viewports: [
