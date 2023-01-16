@@ -5,9 +5,5 @@ module.exports = async ( page ) => {
 		for ( const btn of tocToggleBtns ) {
 			btn.click();
 		}
-		tocElement.scrollBy( 0, tocElement.scrollHeight );
-		// Scroll up 30px from the bottom of the TOC to allow the scrollable indicator to show
-		tocElement.scrollBy( 0, -30 );
-		return true;
 	} );
 };
