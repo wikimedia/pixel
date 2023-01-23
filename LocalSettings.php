@@ -367,3 +367,8 @@ $wgVectorLanguageAlertInSidebar = [
 	"logged_in" => true,
 	"logged_out" => true
 ];
+
+$wgVectorPageTools = [
+	'logged_in' => true,
+	'logged_out' => true 
+];
