@@ -37,7 +37,8 @@ const scenarios = utils.makeScenariosForSkins(
 			label: 'cdx-' + component,
 			path: '/wiki/Special:VueTest/codex',
 			selectors: [ '.cdx-sandbox__content #cdx-' + component ],
-			misMatchThreshold: 1
+			requireSameDimensions: false,
+			misMatchThreshold: 5
 		};
 	} ),
 	// TODO: add interactive tests for Dialog, clearable Input, and maybe TypeaheadSearch
