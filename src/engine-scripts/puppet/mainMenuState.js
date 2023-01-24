@@ -14,5 +14,5 @@ module.exports = async ( page, hashtags ) => {
 		return;
 	}
 
-	await menuState( page, '#vector-main-menu-dropdown-checkbox', isClosed );
+	await menuState( page, '#vector-main-menu-dropdown-checkbox, #mw-sidebar-button', isClosed );
 };
