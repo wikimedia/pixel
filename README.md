@@ -93,7 +93,7 @@ the relevant repositories (set in repositories.json).
 
 An HTML report of your test results with screenshots will be opened
 automatically on a Mac after the test completes. If you're not on a Mac, you can
-manually open the file at `report/index.html`.
+manually open the file at `report/<name-of-test-group>/index.html`.
 
 Additionally, Pixel runs a server at `http://localhost:3000` (default) which can
 be used to interact with/debug the same server that the tests use.
