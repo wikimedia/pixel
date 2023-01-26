@@ -9,6 +9,11 @@ const {
 } = require( './viewports' );
 
 const tests = [
+
+	{
+		label: 'Enable Event Registration (#logged-in)',
+		path: '/wiki/Special:EnableEventRegistration'
+	},
 	{
 		label: 'Main_Page (#vector-2022)',
 		path: '/wiki/Main_Page'
