@@ -48,7 +48,6 @@ const tests = [
 	{
 		label: 'Test expanded TOC (#vector-2022, #sidebar-closed, #toggle-toc-subsections)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		viewports: [
 			VIEWPORT_DESKTOP,
 			VIEWPORT_DESKTOP_WIDE
@@ -61,7 +60,6 @@ const tests = [
 	{
 		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-closed)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		// Limit to large viewports to minimize duplication
 		viewports: [
 			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
@@ -69,13 +67,11 @@ const tests = [
 	},
 	{
 		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-open)',
-		path: '/wiki/Test',
-		selectors: [ 'viewport' ]
+		path: '/wiki/Test'
 	},
 	{
 		label: 'Test (#vector-2022, #sidebar-open, #collapsed-toc-open)',
-		path: '/wiki/Test',
-		selectors: [ 'viewport' ]
+		path: '/wiki/Test'
 	},
 	{
 		label: 'Special:BlankPage (#vector-2022, #userMenu-open)',
@@ -88,7 +84,6 @@ const tests = [
 	{
 		label: 'Test anon floating TOC (#vector-2022, #scroll, #collapsed-toc-open)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		viewports: [
 			VIEWPORT_TABLET,
 			VIEWPORT_PHONE
@@ -97,7 +92,6 @@ const tests = [
 	{
 		label: 'Test anon scroll (#vector-2022, #scroll)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		viewports: [
 			VIEWPORT_DESKTOP,
 			VIEWPORT_DESKTOP_WIDE,
@@ -107,7 +101,6 @@ const tests = [
 	{
 		label: 'Test anon scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		// Smoke test anon scroll with the sidebar open. Limit to desktop
 		// wide viewport to minimize duplication with other tests.  See T309807 for
 		// an example bug.
@@ -135,7 +128,6 @@ const tests = [
 	{
 		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		// No search icon present if no sticky header present, so limit to this viewport
 		viewports: [
 			VIEWPORT_DESKTOP_WIDE
@@ -147,13 +139,11 @@ const tests = [
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
-		path: '/wiki/Test',
-		selectors: [ 'viewport' ]
+		path: '/wiki/Test'
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-closed)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		// Limit to viewports where the sticky header is visible
 		viewports: [
 			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
@@ -162,7 +152,6 @@ const tests = [
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-open)',
 		path: '/wiki/Test',
-		selectors: [ 'viewport' ],
 		// Limit to viewports where the sticky header is visible
 		viewports: [
 			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
@@ -170,8 +159,7 @@ const tests = [
 	},
 	{
 		label: 'Special:Homepage (#vector-2022, #logged-in)',
-		path: '/wiki/Special:Homepage',
-		selectors: [ 'viewport' ]
+		path: '/wiki/Special:Homepage'
 	},
 	{
 		label: 'Main_Page (#vector)',
@@ -204,30 +192,12 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
-	// On mobile, short pages will cause false positives on some patchsets e.g.
-	// the switchover to grid CSS.  To avoid this use the viewport selector when
-	// not defined.
-	const urlParts = test.path.split( '?' );
-	const urlPath = urlParts[ 0 ];
-	const urlQueryString = urlParts[ 1 ] || '';
-	const useViewportSelector = [
-		'/wiki/Main_Page',
-		'/wiki/Talk:Test',
-		'/wiki/Tree',
-		'/wiki/Special:SpecialPages',
-		'/wiki/Special:BlankPage'
-	].includes( urlPath ) || (
-		[
-			'action=history'
-		].filter( ( t ) => urlQueryString.includes( t ) )
-	).length > 0;
-
-	return Object.assign( {
-		selectors: useViewportSelector ? [ 'viewport' ] : undefined
-	}, test, {
+	return {
+		selectors: [ 'viewport' ],
 		url: `${BASE_URL}${test.path}`,
-		misMatchThreshold: 0.04
-	}, test );
+		misMatchThreshold: 0.04,
+		...test
+	};
 } );
 
 module.exports = {
