@@ -24,11 +24,7 @@ const scenarios = tests.map( ( test ) => {
 	const urlPath = urlParts[ 0 ];
 	const urlQueryString = urlParts[ 1 ] || '';
 	const useViewportSelector = [
-		'/wiki/Main_Page',
-		'/wiki/Talk:Test',
-		'/wiki/Tree',
-		'/wiki/Special:SpecialPages',
-		'/wiki/Special:BlankPage'
+		'/wiki/Special:EnableEventRegistration'
 	].includes( urlPath ) || (
 		[
 			'action=history'
