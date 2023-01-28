@@ -145,6 +145,7 @@ wfLoadSkin( 'Timeless' );
 # to LocalSettings.php. Check specific extension documentation for more details.
 # The following extensions were automatically enabled:
 wfLoadExtension( 'BetaFeatures' );
+wfLoadExtension( 'CampaignEvents' );
 wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Echo' );
 wfLoadExtension( 'Gadgets' );

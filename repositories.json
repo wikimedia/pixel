@@ -2,6 +2,9 @@
 	"mediawiki/extensions/BetaFeatures": {
 		"path": "extensions/BetaFeatures"
 	},
+	"mediawiki/extensions/CampaignEvents": {
+		"path": "extensions/CampaignEvents"
+	},
 	"mediawiki/extensions/Cite": {
 		"path": "extensions/Cite"
 	},
