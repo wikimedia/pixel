@@ -18,13 +18,16 @@ const getUsernameFromHashtags = ( hashtags ) => {
 /**
  * Runs before each scenario -- use for setting cookies or other env state (.js suffix is optional)
  *
- * @param {import("puppeteer").Page} page
+ * @param {import("playwright").Page} _page
  * @param {import("backstopjs").Scenario} scenario
+ * @param {import("backstopjs").Viewport} _viewport
+ * @param {boolean} _isReference
+ * @param {import("playwright").BrowserContext} browserContext
  */
-module.exports = async ( page, scenario ) => {
+module.exports = async ( _page, scenario, _viewport, _isReference, browserContext ) => {
 	const hashtags = scenario.label.match( /(#[^ ,)]*)/g ) || [];
 	const requireLogin = hashtags.includes( '#logged-in' );
 	if ( requireLogin ) {
-		await require( './loadCookies' )( page, getUsernameFromHashtags( hashtags ) );
+		await require( './loadCookies' )( browserContext, scenario, getUsernameFromHashtags( hashtags ) );
 	}
 };

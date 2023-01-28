@@ -21,7 +21,7 @@ const getSkinModuleFromHashtags = ( hashtags ) => {
  * Returns a promise that resolves when the vector or vector-2022's main module
  * is ready.
  *
- * @param {import("puppeteer").Page} page
+ * @param {import("playwright").Page} page
  * @param {Array} hashtags
  */
 module.exports = async ( page, hashtags ) => {

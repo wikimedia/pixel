@@ -7,6 +7,11 @@ const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
+const backstop = require( 'backstopjs' );
+const dotenv = require( 'dotenv' );
+const dotenvExpand = require( 'dotenv-expand' );
+const myEnv = dotenv.config();
+dotenvExpand.expand( myEnv );
 
 /*
  * @param {string[]} opts
@@ -207,37 +212,20 @@ async function processCommand( type, opts ) {
 			removeFolder( config.paths.bitmaps_test );
 		}
 		// Execute Visual regression tests.
-		await batchSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
-		).then( async () => {
-			await openReportIfNecessary(
-				type, group, config.paths.html_report, process.env.NONINTERACTIVE
-			);
-		}, async ( /** @type {Error} */ err ) => {
-			if ( err.message.includes( '130' ) ) {
-				// If user ends subprocess with a sigint, exit early.
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
-			}
+		try {
+			await backstop( type, { config } );
+		} catch ( e ) {
+			console.error( e );
+		}
+		// Edit report to include state.
+		await openReportIfNecessary(
+			type, group, config.paths.html_report, process.env.NONINTERACTIVE
+		);
 
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				await openReportIfNecessary(
-					type, group, config.paths.html_report, process.env.NONINTERACTIVE
-				);
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
-			}
-
-			throw err;
-		} ).finally( async () => {
-			// Reset the database if `--reset-db` option is passed.
-			if ( opts.resetDb ) {
-				console.log( 'Resetting database state...' );
-				await resetDb();
-			}
-		} );
-
+		if ( opts.resetDb ) {
+			console.log( 'Resetting database state...' );
+			await resetDb();
+		}
 	} catch ( err ) {
 		console.error( err );
 		// eslint-disable-next-line no-process-exit

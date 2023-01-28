@@ -4,16 +4,17 @@ const fastForwardAnimations = require( './fastForwardAnimations' );
 /**
  * Focuses the search input and types test
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
+ * @param {import('playwright').BrowserContext} browserContext
  * @param {string[]} hashtags
  */
-module.exports = async ( page, hashtags ) => {
+module.exports = async ( page, browserContext, hashtags ) => {
 	const isOffline = hashtags.includes( '#search-offline' );
 	if ( isOffline ) {
-		await page.setOfflineMode( true );
+		await browserContext.setOffline( true );
 	}
 
-	const viewportWidth = page.viewport().width;
+	const viewportWidth = page.viewportSize().width;
 	const isStickyHeaderScenario = hashtags.includes( '#search-sticky' );
 	const selectorSearchToggle = isStickyHeaderScenario ?
 		'.vector-sticky-header-search-toggle' :
@@ -27,7 +28,7 @@ module.exports = async ( page, hashtags ) => {
 
 	// Check the sticky header has loaded if necessary.
 	if ( isStickyHeaderScenario ) {
-		await page.waitForSelector( '.vector-sticky-header-visible' );
+		await page.waitForSelector( '.vector-sticky-header-visible', { state: 'attached' } );
 	}
 
 	// Click toggle if necessary to reveal input

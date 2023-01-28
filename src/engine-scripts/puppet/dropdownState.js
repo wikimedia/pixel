@@ -3,13 +3,13 @@ const fastForwardAnimations = require( './fastForwardAnimations' );
 /**
  * Handles opening or closing a menu.
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {string} buttonSelector
  * @param {boolean} isClosed
  */
 const dropdownState = async ( page, buttonSelector, isClosed ) => {
-	await page.waitForSelector( buttonSelector );
-	await page.evaluate( ( selector, isExpectedClosed ) => {
+	await page.locator( buttonSelector );
+	await page.evaluate( ( { buttonSelector: selector, isClosed: isExpectedClosed } ) => {
 		const btn = document.querySelector( selector );
 		const isCheckbox = btn.getAttribute( 'type' ) === 'checkbox';
 		const checkbox = isCheckbox ?
@@ -24,7 +24,7 @@ const dropdownState = async ( page, buttonSelector, isClosed ) => {
 		} else if ( !isExpectedClosed && !isOpen ) {
 			toggle();
 		}
-	}, buttonSelector, isClosed );
+	}, { buttonSelector, isClosed } );
 
 	// Vector-2022 menus currently have transition animations when opened.
 	await fastForwardAnimations( page );

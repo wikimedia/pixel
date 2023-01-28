@@ -3,7 +3,7 @@ const moduleReady = require( './moduleReady' );
 /**
  * Setup Echo notifications
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {
@@ -27,7 +27,7 @@ module.exports = async ( page, hashtags ) => {
 
 		// Wait for the OOUI pending element to disappear.
 		await page.waitForSelector( '.oo-ui-pendingElement-pending', {
-			hidden: true
+			state: 'hidden'
 		} );
 		// wait for a notification to appear if we're expecting them.
 		await page.waitForSelector( '.mw-echo-ui-notificationItemWidget-content, .mw-echo-ui-placeholderItemWidget' );

@@ -3,7 +3,7 @@ const dropdownState = require( './dropdownState' );
 /**
  * Open or close Vector-2022's sidebar.
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {

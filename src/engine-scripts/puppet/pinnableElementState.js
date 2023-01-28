@@ -1,7 +1,7 @@
 /**
  * Handles Vector-2022's pinnable elements
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {string[]} hashtags
  * @param {string} featureName
  */

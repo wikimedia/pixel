@@ -57,7 +57,7 @@ module.exports = {
 	scenarios,
 	paths: utils.makePaths( 'codex' ),
 	report: [],
-	engine: 'puppeteer',
+	engine: 'playwright',
 	engineOptions: {
 		args: [
 			'--no-sandbox'

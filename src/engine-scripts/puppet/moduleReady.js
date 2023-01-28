@@ -1,3 +1,7 @@
+/**
+ * @param {import('playwright').Page} page
+ * @param {string} moduleName
+ */
 module.exports = async ( page, moduleName ) => {
 	await page.evaluate( async ( m ) => {
 		let times = 0;

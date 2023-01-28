@@ -1,3 +1,6 @@
+/**
+ * @param {import('playwright').Page} page
+ */
 module.exports = async ( page ) => {
 	await page.evaluate( () => {
 		const tocElement = document.getElementById( 'vector-toc' );

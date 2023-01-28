@@ -242,11 +242,9 @@ module.exports = {
 	scenarios,
 	paths: utils.makePaths( 'desktop' ),
 	report: [],
-	engine: 'puppeteer',
+	engine: 'playwright',
 	engineOptions: {
-		args: [
-			'--no-sandbox'
-		]
+		browser: 'chromium'
 	},
 	asyncCaptureLimit: 10,
 	asyncCompareLimit: 50,

@@ -1,13 +1,17 @@
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
+const waitForMutation = require( './waitForMutation' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {import('backstopjs').Scenario} scenario
+ * @param {import('backstopjs').Viewport} viewport
+ * @param {boolean} isReference
+ * @param {boolean} browserContext
  */
-module.exports = async ( page, scenario ) => {
+module.exports = async ( page, scenario, viewport, isReference, browserContext ) => {
 	console.log( 'SCENARIO > ' + scenario.label );
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
@@ -48,34 +52,23 @@ module.exports = async ( page, scenario ) => {
 		await page.waitForTimeout( 500 );
 	}
 
+	if ( hashtags.includes( '#scroll' ) && hashtags.includes( '#toc-bold' ) ) {
+		const tocMutated = waitForMutation( page, '#vector-toc', { subtree: true, attributeFilter: [ 'class' ] } );
+		await require( './scroll.js' )( page );
+		await tocMutated;
+	}
+
 	if ( hashtags.includes( '#search-focus' ) ) {
-		await require( './search.js' )( page, hashtags );
+		await require( './search.js' )( page, browserContext, hashtags );
 	}
 
 	// add more ready handlers here...
 	// Note: These calls should always be last.
 
 	// Wait for any images to finish loading.
-	await page.waitForNetworkIdle();
+	await page.waitForLoadState( 'networkidle' );
 	// Wait for the main thread to have an idle period.
 	await waitForIdle( page );
 	// Fast forward through any css transitions/web animations that are happening.
 	await fastForwardAnimations( page );
-
-	/**
-	 * Remove the .sidebar-toc-list-item-active, .vector-toc-list-item-active
-	 * class from the item in the toc What is focused is variable, so can lead to
-	 * false positives in pixel.  Knowing it exists is enough to know it is
-	 * working.
-	 */
-	await page.evaluate( () => {
-		document.querySelectorAll(
-			'.sidebar-toc-list-item-active, .vector-toc-list-item-active'
-		).forEach( ( node ) => {
-			node.classList.remove(
-				'sidebar-toc-list-item-active', 'vector-toc-list-item-active'
-			);
-		} );
-		return true;
-	} );
 };

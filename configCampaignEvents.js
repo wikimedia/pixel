@@ -63,7 +63,7 @@ module.exports = {
 	scenarios,
 	paths: utils.makePaths( 'campaign-events' ),
 	report: [],
-	engine: 'puppeteer',
+	engine: 'playwright',
 	engineOptions: {
 		args: [
 			'--no-sandbox'

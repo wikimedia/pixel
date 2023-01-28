@@ -6,7 +6,7 @@
  * the web animation api. It will NOT work for animations that manipulate the
  * DOM (e.g. altering the style attribute).
  *
- * @param {import("puppeteer").Page} page
+ * @param {import("playwright").Page} page
  */
 async function fastForwardAnimations( page ) {
 	return page.evaluate( async () => {

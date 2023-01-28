@@ -1,7 +1,7 @@
 /**
  * Toggle Vector-2022's limited width button.
  *
- * @param {import('puppeteer').Page} page
+ * @param {import('playwright').Page} page
  * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {
@@ -14,7 +14,7 @@ module.exports = async ( page, hashtags ) => {
 
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
-		await page.waitForSelector( limitedWidthButtonSelector );
+		await page.waitForSelector( limitedWidthButtonSelector, { state: 'attached' } );
 		await page.evaluate( ( selector ) => {
 			const btn = document.querySelector( selector );
 			btn.click();

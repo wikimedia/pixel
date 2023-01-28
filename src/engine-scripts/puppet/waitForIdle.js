@@ -4,7 +4,7 @@
  *
  * [1] https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback
  *
- * @param {import("puppeteer").Page} page
+ * @param {import("playwright").Page} page
  */
 async function waitForIdle( page ) {
 	return page.evaluate( async () => {
