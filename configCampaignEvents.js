@@ -17,26 +17,13 @@ const tests = [
 ];
 
 const scenarios = tests.map( ( test ) => {
-	// On mobile, short pages will cause false positives on some patchsets e.g.
-	// the switchover to grid CSS.  To avoid this use the viewport selector when
-	// not defined.
-	const urlParts = test.path.split( '?' );
-	const urlPath = urlParts[ 0 ];
-	const urlQueryString = urlParts[ 1 ] || '';
-	const useViewportSelector = [
-		'/wiki/Special:EnableEventRegistration'
-	].includes( urlPath ) || (
-		[
-			'action=history'
-		].filter( ( t ) => urlQueryString.includes( t ) )
-	).length > 0;
-
-	return Object.assign( {
-		selectors: useViewportSelector ? [ 'viewport' ] : undefined
-	}, test, {
+	return {
 		url: `${BASE_URL}${test.path}`,
-		misMatchThreshold: 0.04
-	}, test );
+		misMatchThreshold: 0.04,
+		selectors: [ 'main' ],
+		removeSelectors: [ '.vector-column-end' ],
+		...test
+	};
 } );
 
 module.exports = {
