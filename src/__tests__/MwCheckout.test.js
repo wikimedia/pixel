@@ -49,7 +49,7 @@ describe( 'MwCheckout.js', () => {
 
 			await factory.mwCheckout.checkout( 'master', [ 'I8d3af86fdc3daf42441a93fc5b64ebcef37c5fb4' ] );
 
-			expect( factory.batchSpawn.spawn ).toHaveBeenLastCalledWith( 'php maintenance/run.php maintenance/update.php --quick', expect.anything(), expect.anything() );
+			expect( factory.batchSpawn.spawn ).toHaveBeenLastCalledWith( 'php maintenance/run.php update.php --quick', expect.anything(), expect.anything() );
 		} );
 
 		it( 'throws an error when branch is not found', async () => {
