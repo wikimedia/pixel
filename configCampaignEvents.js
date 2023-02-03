@@ -11,8 +11,31 @@ const {
 const tests = [
 	{
 		label: 'Enable Event Registration (#logged-in)',
-		path: '/wiki/Special:EnableEventRegistration',
-		hashtags: [ '#logged-in' ]
+		path: '/wiki/Special:EnableEventRegistration'
+	},
+	{
+		label: 'Event Details (#logged-in)',
+		path: '/wiki/Event:1'
+	},
+	{
+		label: 'Delete Event Registration (#logged-in)',
+		path: '/wiki/Special:DeleteEventRegistration/1'
+	},
+	{
+		label: 'Edit Event Registration (#logged-in)',
+		path: '/wiki/Special:EditEventRegistration/1'
+	},
+	{
+		label: 'Register for Event (#logged-in)',
+		path: '/wiki/Special:RegisterForEvent/5'
+	},
+	{
+		label: 'Cancel Event Registration (#logged-in)',
+		path: '/wiki/Special:CancelEventRegistration/6'
+	},
+	{
+		label: 'My Events (#logged-in)',
+		path: '/wiki/Special:MyEvents'
 	}
 ];
 
