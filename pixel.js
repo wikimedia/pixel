@@ -48,7 +48,7 @@ async function getLatestReleaseBranch() {
 
 /**
  * @param {'test'|'reference'} type
- * @param {'mobile'|'desktop'|'desktop-dev'|'echo'} group
+ * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
  * @param {string} relativePath Relative path to report.
  * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
@@ -106,6 +106,8 @@ const getGroupConfig = ( groupName ) => {
 			return 'configDesktop.js';
 		case 'mobile':
 			return 'configMobile.js';
+		case 'campaign-events':
+			return 'configCampaignEvents.js';
 		default:
 			throw new Error( `Unknown test group: ${groupName}` );
 	}
@@ -253,7 +255,7 @@ function setupCli() {
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
 	const groupOpt = /** @type {const} */ ( [
-		'-g, --group <(mobile|desktop|echo)>',
+		'-g, --group <(mobile|desktop|echo|campaign-events)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
 	] );
