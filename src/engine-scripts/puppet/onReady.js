@@ -17,6 +17,8 @@ module.exports = async ( page, scenario ) => {
 
 	if ( hashtags.includes( '#scroll' ) ) {
 		await require( './scroll.js' )( page );
+		// eslint-disable-next-line no-restricted-properties
+		await page.waitForTimeout( 500 );
 	}
 
 	// These only apply to Vector 2022
