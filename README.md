@@ -130,7 +130,7 @@ issues with the containers you just want to throw away everything and start
 Pixel with a clean slate. To do that, run:
 
 ```sh
-./pixels.js clean
+./pixel.js clean
 ```
 
 You can also reset Pixel's database to its original state with:
