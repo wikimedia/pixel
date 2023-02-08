@@ -16,7 +16,7 @@ module.exports = async ( page, scenario ) => {
 	await require( './jsReady' )( page, hashtags );
 
 	if ( hashtags.includes( '#scroll' ) ) {
-		await require( './scroll.js' )( page );
+		await require( './scroll' )( page );
 		// eslint-disable-next-line no-restricted-properties
 		await page.waitForTimeout( 500 );
 	}
@@ -26,10 +26,16 @@ module.exports = async ( page, scenario ) => {
 		await require( './mainMenuState' )( page, hashtags );
 		await require( './userMenuState' )( page, hashtags );
 		await require( './unpinnedTocState' )( page, hashtags );
-	}
 
-	if ( hashtags.includes( '#toggle-toc-subsections' ) ) {
-		await require( './toggleTocSubsections' )( page );
+		if ( hashtags.includes( '#toggle-toc-subsections' ) ) {
+			await require( './toggleTocSubsections' )( page );
+		}
+		if ( hashtags.includes( '#echo' ) ) {
+			await require( './echo' )( page, hashtags );
+		}
+		if ( hashtags.includes( '#search-focus' ) ) {
+			await require( './search' )( page, hashtags );
+		}
 	}
 
 	// These only apply to Minerva
@@ -37,14 +43,6 @@ module.exports = async ( page, scenario ) => {
 		await require( './minerva/mainMenuState' )( page, hashtags );
 	}
 
-	// Run Echo handlers if necessary.
-	if ( hashtags.includes( '#echo' ) ) {
-		await require( './echo.js' )( page, hashtags );
-	}
-
-	if ( hashtags.includes( '#search-focus' ) ) {
-		await require( './search.js' )( page, hashtags );
-	}
 	// add more ready handlers here...
 	// Note: These calls should always be last.
 

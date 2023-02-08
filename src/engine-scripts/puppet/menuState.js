@@ -15,14 +15,8 @@ const menuState = async ( page, buttonSelector, isClosed ) => {
 		const checkbox = isCheckbox ?
 			btn : document.getElementById( btn.getAttribute( 'for' ) );
 		const isOpen = checkbox.checked;
-
-		const toggle = () => {
+		if ( isExpectedClosed === isOpen ) {
 			btn.click();
-		};
-		if ( isExpectedClosed && isOpen ) {
-			toggle();
-		} else if ( !isExpectedClosed && !isOpen ) {
-			toggle();
 		}
 	}, buttonSelector, isClosed );
 
