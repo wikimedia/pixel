@@ -15,13 +15,15 @@ module.exports = async ( page, hashtags ) => {
 		return;
 	}
 
-	const unpinTocButton = '.vector-toc-pinnable-header .vector-pinnable-header-unpin-button';
-	await page.waitForSelector( unpinTocButton );
-	await page.evaluate( ( selector ) => {
-		const btn = document.querySelector( selector );
-		btn.click();
-	}, unpinTocButton );
+	if ( !hashtags.includes( '#no-js' ) ) {
+		const unpinTocButton = '.vector-toc-pinnable-header .vector-pinnable-header-unpin-button';
+		await page.waitForSelector( unpinTocButton );
+		await page.evaluate( ( selector ) => {
+			const btn = document.querySelector( selector );
+			btn.click();
+		}, unpinTocButton );
+	}
 
-	const tocButtonSelector = isStickyHeader ? '#vector-sticky-header-toc-label' : '#vector-page-titlebar-toc-label,.client-nojs #vector-toc-collapsed-button';
+	const tocButtonSelector = isStickyHeader ? '#vector-sticky-header-toc-label' : '.client-js #vector-page-titlebar-toc-label,.client-nojs #vector-toc-collapsed-button';
 	await menuState( page, tocButtonSelector, isClosed );
 };

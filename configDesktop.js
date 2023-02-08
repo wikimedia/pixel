@@ -68,6 +68,11 @@ const tests = [
 		]
 	},
 	{
+		label: 'Test (#vector-2022, #no-js)',
+		path: '/wiki/Test',
+		selectors: [ 'viewport' ]
+	},
+	{
 		label: 'Test (#vector-2022, #sidebar-closed, #unpinned-toc-open)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ]

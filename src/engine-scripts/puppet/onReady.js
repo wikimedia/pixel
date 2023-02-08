@@ -12,8 +12,13 @@ module.exports = async ( page, scenario ) => {
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
 
-	// Make sure the main skin JavaScript module has loaded.
-	await require( './jsReady' )( page, hashtags );
+	if ( hashtags.includes( '#no-js' ) ) {
+		// Disable JS
+		await page.setJavaScriptEnabled( false );
+	} else {
+		// Make sure the main skin JavaScript module has loaded.
+		await require( './jsReady' )( page, hashtags );
+	}
 
 	if ( hashtags.includes( '#scroll' ) ) {
 		await require( './scroll' )( page );

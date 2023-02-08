@@ -23,8 +23,7 @@ const getUsernameFromHashtags = ( hashtags ) => {
  */
 module.exports = async ( page, scenario ) => {
 	const hashtags = scenario.label.match( /(#[^ ,)]*)/g ) || [];
-	const requireLogin = hashtags.includes( '#logged-in' );
-	if ( requireLogin ) {
+	if ( hashtags.includes( '#logged-in' ) ) {
 		await require( './loadCookies' )( page, getUsernameFromHashtags( hashtags ) );
 	}
 };
