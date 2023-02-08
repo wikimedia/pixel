@@ -54,18 +54,16 @@ module.exports = async ( page, scenario ) => {
 	await fastForwardAnimations( page );
 
 	/**
-	 * Remove the .sidebar-toc-list-item-active, .vector-toc-list-item-active
+	 * Remove the .vector-toc-list-item-active
 	 * class from the item in the toc What is focused is variable, so can lead to
 	 * false positives in pixel.  Knowing it exists is enough to know it is
 	 * working.
 	 */
 	await page.evaluate( () => {
 		document.querySelectorAll(
-			'.sidebar-toc-list-item-active, .vector-toc-list-item-active'
+			'.vector-toc-list-item-active'
 		).forEach( ( node ) => {
-			node.classList.remove(
-				'sidebar-toc-list-item-active', 'vector-toc-list-item-active'
-			);
+			node.classList.remove( 'sidebar-toc-list-item-active', 'vector-toc-list-item-active' );
 		} );
 		return true;
 	} );
