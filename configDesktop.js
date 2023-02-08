@@ -59,7 +59,7 @@ const tests = [
 		path: '/wiki/Special:BlankPage'
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-closed)',
+		label: 'Test (#vector-2022, #sidebar-closed, #unpinned-toc-closed)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
 		// Limit to large viewports to minimize duplication
@@ -68,12 +68,12 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-open)',
+		label: 'Test (#vector-2022, #sidebar-closed, #unpinned-toc-open)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ]
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-open, #collapsed-toc-open)',
+		label: 'Test (#vector-2022, #sidebar-open, #unpinned-toc-open)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ]
 	},
@@ -86,7 +86,7 @@ const tests = [
 		path: '/wiki/Special:SpecialPages'
 	},
 	{
-		label: 'Test anon floating TOC (#vector-2022, #scroll, #collapsed-toc-open)',
+		label: 'Test anon floating TOC (#vector-2022, #scroll, #unpinned-toc-open)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
 		viewports: [
@@ -151,7 +151,7 @@ const tests = [
 		selectors: [ 'viewport' ]
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-closed)',
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #unpinned-toc-closed)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
 		// Limit to viewports where the sticky header is visible
@@ -160,7 +160,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-open)',
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #unpinned-toc-open)',
 		path: '/wiki/Test',
 		selectors: [ 'viewport' ],
 		// Limit to viewports where the sticky header is visible

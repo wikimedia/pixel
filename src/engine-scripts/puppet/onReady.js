@@ -25,7 +25,7 @@ module.exports = async ( page, scenario ) => {
 	if ( hashtags.includes( '#vector-2022' ) ) {
 		await require( './mainMenuState' )( page, hashtags );
 		await require( './userMenuState' )( page, hashtags );
-		await require( './collapsedTocState' )( page, hashtags );
+		await require( './unpinnedTocState' )( page, hashtags );
 	}
 
 	if ( hashtags.includes( '#toggle-toc-subsections' ) ) {
