@@ -1,5 +1,3 @@
-const moduleReady = require( './moduleReady' );
-
 /**
  * Setup Echo notifications
  *
@@ -15,15 +13,12 @@ module.exports = async ( page, hashtags ) => {
 
 	// Open the drawer for tests that require interaction
 	if ( hashtags.includes( '#echo-drawer' ) ) {
-		await moduleReady( page, 'ext.echo.init' );
 		await page.evaluate( async () => {
 			const btn = document.querySelector( '#pt-notifications-alert a' );
 			btn.click();
 		} );
-		await moduleReady(
-			page,
-			hashtags.includes( '#mobile' ) ? 'ext.echo.mobile' : 'ext.echo.ui.desktop'
-		);
+		// Wait for JS to load.
+		await page.waitForNetworkIdle();
 
 		// Wait for the OOUI pending element to disappear.
 		await page.waitForSelector( '.oo-ui-pendingElement-pending', {

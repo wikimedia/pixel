@@ -1,4 +1,3 @@
-const moduleReady = require( './moduleReady' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 
 /**
@@ -49,8 +48,9 @@ module.exports = async ( page, hashtags ) => {
 	} else {
 		// Make sure Codex kicked in.
 		await page.waitForSelector( '.cdx-typeahead-search' );
-		// Wait for Vue to load.
-		await moduleReady( page, 'vue' );
+		// Wait for JS to load.
+		await page.waitForNetworkIdle();
+
 		// focus and type into the newly added input
 		await page.focus( selectorSearchInput );
 		await page.keyboard.type( 't' );
