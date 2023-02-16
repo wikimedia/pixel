@@ -14,5 +14,5 @@ module.exports = async ( page, hashtags ) => {
 		return;
 	}
 
-	await menuState( page, '#p-personal-checkbox', isClosed );
+	await menuState( page, '#vector-user-links-dropdown-label, #p-personal-checkbox', isClosed );
 };
