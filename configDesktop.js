@@ -58,6 +58,13 @@ const tests = [
 		path: '/wiki/Special:BlankPage'
 	},
 	{
+		label: 'Special:BlankPage (#vector-2022, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
 		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-closed)',
 		path: '/wiki/Test',
 		// Limit to large viewports to minimize duplication
@@ -161,6 +168,13 @@ const tests = [
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
 		path: '/wiki/Test'
+	},
+	{
+		label: 'Test sticky header (#vector-2022, #limited-width-disabled, #logged-in, #scroll)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-closed)',
