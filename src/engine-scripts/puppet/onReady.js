@@ -15,14 +15,12 @@ module.exports = async ( page, scenario ) => {
 	// Make sure the main skin JavaScript module has loaded.
 	await require( './jsReady' )( page, hashtags );
 
-	if ( hashtags.includes( '#scroll' ) ) {
-		await require( './scroll.js' )( page );
-		// eslint-disable-next-line no-restricted-properties
-		await page.waitForTimeout( 500 );
-	}
-
 	// These only apply to Vector 2022
 	if ( hashtags.includes( '#vector-2022' ) ) {
+		await require( './limitedWidth' )( page, hashtags );
+		await require( './pinnableElementState' )( page, hashtags, 'toc' );
+		await require( './pinnableElementState' )( page, hashtags, 'page-tools' );
+		await require( './pinnableElementState' )( page, hashtags, 'main-menu' );
 		await require( './mainMenuState' )( page, hashtags );
 		await require( './userMenuState' )( page, hashtags );
 		await require( './collapsedTocState' )( page, hashtags );
@@ -42,9 +40,16 @@ module.exports = async ( page, scenario ) => {
 		await require( './echo.js' )( page, hashtags );
 	}
 
+	if ( hashtags.includes( '#scroll' ) ) {
+		await require( './scroll.js' )( page );
+		// eslint-disable-next-line no-restricted-properties
+		await page.waitForTimeout( 500 );
+	}
+
 	if ( hashtags.includes( '#search-focus' ) ) {
 		await require( './search.js' )( page, hashtags );
 	}
+
 	// add more ready handlers here...
 	// Note: These calls should always be last.
 

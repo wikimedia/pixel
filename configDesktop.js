@@ -126,6 +126,27 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
+		label: 'Test (#vector-2022, #logged-in, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'Test (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'Test (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
 		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
 		path: '/wiki/Test',
 		// No search icon present if no sticky header present, so limit to this viewport
