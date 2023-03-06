@@ -7,7 +7,7 @@ const fastForwardAnimations = require( './fastForwardAnimations' );
  * @param {string} buttonSelector
  * @param {boolean} isClosed
  */
-const menuState = async ( page, buttonSelector, isClosed ) => {
+const dropdownState = async ( page, buttonSelector, isClosed ) => {
 	await page.waitForSelector( buttonSelector );
 	await page.evaluate( ( selector, isExpectedClosed ) => {
 		const btn = document.querySelector( selector );
@@ -30,4 +30,4 @@ const menuState = async ( page, buttonSelector, isClosed ) => {
 	await fastForwardAnimations( page );
 };
 
-module.exports = menuState;
+module.exports = dropdownState;

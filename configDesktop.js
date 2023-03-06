@@ -26,7 +26,7 @@ const tests = [
 		path: '/wiki/User:Admin/common.js'
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-open)',
+		label: 'Test (#vector-2022, #main-menu-open)',
 		path: '/wiki/Test',
 		selectors: [ 'html' ]
 	},
@@ -41,12 +41,12 @@ const tests = [
 		selectors: [ 'html' ]
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed)',
+		label: 'Test (#vector-2022)',
 		path: '/wiki/Test',
 		selectors: [ 'html' ]
 	},
 	{
-		label: 'Test expanded TOC (#vector-2022, #sidebar-closed, #toggle-toc-subsections)',
+		label: 'Test expanded TOC (#vector-2022, #toggle-toc-subsections)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -54,7 +54,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Special:BlankPage (#vector-2022, #sidebar-open)',
+		label: 'Special:BlankPage (#vector-2022, #main-menu-open)',
 		path: '/wiki/Special:BlankPage'
 	},
 	{
@@ -65,7 +65,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-closed)',
+		label: 'Test (#vector-2022, #toc-unpinned)',
 		path: '/wiki/Test',
 		// Limit to large viewports to minimize duplication
 		viewports: [
@@ -73,23 +73,23 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-closed, #collapsed-toc-open)',
+		label: 'Test (#vector-2022, #toc-unpinned, #toc-open)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Test (#vector-2022, #sidebar-open, #collapsed-toc-open)',
+		label: 'Test (#vector-2022, #toc-unpinned, #toc-open)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Special:BlankPage (#vector-2022, #userMenu-open)',
+		label: 'Special:BlankPage (#vector-2022, #user-links-open)',
 		path: '/wiki/Special:BlankPage'
 	},
 	{
-		label: 'Special:RecentChanges (#vector-2022, no max width, #sidebar-closed)',
+		label: 'Special:RecentChanges (#vector-2022, no max width)',
 		path: '/wiki/Special:SpecialPages'
 	},
 	{
-		label: 'Test anon floating TOC (#vector-2022, #scroll, #collapsed-toc-open)',
+		label: 'Test anon floating TOC (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_TABLET,
@@ -106,7 +106,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test anon scroll with sidebar (#vector-2022, #sidebar-open, #scroll)',
+		label: 'Test anon scroll with sidebar (#vector-2022, #main-menu-open, #scroll)',
 		path: '/wiki/Test',
 		// Smoke test anon scroll with the sidebar open. Limit to desktop
 		// wide viewport to minimize duplication with other tests.  See T309807 for
@@ -162,7 +162,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #userMenu-open)',
+		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #user-links-open)',
 		path: '/wiki/Special:BlankPage'
 	},
 	{
@@ -177,7 +177,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-closed)',
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #toc-unpinned)',
 		path: '/wiki/Test',
 		// Limit to viewports where the sticky header is visible
 		viewports: [
@@ -185,7 +185,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #collapsed-toc-open)',
+		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
 		path: '/wiki/Test',
 		// Limit to viewports where the sticky header is visible
 		viewports: [

@@ -1,4 +1,4 @@
-const menuState = require( '../menuState' );
+const dropdownState = require( '../dropdownState' );
 
 /**
  * Open or close Vector-2022's sidebar.
@@ -14,5 +14,5 @@ module.exports = async ( page, hashtags ) => {
 		return;
 	}
 
-	await menuState( page, '#mw-mf-main-menu-button', isClosed );
+	await dropdownState( page, '#mw-mf-main-menu-button', isClosed );
 };
