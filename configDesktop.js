@@ -167,7 +167,10 @@ const tests = [
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP
+		]
 	},
 	{
 		label: 'Test sticky header (#vector-2022, #limited-width-disabled, #logged-in, #scroll)',
