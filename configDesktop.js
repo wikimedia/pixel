@@ -9,7 +9,9 @@ const {
 } = require( './viewports' );
 
 const tests = [
+	//
 	// Pages
+	//
 	{
 		label: 'Main page (#vector-2022)',
 		path: '/wiki/Main_Page'
@@ -49,7 +51,9 @@ const tests = [
 		label: 'Article talk page (#vector-2022)',
 		path: '/wiki/Talk:Test'
 	},
+	//
 	// Layout
+	//
 	{
 		label: '3 column (#vector-2022, #logged-in)',
 		path: '/wiki/Test'
@@ -86,7 +90,83 @@ const tests = [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
+	//
+	// TOC
+	//
+	{
+		label: 'TOC pinned with hidden subsections (#vector-2022, #toggle-toc-subsections)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC pinned below page title (#vector-2022, #scroll)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// Sticky header
+	//
+	{
+		label: 'Sticky header with pinned TOC (#vector-2022, #logged-in, #scroll)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'Sticky header with unpinned TOC (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// Search
+	//
+	{
+		label: 'Search in header (#vector-2022, #search-focus)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Search loading in header (#vector-2022, #search-focus, #search-offline)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Search in sticky header (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
 	// Dropdowns
+	//
 	{
 		label: 'Anon user links dropdown (#vector-2022, #user-links-open)',
 		path: '/wiki/Test',
@@ -123,75 +203,9 @@ const tests = [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
-	// TOC
-	{
-		label: 'TOC pinned with hidden subsections (#vector-2022, #toggle-toc-subsections)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'TOC pinned below page title (#vector-2022, #scroll)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
-	// Sticky header
-	{
-		label: 'Sticky header with pinned TOC (#vector-2022, #logged-in, #scroll)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
-	{
-		label: 'Sticky header with unpinned TOC (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
-	{
-		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #limited-width-disabled)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
-	// Search
-	{
-		label: 'Search in header (#vector-2022, #search-focus)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'Search loading in header (#vector-2022, #search-focus, #search-offline)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'Search in sticky header (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
+	//
 	// Legacy Vector
+	//
 	{
 		label: 'Legacy Vector article page (#vector)',
 		path: '/wiki/Test?useskin=vector',
