@@ -24,7 +24,7 @@ module.exports = async ( page, hashtags, featureName ) => {
 				if ( btn ) {
 					btn.click();
 					// Reset focus to reduce flakiness
-					document.activeElement = null;
+					document.activeElement.blur();
 				}
 			}, buttonSelector );
 		}
