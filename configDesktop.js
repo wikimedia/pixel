@@ -170,7 +170,6 @@ const tests = [
 	{
 		label: 'Anon user links dropdown (#vector-2022, #user-links-open)',
 		path: '/wiki/Test',
-		selectors: [ '#vector-user-links-dropdown .vector-dropdown-content' ],
 		viewports: [
 			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
@@ -179,7 +178,6 @@ const tests = [
 	{
 		label: 'Logged in user links dropdown (#vector-2022, #logged-in, #user-links-open)',
 		path: '/wiki/Test',
-		selectors: [ '#vector-user-links-dropdown .vector-dropdown-content' ],
 		viewports: [
 			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
@@ -188,7 +186,6 @@ const tests = [
 	{
 		label: 'Main menu dropdown (#vector-2022, #logged-in, #main-menu-unpinned, #main-menu-open)',
 		path: '/wiki/Test',
-		selectors: [ '#vector-main-menu-dropdown .vector-dropdown-content' ],
 		viewports: [
 			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
@@ -197,7 +194,6 @@ const tests = [
 	{
 		label: 'Page tools dropdown (#vector-2022, #logged-in, #page-tools-unpinned, #page-tools-open)',
 		path: '/wiki/Test',
-		selectors: [ '#vector-page-tools-dropdown .vector-dropdown-content' ],
 		viewports: [
 			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
