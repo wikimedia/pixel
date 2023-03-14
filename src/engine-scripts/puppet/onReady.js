@@ -1,3 +1,4 @@
+const deferToFrame = require( './deferToFrame' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
 
@@ -44,8 +45,10 @@ module.exports = async ( page, scenario ) => {
 
 	if ( hashtags.includes( '#scroll' ) ) {
 		await require( './scroll.js' )( page );
-		// eslint-disable-next-line no-restricted-properties
-		await page.waitForTimeout( 500 );
+		// Anecdotally, browsers can take up to 3 repaints before painting the new
+		// scroll position.
+		await deferToFrame( page, 3 );
+
 	}
 
 	if ( hashtags.includes( '#search-focus' ) ) {
