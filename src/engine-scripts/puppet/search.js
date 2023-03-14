@@ -59,5 +59,8 @@ module.exports = async ( page, hashtags ) => {
 			visible: true,
 			timeout: 10000
 		} );
+		// For some reason, the first result's hover state can appear without
+		// explicitly hovering the search input.
+		await page.hover( selectorSearchInput );
 	}
 };
