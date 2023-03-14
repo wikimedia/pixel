@@ -70,10 +70,10 @@ module.exports = async ( page, scenario ) => {
 	 */
 	await page.evaluate( () => {
 		document.querySelectorAll(
-			'.sidebar-toc-list-item-active, .vector-toc-list-item-active'
+			'.vector-toc-list-item-active'
 		).forEach( ( node ) => {
 			node.classList.remove(
-				'sidebar-toc-list-item-active', 'vector-toc-list-item-active'
+				'vector-toc-list-item-active'
 			);
 		} );
 		return true;
