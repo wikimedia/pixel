@@ -9,95 +9,116 @@ const {
 } = require( './viewports' );
 
 const tests = [
+	//
+	// Pages
+	//
 	{
-		label: 'Main_Page (#vector-2022)',
+		label: 'Main page (#vector-2022)',
 		path: '/wiki/Main_Page'
 	},
 	{
-		label: 'Testing user page (#vector-2022)',
+		label: 'User page (#vector-2022)',
 		path: '/wiki/User:Admin'
 	},
 	{
-		label: 'Testing empty user page (#vector-2022)',
-		path: '/wiki/User:Echo1'
-	},
-	{
-		label: 'Testing user sub pages (#vector-2022)',
+		label: 'User sub pages (#vector-2022)',
 		path: '/wiki/User:Admin/common.js'
 	},
 	{
-		label: 'Test (#vector-2022, #main-menu-open)',
-		path: '/wiki/Test',
-		selectors: [ 'html' ]
+		label: 'Empty user page (#vector-2022)',
+		path: '/wiki/User:Echo1'
 	},
 	{
-		label: 'Test (#vector-2022, #search-focus)',
-		path: '/wiki/Test',
-		selectors: [ 'html' ]
-	},
-	{
-		label: 'Test (#vector-2022, #search-focus, #search-offline)',
-		path: '/wiki/Test',
-		selectors: [ 'html' ]
-	},
-	{
-		label: 'Test (#vector-2022)',
-		path: '/wiki/Test',
-		selectors: [ 'html' ]
-	},
-	{
-		label: 'Test expanded TOC (#vector-2022, #toggle-toc-subsections)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
-		label: 'Special:BlankPage (#vector-2022, #main-menu-open)',
+		label: 'Special page (#vector-2022)',
 		path: '/wiki/Special:BlankPage'
 	},
 	{
-		label: 'Special:BlankPage (#vector-2022, #limited-width-disabled)',
+		label: 'Special page full width (#vector-2022, #limited-width-disabled)',
+		path: '/wiki/Special:BlankPage',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'Full article page (#vector-2022)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Article history page (#vector-2022)',
+		path: '/w/index.php?title=Test&action=history'
+	},
+	{
+		label: 'Article talk page (#vector-2022)',
+		path: '/wiki/Talk:Test'
+	},
+	//
+	// Layout
+	//
+	{
+		label: '3 column (#vector-2022, #logged-in)',
+		path: '/wiki/Test'
+	},
+	{
+		label: '3 column full width (#vector-2022, #logged-in, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #toc-unpinned)',
-		path: '/wiki/Test',
-		// Limit to large viewports to minimize duplication
-		viewports: [
-			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
-		label: 'Test (#vector-2022, #toc-unpinned, #toc-open)',
+		label: '2 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Test (#vector-2022, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'Special:BlankPage (#vector-2022, #user-links-open)',
-		path: '/wiki/Special:BlankPage'
-	},
-	{
-		label: 'Special:RecentChanges (#vector-2022, no max width)',
-		path: '/wiki/Special:SpecialPages'
-	},
-	{
-		label: 'Test anon floating TOC (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
+		label: '2 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
-			VIEWPORT_TABLET,
-			VIEWPORT_PHONE
+			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test anon scroll (#vector-2022, #scroll)',
+		label: '1 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: '1 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// TOC
+	//
+	{
+		label: 'TOC pinned with hidden subsections (#vector-2022, #toggle-toc-subsections)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'TOC pinned below page title (#vector-2022, #scroll)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// Sticky header
+	//
+	{
+		label: 'Sticky header with pinned TOC (#vector-2022, #logged-in, #scroll)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -106,125 +127,94 @@ const tests = [
 		]
 	},
 	{
-		label: 'Test anon scroll with sidebar (#vector-2022, #main-menu-open, #scroll)',
-		path: '/wiki/Test',
-		// Smoke test anon scroll with the sidebar open. Limit to desktop
-		// wide viewport to minimize duplication with other tests.  See T309807 for
-		// an example bug.
-		viewports: [
-			VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
-		label: 'Test?action=History (#vector-2022)',
-		path: '/w/index.php?title=Test&action=history'
-	},
-	{
-		label: 'Talk:Test (#vector-2022)',
-		path: '/wiki/Talk:Test'
-	},
-	{
-		label: 'Tree (#vector-2022)',
-		path: '/wiki/Tree'
-	},
-	{
-		label: 'Test (#vector-2022, #logged-in)',
-		path: '/wiki/Test',
-		selectors: [ 'html' ]
-	},
-	{
-		label: 'Test (#vector-2022, #logged-in, #limited-width-disabled)',
+		label: 'Sticky header with unpinned TOC (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
 		path: '/wiki/Test',
 		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #limited-width-disabled)',
+		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// Search
+	//
+	{
+		label: 'Search in header (#vector-2022, #search-focus)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Search loading in header (#vector-2022, #search-focus, #search-offline)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Search in sticky header (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	//
+	// Dropdowns
+	//
+	{
+		label: 'Anon user links dropdown (#vector-2022, #user-links-open)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
+		label: 'Logged in user links dropdown (#vector-2022, #logged-in, #user-links-open)',
 		path: '/wiki/Test',
 		viewports: [
+			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
-		path: '/wiki/Test',
-		// No search icon present if no sticky header present, so limit to this viewport
-		viewports: [
-			VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
-		label: 'Special:BlankPage with user menu open (#vector-2022, #logged-in, #user-links-open)',
-		path: '/wiki/Special:BlankPage'
-	},
-	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll)',
+		label: 'Main menu dropdown (#vector-2022, #logged-in, #main-menu-unpinned, #main-menu-open)',
 		path: '/wiki/Test',
 		viewports: [
-			VIEWPORT_DESKTOP
-		]
-	},
-	{
-		label: 'Test sticky header (#vector-2022, #limited-width-disabled, #logged-in, #scroll)',
-		path: '/wiki/Test',
-		viewports: [
+			VIEWPORT_PHONE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #toc-unpinned)',
+		label: 'Page tools dropdown (#vector-2022, #logged-in, #page-tools-unpinned, #page-tools-open)',
 		path: '/wiki/Test',
-		// Limit to viewports where the sticky header is visible
 		viewports: [
-			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
+			VIEWPORT_PHONE,
+			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
+	//
+	// Legacy Vector
+	//
 	{
-		label: 'Test sticky header (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test',
-		// Limit to viewports where the sticky header is visible
-		viewports: [
-			VIEWPORT_DESKTOP, VIEWPORT_DESKTOP_WIDE
-		]
-	},
-	{
-		label: 'Special:Homepage (#vector-2022, #logged-in)',
-		path: '/wiki/Special:Homepage'
-	},
-	{
-		label: 'Main_Page (#vector)',
-		path: '/wiki/Main_Page?useskin=vector',
-		// FIXME: Delay is needed to wait for legacy Vector's dancing tabs to stop
-		// dancing.
-		delay: 1500
-	},
-	{
-		label: 'Test (#vector)',
+		label: 'Legacy Vector article page (#vector)',
 		path: '/wiki/Test?useskin=vector',
-		selectors: [ 'html' ],
 		delay: 1500
 	},
 	{
-		label: 'Test?action=History (#vector)',
+		label: 'Legacy Vector article history page (#vector)',
 		path: '/w/index.php?title=Test&action=history&useskin=vector',
 		delay: 1500
 	},
 	{
-		label: 'Talk:Test (#vector)',
+		label: 'Legacy Vector article talk page (#vector)',
 		path: '/wiki/Talk:Test?useskin=vector',
-		delay: 1500
-	},
-	{
-		label: 'Tree (#vector)',
-		path: '/wiki/Tree?useskin=vector',
 		delay: 1500
 	}
 ];

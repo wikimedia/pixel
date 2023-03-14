@@ -20,9 +20,11 @@ module.exports = async ( page, hashtags, featureName ) => {
 			const buttonSelector = `#vector-${featureName} .vector-pinnable-header-toggle-button`;
 			await page.evaluate( ( selector ) => {
 				const btn = document.querySelector( selector );
+				// Possible for the TOC or page tools to not be present on certain pages
 				if ( btn ) {
-					// Possible for the TOC to not be present
 					btn.click();
+					// Reset focus to reduce flakiness
+					document.activeElement.blur();
 				}
 			}, buttonSelector );
 		}
