@@ -48,7 +48,6 @@ module.exports = async ( page, scenario ) => {
 		// Anecdotally, browsers can take up to 3 repaints before painting the new
 		// scroll position.
 		await deferToFrame( page, 3 );
-
 	}
 
 	if ( hashtags.includes( '#search-focus' ) ) {
