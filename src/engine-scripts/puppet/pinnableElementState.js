@@ -17,11 +17,11 @@ module.exports = async ( page, hashtags, featureName ) => {
 	// Only unpin when unpin hashtag is provided
 	if ( isLoggedIn || featureName === 'toc' ) {
 		if ( ( !isUnpinned && !isCurrentlyPinned ) || ( isUnpinned && isCurrentlyPinned ) ) {
-			const buttonSelector = `#vector-${featureName} .vector-pinnable-header-toggle-button`;
+			const buttonSelector = `#vector-${featureName} .vector-pinnable-header-${isUnpinned ? 'unpin' : 'pin'}-button`;
 			await page.evaluate( ( selector ) => {
 				const btn = document.querySelector( selector );
-				// Possible for the TOC or page tools to not be present on certain pages
-				if ( btn ) {
+				// Only click the unpin/pin button if available and visible
+				if ( btn && window.getComputedStyle( btn ).display !== 'none' ) {
 					btn.click();
 					// Reset focus to reduce flakiness
 					document.activeElement.blur();
