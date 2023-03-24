@@ -13,7 +13,7 @@ const tests = [
 	// Pages
 	//
 	{
-		label: 'Main page (#vector-2022)',
+		label: 'Main page (#vector-2022, #toc-pinned)',
 		path: '/wiki/Main_Page'
 	},
 	{
@@ -40,7 +40,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Full article page (#vector-2022)',
+		label: 'Full article page (#vector-2022, #toc-pinned)',
 		path: '/wiki/Test'
 	},
 	{
@@ -48,43 +48,44 @@ const tests = [
 		path: '/w/index.php?title=Test&action=history'
 	},
 	{
-		label: 'Article talk page (#vector-2022)',
+		label: 'Article talk page (#vector-2022, #toc-pinned)',
 		path: '/wiki/Talk:Test'
 	},
 	//
 	// Layout
 	//
 	{
-		label: '3 column (#vector-2022, #logged-in)',
+		label: '3 column (#vector-2022, #toc-pinned, #main-menu-pinned, #page-tools-pinned)',
 		path: '/wiki/Test'
 	},
 	{
-		label: '3 column full width (#vector-2022, #logged-in, #limited-width-disabled)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP_WIDEST
-		]
-	},
-	{
-		label: '2 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned)',
+		label: '3 column logged in (#vector-2022, #logged-in, #toc-pinned, #main-menu-pinned, #page-tools-pinned)',
 		path: '/wiki/Test'
 	},
 	{
-		label: '2 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #limited-width-disabled)',
+		label: '3 column full width (#vector-2022, #toc-pinned, #main-menu-pinned, #page-tools-pinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: '1 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
+		label: '2 column (#vector-2022, #toc-pinned)',
+		path: '/wiki/Test'
+	},
+	{
+		label: '2 column full width (#vector-2022, #toc-pinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
 	{
-		label: '1 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
+		label: '1 column (#vector-2022)',
+		path: '/wiki/Test'
+	},
+	{
+		label: '1 column full width (#vector-2022, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
@@ -94,19 +95,24 @@ const tests = [
 	// TOC
 	//
 	{
-		label: 'TOC pinned with hidden subsections (#vector-2022, #toggle-toc-subsections)',
+		label: 'TOC pinned with hidden subsections (#vector-2022, #toc-pinned, #toggle-toc-subsections)',
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
+	},
+	{
+		label: 'TOC unpinned in page title (#vector-2022, #toc-open)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
+		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-open)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
-	},
-	{
-		label: 'TOC pinned below page title (#vector-2022, #scroll)',
+		label: 'TOC pinned below page title (#vector-2022, #scroll, #toc-pinned)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -118,7 +124,7 @@ const tests = [
 	// Sticky header
 	//
 	{
-		label: 'Sticky header with pinned TOC (#vector-2022, #logged-in, #scroll)',
+		label: 'Sticky header with pinned TOC (#vector-2022, #logged-in, #scroll, #toc-pinned)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -127,7 +133,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Sticky header with unpinned TOC (#vector-2022, #logged-in, #scroll, #toc-unpinned, #toc-open)',
+		label: 'Sticky header with unpinned TOC (#vector-2022, #logged-in, #scroll, #toc-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -136,11 +142,9 @@ const tests = [
 		]
 	},
 	{
-		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #limited-width-disabled)',
+		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #toc-pinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
@@ -148,15 +152,15 @@ const tests = [
 	// Search
 	//
 	{
-		label: 'Search in header (#vector-2022, #search-focus)',
+		label: 'Search in header (#vector-2022, #toc-pinned, #search-focus)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Search loading in header (#vector-2022, #search-focus, #search-offline)',
+		label: 'Search loading in header (#vector-2022, #toc-pinned, #search-focus, #search-offline)',
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Search in sticky header (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
+		label: 'Search in sticky header (#vector-2022, #logged-in, #scroll, #toc-pinned, #search-sticky, #search-focus)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP,
@@ -168,7 +172,7 @@ const tests = [
 	// Dropdowns
 	//
 	{
-		label: 'Anon user links dropdown (#vector-2022, #user-links-open)',
+		label: 'Anon user links dropdown (#vector-2022, #toc-pinned, #user-links-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_PHONE,
@@ -176,7 +180,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Logged in user links dropdown (#vector-2022, #logged-in, #user-links-open)',
+		label: 'Logged in user links dropdown (#vector-2022, #logged-in, #toc-pinned, #main-menu-pinned, #page-tools-pinned, #user-links-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_PHONE,
@@ -184,7 +188,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Main menu dropdown (#vector-2022, #logged-in, #main-menu-unpinned, #main-menu-open)',
+		label: 'Main menu dropdown (#vector-2022, #toc-pinned, #main-menu-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_PHONE,
@@ -192,7 +196,7 @@ const tests = [
 		]
 	},
 	{
-		label: 'Page tools dropdown (#vector-2022, #logged-in, #page-tools-unpinned, #page-tools-open)',
+		label: 'Page tools dropdown (#vector-2022, #toc-pinned, #page-tools-open)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_PHONE,
