@@ -78,10 +78,7 @@ const tests = [
 	},
 	{
 		label: '1 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
-		path: '/wiki/Test',
-		viewports: [
-			VIEWPORT_DESKTOP_WIDEST
-		]
+		path: '/wiki/Test'
 	},
 	{
 		label: '1 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
@@ -95,7 +92,12 @@ const tests = [
 	//
 	{
 		label: 'TOC pinned with hidden subsections (#vector-2022, #toggle-toc-subsections)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		viewports: [
+			VIEWPORT_DESKTOP,
+			VIEWPORT_DESKTOP_WIDE,
+			VIEWPORT_DESKTOP_WIDEST
+		]
 	},
 	{
 		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
@@ -139,8 +141,6 @@ const tests = [
 		label: 'Sticky header full width (#vector-2022, #logged-in, #scroll, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
-			VIEWPORT_DESKTOP,
-			VIEWPORT_DESKTOP_WIDE,
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
