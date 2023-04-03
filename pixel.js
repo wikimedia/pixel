@@ -42,7 +42,8 @@ if ( fs.existsSync( CONTEXT_PATH ) ) {
  * @return {Promise<string>}
  */
 async function getLatestReleaseBranch() {
-	const { stdout } = await exec( 'git ls-remote -h --sort="-version:refname" https://gerrit.wikimedia.org/r/mediawiki/core | head -1' );
+	// Get the latest branch version that starts with a digit.
+	const { stdout } = await exec( 'git ls-remote -h --sort="-version:refname" https://gerrit.wikimedia.org/r/mediawiki/core --patterns "refs/heads/wmf/[0-9]*" | head -1' );
 	return `origin/${stdout.split( 'refs/heads/' )[ 1 ].trim()}`;
 }
 
