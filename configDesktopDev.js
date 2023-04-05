@@ -7,7 +7,7 @@ const configDesktop = require( './configDesktop.js' );
 module.exports = Object.assign( {}, configDesktop, {
 	scenarios: configDesktop.scenarios.map(
 		( scenario ) => utils.addFeatureFlagQueryStringsToScenario( scenario, {
-			vectorpagetools: '1'
+			vectorzebradesign: '1'
 		} )
 	),
 	paths: utils.makePaths( 'desktop-development' )
