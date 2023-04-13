@@ -29,6 +29,9 @@
 		"backstopjs": "6.1.4",
 		"commander": "9.1.0",
 		"dotenv": "16.0.3",
-		"dotenv-expand": "10.0.0"
+		"dotenv-expand": "10.0.0",
+		"mustache": "^3.2.1",
+		"node-fetch": "^2.6.9",
+		"pa11y": "^6.2.3"
 	}
 }

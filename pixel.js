@@ -11,6 +11,7 @@ const backstop = require( 'backstopjs' );
 const dotenv = require( 'dotenv' );
 const dotenvExpand = require( 'dotenv-expand' );
 const myEnv = dotenv.config();
+const runA11yTests = require( './src/a11y/runA11yTests' );
 dotenvExpand.expand( myEnv );
 
 /*
@@ -204,6 +205,11 @@ async function processCommand( type, opts ) {
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 
+		const a11yConfig = opts.a11y ? require( `${__dirname}/configDesktopA11y.js` ) : null;
+		if ( a11yConfig ) {
+			runA11yTests( type, a11yConfig );
+		}
+
 		// Remove test screenshots folder (if present) so that its size doesn't
 		// increase with each `test` run. BackstopJS automatically removes the
 		// reference folder when the `reference` command is run, but not the test
@@ -235,6 +241,11 @@ async function processCommand( type, opts ) {
 
 function setupCli() {
 	const { program } = require( 'commander' );
+	const a11yOpt = /** @type {const} */ ( [
+		'-a, --a11y',
+		'Run automated a11y tests in addition to visual regression.',
+		'desktop'
+	] );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
 		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
@@ -262,6 +273,7 @@ function setupCli() {
 		.command( 'reference' )
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
+		.option( ...a11yOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
@@ -273,6 +285,7 @@ function setupCli() {
 		.command( 'test' )
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
+		.option( ...a11yOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
