@@ -33,6 +33,21 @@ const makePaths = ( path ) => {
 };
 
 /**
+ * @param {string} path
+ * @return {Object}
+ */
+const makeA11yPaths = ( path ) => {
+	return {
+		// eslint-disable-next-line camelcase
+		a11y_reference: `report-a11y/reference-json-${path}`,
+		// eslint-disable-next-line camelcase
+		a11y_test: `report-a11y/test-json-${path}`,
+		// eslint-disable-next-line camelcase
+		a11y_report: `report-a11y/${path}`
+	};
+};
+
+/**
  * @param {Object} scenario
  * @param {string} scenario.url
  * @param {Object} featureFlags
@@ -82,5 +97,6 @@ const makeScenariosForSkins = ( tests, skins ) => {
 module.exports = {
 	makeScenariosForSkins,
 	makePaths,
+	makeA11yPaths,
 	addFeatureFlagQueryStringsToScenario
 };

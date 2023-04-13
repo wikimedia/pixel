@@ -75,3 +75,21 @@ services:
       - ./configCodex.js:/pixel/configCodex.js
       - ./src:/pixel/src
       - ./report:/pixel/report
+  a11y-regression:
+    init: true
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile.a11y-regression
+      args:
+        - PA11Y_VERSION=6.2.3
+    working_dir: /pixel
+    env_file:
+      - .env
+    volumes:
+      - ./context.json:/pixel/context.json
+      - ./viewports.js:/pixel/viewports.js
+      - ./utils.js:/pixel/utils.js
+      - ./configDesktopA11y.js:/pixel/configDesktopA11y.js
+      - ./src:/pixel/src
+      - ./report-a11y:/pixel/report-a11y

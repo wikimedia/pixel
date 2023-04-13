@@ -1,3 +1,4 @@
+// @ts-nocheck
 const allCookies = require( '../cookies.json' );
 
 /**
