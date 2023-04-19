@@ -3,7 +3,7 @@ module.exports = async ( page, moduleName ) => {
 		let times = 0;
 		await new Promise( ( resolve, reject ) => {
 			if ( !window.mw || !window.mw.loader || !window.mw.loader.getState ) {
-				reject( 'mw.loader.getState is undefined. This is likely the result of a server error. The page\'s HTML is: \n' + document.documentElement.innerHTML );
+				reject( 'mw.loader.getState is undefined. This is likely the result of a server error. The page\'s HTML is: \n' + document.documentElement.outerHTML );
 				return;
 			}
 			const id = setInterval( () => {
