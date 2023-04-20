@@ -244,6 +244,7 @@ module.exports = {
 	report: [],
 	engine: 'puppeteer',
 	engineOptions: {
+		waitTimeout: 90000, // 90 second request timeout
 		args: [
 			'--no-sandbox'
 		]
