@@ -9,23 +9,26 @@ ENV \
 RUN apt-get update && \
 	apt-get install -y git sudo software-properties-common
 
-# Find links to Chromium arm64 binaries here: http://snapshot.debian.org/binary/chromium/
-ENV CHROMIUM_ARM_URL http://snapshot.debian.org/archive/debian-security/20220902T180902Z/pool/updates/main/c/chromium/
-ENV CHROMIUM_ARM_BINARY chromium_105.0.5195.52-1~deb11u1_arm64.deb
-ENV CHROMIUM_ARM_COMMON_BINARY chromium-common_105.0.5195.52-1~deb11u1_arm64.deb
-
-RUN /bin/bash -c 'set -ex && \
+RUN set -ex && \
     ARCH=`uname -m` && \
-    if [ "$ARCH" == "x86_64" ]; then \
+    if [ "$ARCH" = "x86_64" ]; then \
        sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}; \
     else \
-       sudo PUPPETEER_SKIP_DOWNLOAD=true PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION} && \
-       wget "${CHROMIUM_ARM_URL}${CHROMIUM_ARM_COMMON_BINARY}" \
-            "${CHROMIUM_ARM_URL}${CHROMIUM_ARM_BINARY}" && \
-       apt install -y "./${CHROMIUM_ARM_COMMON_BINARY}" \
-                      "./${CHROMIUM_ARM_BINARY}" && \
+       sudo PUPPETEER_SKIP_DOWNLOAD=true PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION} puppeteer-chromium-version-finder chromium-version-deb-finder && \
+       NODE_PATH="$(npm root -g):$(npm root -g)/backstopjs/node_modules" node -e " \
+          const versionFinder = require('puppeteer-chromium-version-finder'); \
+          const debFinder = require('chromium-version-deb-finder'); \
+          (async () => { \
+            const version = await versionFinder.getPuppeteerChromiumVersion(); \
+            const debUrls = await debFinder.getDebUrlsForVersionAndArch(version.MAJOR, version.MINOR, 'arm64'); \
+            console.log(debUrls.join('\n')); \
+          })(); \
+       " | \
+       xargs -I % sh -c 'set -x; echo "Downloading: %"; wget %; echo "Downloaded: %"' && \
+       apt install -y ./*.deb && \
+       rm -f ./*.deb && \
        sudo test -f /usr/bin/chromium && sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser && sudo ln -s /usr/bin/chromium /usr/bin/chrome; \
-    fi'
+    fi
 
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
 RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
