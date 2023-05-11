@@ -207,7 +207,11 @@ async function processCommand( type, opts ) {
 
 		const a11yConfig = opts.a11y ? require( `${__dirname}/configDesktopA11y.js` ) : null;
 		if ( a11yConfig ) {
-			runA11yTests( type, a11yConfig );
+			try {
+				await runA11yTests( type, a11yConfig );
+			} catch ( e ) {
+				console.error( e );
+			}
 		}
 
 		// Remove test screenshots folder (if present) so that its size doesn't

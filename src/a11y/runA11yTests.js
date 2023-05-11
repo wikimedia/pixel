@@ -158,9 +158,13 @@ async function main( type, config ) {
 	}
 
 	resetDirs( type, config );
+
 	const testPromises = getTestPromises( tests, config );
-	const results = await Promise.all( testPromises );
-	results.forEach( ( result ) => processTestResults( result, type, config, opts ) );
+	const testResults = await Promise.all( testPromises );
+	const resultPromises = testResults.map( async ( result ) => {
+		await processTestResults( result, type, config, opts );
+	} );
+	await Promise.all( resultPromises );
 }
 
 module.exports = main;
