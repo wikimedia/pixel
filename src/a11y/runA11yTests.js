@@ -81,11 +81,12 @@ function sendMetrics( namespace, name, count ) {
  * @param {Object} opts
  */
 async function processTestResults( testResults, type, config, opts ) {
-	testResults.issues.forEach( ( issue ) => {
-		// Reassign axe warnings as errors
-		if ( issue.type === 'warning' && issue.runner === 'axe' ) {
-			issue.type = 'error';
-		}
+	testResults.issues = testResults.issues.filter( ( issue ) => {
+		// Clean up test results
+		// Remove htmlcs notices (there are too manu) and issues missing data about the element
+		const isHtmlcsNotice = issue.type === 'notice' && issue.runner === 'htmlcs';
+		const isMissingContext = !issue.context;
+		return !isHtmlcsNotice && !isMissingContext;
 	} );
 
 	const errorNum = testResults.issues.filter( ( issue ) => issue.type === 'error' ).length;

@@ -150,7 +150,7 @@
 		{{#diffData}}
 		<div id="{{type}}-diff" class="container">
 			<h3>{{typeLabel}}: -{{removedCount}}, +{{addedCount}} rule(s)</h3>
-			{{#messages}}
+			{{#codes}}
 			<div class="message">
 				<h4>{{message}}</h4>
 				<p><b>Rule:</b> {{runner}}, {{code}}</p>
@@ -172,7 +172,7 @@
 					</ul>
 				</details>
 			</div>
-			{{/messages}}
+			{{/codes}}
 		</div>
 		{{/diffData}}
 
@@ -187,7 +187,7 @@
 		{{#totalData}}
 		<div id="{{type}}" class="container">
 			<h3>{{typeLabel}}: {{typeCount}} rule(s)</h3>
-			{{#messages}}
+			{{#codes}}
 			<div class="message {{type}}">
 				<h4>{{message}}</h4>
 				<p><b>Rule:</b> {{runner}}, {{code}}</p>
@@ -206,7 +206,7 @@
 					</ul>
 				</details>
 			</div>
-			{{/messages}}
+			{{/codes}}
 		</div>
 		{{/totalData}}
 	</div>

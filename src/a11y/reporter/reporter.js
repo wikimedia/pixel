@@ -27,85 +27,85 @@ function getIssuesMap( issues ) {
 }
 
 // Converts array of issues into a map
-// where the key is the type, and the value is an array of messages
-function getMessagesByType( issues ) {
+// where the key is the type, and the value is an array of codes
+function getCodesByType( issues ) {
 	return issues.reduce( ( result, issue ) => {
 		if ( !result[ issue.type ] ) {
-			result[ issue.type ] = [ issue.message ];
-		} else if ( !result[ issue.type ].includes( issue.message ) ) {
-			result[ issue.type ].push( issue.message );
+			result[ issue.type ] = [ issue.code ];
+		} else if ( !result[ issue.type ].includes( issue.code ) ) {
+			result[ issue.type ].push( issue.code );
 		}
 		return result;
 	}, {} );
 }
 
 // Converts array of issues into a map
-// where the key is the message, and the value is an array of issues
-function getIssuesByMessage( issues ) {
+// where the key is the code, and the value is an array of issues
+function getIssuesByCode( issues ) {
 	return issues.reduce( ( result, issue ) => {
-		if ( !result[ issue.message ] ) {
-			result[ issue.message ] = [ issue ];
+		if ( !result[ issue.code ] ) {
+			result[ issue.code ] = [ issue ];
 		} else {
-			result[ issue.message ].push( issue );
+			result[ issue.code ].push( issue );
 		}
 		return result;
 	}, {} );
 }
 
-function getTypes( messagesByType ) {
+function getTypes( codesByType ) {
 	const values = {
 		error: -1,
 		warning: 0,
 		notice: 1
 	};
-	return Object.keys( messagesByType ).sort( ( a, b ) => {
+	return Object.keys( codesByType ).sort( ( a, b ) => {
 		return values[ a ] - values[ b ];
 	} );
 }
 
-function getMessageTemplateData( type, messagesByType, issuesByMessage ) {
-	return messagesByType[ type ].map( ( message ) => {
-		const firstIssue = issuesByMessage[ message ][ 0 ];
+function getCodeTemplateData( type, codesByType, issuesByCode ) {
+	return codesByType[ type ].map( ( code ) => {
+		const firstIssue = issuesByCode[ code ][ 0 ];
 		const hasRunnerExtras = Object.keys( firstIssue.runnerExtras ).length > 0;
 		return {
-			message,
-			issueCount: issuesByMessage[ message ].length,
+			message: firstIssue.message,
+			issueCount: issuesByCode[ code ].length,
 			runner: firstIssue.runner,
 			runnerExtras: hasRunnerExtras ? firstIssue.runnerExtras : false,
-			code: firstIssue.code,
-			issues: issuesByMessage[ message ]
+			code,
+			issues: issuesByCode[ code ]
 		};
 	} ).sort( ( a, b ) => {
-		// Sort messages by number of issues
+		// Sort codes by number of issues
 		return b.issueCount - a.issueCount;
 	} );
 }
 
 function processDiffData( issues, issuesByDiff ) {
-	const messagesByType = getMessagesByType( issues );
-	const issuesByMessage = getIssuesByMessage( issues );
+	const codesByType = getCodesByType( issues );
+	const issuesByCode = getIssuesByCode( issues );
 
-	const types = getTypes( messagesByType );
+	const types = getTypes( codesByType );
 	const issueData = types.map( ( type ) => ( {
 		type,
 		typeLabel: upperCaseFirst( type ) + 's',
 		removedCount: issuesByDiff[ '-' ].filter( ( issue ) => issue.type === type ).length,
 		addedCount: issuesByDiff[ '+' ].filter( ( issue ) => issue.type === type ).length,
-		messages: getMessageTemplateData( type, messagesByType, issuesByMessage )
+		codes: getCodeTemplateData( type, codesByType, issuesByCode )
 	} ) );
 	return issueData;
 }
 
 function processTotalData( issues ) {
-	const messagesByType = getMessagesByType( issues );
-	const issuesByMessage = getIssuesByMessage( issues );
+	const codesByType = getCodesByType( issues );
+	const issuesByCode = getIssuesByCode( issues );
 
-	const types = getTypes( messagesByType );
+	const types = getTypes( codesByType );
 	const issueData = types.map( ( type ) => ( {
 		type,
 		typeLabel: upperCaseFirst( type ) + 's',
-		typeCount: messagesByType[ type ].length,
-		messages: getMessageTemplateData( type, messagesByType, issuesByMessage )
+		typeCount: codesByType[ type ].length,
+		codes: getCodeTemplateData( type, codesByType, issuesByCode )
 	} ) );
 	return issueData;
 }

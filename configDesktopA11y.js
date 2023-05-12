@@ -16,10 +16,10 @@ const testDefaults = {
 	includeWarnings: true,
 	includeNotices: true,
 	ignore: [
+		// Prevent axe-core from flagging all TOC links as incorrect color contrast
 		'color-contrast',
 		'WCAG2AA.Principle2.Guideline2_4.2_4_1.G1,G123,G124.NoSuchID'
 	],
-	hideElements: '#bodyContent, #siteNotice',
 	chromeLaunchConfig: {
 		headless: true,
 		args: [
