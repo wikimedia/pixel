@@ -16,9 +16,9 @@ const testDefaults = {
 	includeWarnings: true,
 	includeNotices: true,
 	ignore: [
+		// Prevent axe-core from flagging all TOC links as incorrect color contrast
 		'color-contrast'
 	],
-	hideElements: '#bodyContent, #siteNotice',
 	chromeLaunchConfig: {
 		headless: true,
 		args: [
