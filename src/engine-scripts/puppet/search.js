@@ -8,11 +8,6 @@ const fastForwardAnimations = require( './fastForwardAnimations' );
  * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {
-	const isOffline = hashtags.includes( '#search-offline' );
-	if ( isOffline ) {
-		await page.setOfflineMode( true );
-	}
-
 	const viewportWidth = page.viewport().width;
 	const isStickyHeaderScenario = hashtags.includes( '#search-sticky' );
 	const selectorSearchToggle = isStickyHeaderScenario ?
@@ -38,26 +33,16 @@ module.exports = async ( page, hashtags ) => {
 	await button.click();
 	// Focus the server side rendered search to trigger the loading of Vue.
 	await page.focus( selectorSearchInput );
-	if ( isOffline ) {
-		// type into the server side rendered input
-		page.keyboard.type( 't' );
-		// Wait for the loader to display
-		await page.waitForSelector( '.search-form__loader', {
-			visible: true
-		} );
-		await fastForwardAnimations( page );
-	} else {
-		// Make sure Codex kicked in.
-		await page.waitForSelector( '.cdx-typeahead-search' );
-		// Wait for Vue to load.
-		await moduleReady( page, 'vue' );
-		// focus and type into the newly added input
-		await page.focus( selectorSearchInput );
-		await page.keyboard.type( 't' );
-		// Wait for a search result to display.
-		await page.waitForSelector( selectorSearchSuggestion, {
-			visible: true,
-			timeout: 10000
-		} );
-	}
+	// Make sure Codex kicked in.
+	await page.waitForSelector( '.cdx-typeahead-search' );
+	// Wait for Vue to load.
+	await moduleReady( page, 'vue' );
+	// focus and type into the newly added input
+	await page.focus( selectorSearchInput );
+	await page.keyboard.type( 't' );
+	// Wait for a search result to display.
+	await page.waitForSelector( selectorSearchSuggestion, {
+		visible: true,
+		timeout: 10000
+	} );
 };
