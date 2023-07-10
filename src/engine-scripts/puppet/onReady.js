@@ -36,6 +36,21 @@ module.exports = async ( page, scenario ) => {
 	// These only apply to Minerva
 	if ( hashtags.includes( '#minerva' ) ) {
 		await require( './minerva/mainMenuState' )( page, hashtags );
+
+		const clickBtn = require( './minerva/clickBtn' );
+		// Run click handlers if necessary.
+		if ( hashtags.includes( '#click-edit' ) ) {
+			await clickBtn( page, '#ca-edit' );
+		}
+		if ( hashtags.includes( '#click-language' ) ) {
+			await clickBtn( page, '#language-selector a' );
+		}
+		if ( hashtags.includes( '#click-watch' ) ) {
+			await clickBtn( page, '#ca-watch' );
+		}
+		if ( hashtags.includes( '#click-redlink' ) ) {
+			await clickBtn( page, 'a.new' );
+		}
 	}
 
 	// Run Echo handlers if necessary.

@@ -34,6 +34,26 @@ const tests = [
 	{
 		label: 'Non-existent user page (#minerva #mobile)',
 		path: '/wiki/User:Echo1'
+	},
+	{
+		label: 'Test language overlay (#minerva #mobile #click-language)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test CTADrawer (#minerva #mobile #click-watch)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test red link drawer (#minerva #mobile #click-redlink)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test (#minerva #mobile #logged-in #click-edit)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Diff page logged in (#minerva #mobile #logged-in)',
+		path: '/wiki/Special:MobileDiff/335'
 	}
 ];
 
