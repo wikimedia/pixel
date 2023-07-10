@@ -70,6 +70,7 @@ services:
       - ./configDesktopDev.js:/pixel/configDesktopDev.js
       - ./configEcho.js:/pixel/configEcho.js
       - ./configCampaignEvents.js:/pixel/configCampaignEvents.js
+      - ./configLogin.js:/pixel/configLogin.js
       - ./configWebMaintained.js:/pixel/configWebMaintained.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./configCodex.js:/pixel/configCodex.js
