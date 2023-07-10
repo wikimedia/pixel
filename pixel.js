@@ -7,6 +7,7 @@ const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
+const makeReport = require( './src/makeReportIndex.js' );
 
 /*
  * @param {string[]} opts
@@ -91,33 +92,63 @@ ${markerString}`
 }
 
 /**
+ * Each group has an assigned priority based on how regular they need to run.
+ * For suites with lots of test where code seldom changes priority 2 and 3 are
+ * preferred. Feel free to modify these as development priorities shift.
+ * Priority 1 - run every hour
+ * Priority 2 - run every 12 hours
+ * Priority 3 - run every 24 hours
+ */
+const GROUP_CONFIG = {
+	login: {
+		priority: 3,
+		config: 'configLogin.js'
+	},
+	'web-maintained': {
+		priority: 3,
+		config: 'configWebMaintained.js'
+	},
+	echo: {
+		priority: 3,
+		config: 'configEcho.js'
+	},
+	'desktop-dev': {
+		priority: 3,
+		config: 'configDesktopDev.js'
+	},
+	desktop: {
+		priority: 1,
+		config: 'configDesktop.js'
+	},
+	mobile: {
+		priority: 1,
+		config: 'configMobile.js'
+	},
+	'campaign-events': {
+		priority: 2,
+		config: 'configCampaignEvents.js'
+	},
+	codex: {
+		priority: 2,
+		config: 'configCodex.js'
+	},
+	wikilambda: {
+		priority: 2,
+		config: 'configWikiLambda.js'
+	}
+};
+
+/**
  * @param {string} groupName
  * @return {string} path to configuration file.
  * @throws {Error} for unknown group
  */
 const getGroupConfig = ( groupName ) => {
-	switch ( groupName ) {
-		case 'login':
-			return 'configLogin.js';
-		case 'web-maintained':
-			return 'configWebMaintained.js';
-		case 'echo':
-			return 'configEcho.js';
-		case 'desktop-dev':
-			return 'configDesktopDev.js';
-		case 'desktop':
-			return 'configDesktop.js';
-		case 'mobile':
-			return 'configMobile.js';
-		case 'campaign-events':
-			return 'configCampaignEvents.js';
-		case 'codex':
-			return 'configCodex.js';
-		case 'wikilambda':
-			return 'configWikiLambda';
-		default:
-			throw new Error( `Unknown test group: ${groupName}` );
+	const c = GROUP_CONFIG[ groupName ];
+	if ( !c ) {
+		throw new Error( `Unknown test group: ${groupName}` );
 	}
+	return c.config;
 };
 
 /**
@@ -153,10 +184,18 @@ function removeFolder( relativePath ) {
 }
 
 /**
- * @param {'test'|'reference'} type
- * @param {any} opts
+ * @typedef {Object} CommandOptions
+ * @property {string} [changeId]
+ * @property {string} [branch]
+ * @property {string} group
  */
-async function processCommand( type, opts ) {
+
+/**
+ * @param {'test'|'reference'} type
+ * @param {CommandOptions} opts
+ * @param {boolean} [runSilently]
+ */
+async function processCommand( type, opts, runSilently = false ) {
 	try {
 		let active;
 		let description = '';
@@ -212,14 +251,20 @@ async function processCommand( type, opts ) {
 			removeFolder( config.paths.bitmaps_test );
 		}
 		// Execute Visual regression tests.
-		await batchSpawn.spawn(
+		const finished = await batchSpawn.spawn(
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
-			await openReportIfNecessary(
-				type, group, config.paths.html_report, process.env.NONINTERACTIVE
-			);
+			if ( !runSilently ) {
+				await openReportIfNecessary(
+					type, group, config.paths.html_report, process.env.NONINTERACTIVE
+				);
+			}
 		}, async ( /** @type {Error} */ err ) => {
+			// Don't check error message if caller asked us not to.
+			if ( runSilently ) {
+				return Promise.resolve();
+			}
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
 				// eslint-disable-next-line no-process-exit
@@ -242,9 +287,8 @@ async function processCommand( type, opts ) {
 				await resetDb();
 			}
 		} );
-
+		return finished;
 	} catch ( err ) {
-		console.error( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
 	}
@@ -265,6 +309,16 @@ function setupCli() {
 		'-g, --group <(mobile|desktop|echo|campaign-events)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
+	] );
+	const directoryOpt = /** @type {const} */ ( [
+		'-d, --directory <path>',
+		'Where to save the file',
+		'report'
+	] );
+	const priorityOpt = /** @type {const} */ ( [
+		'-p, --priority <number>',
+		'Only run jobs which match the provided priority',
+		'0'
 	] );
 	const resetDbOpt = /** @type {const} */ ( [
 		'--reset-db',
@@ -352,6 +406,59 @@ function setupCli() {
 			await cleanCommand();
 		} );
 
+	program
+		.command( 'runAll' )
+		.description( 'Runs all the registered tests and generates a report.' )
+		.option( ...branchOpt )
+		.option( ...changeIdOpt )
+		.option( ...groupOpt )
+		.option( ...priorityOpt )
+		.option( ...directoryOpt )
+		.option( ...resetDbOpt )
+		.action( async ( opts ) => {
+			let html = '';
+			const priority = parseInt( opts.priority, 10 );
+			const outputDir = opts.directory;
+			if ( !fs.existsSync( outputDir ) ) {
+				fs.mkdirSync( outputDir );
+			}
+			const groups = Object.keys( GROUP_CONFIG );
+			for ( let i = 0; i < groups.length; i++ ) {
+				const group = groups[ i ];
+				html += `<li><a href="${group}/index.html">${group}</a></li>`;
+				const groupPriority = GROUP_CONFIG[ group ].priority || 0;
+				if ( groupPriority <= priority ) {
+					console.log( `*************************
+*************************
+*************************
+*************************
+Running regression group "${group}"
+*************************
+*************************
+*************************
+*************************` );
+					try {
+						await processCommand( 'reference', {
+							branch: LATEST_RELEASE_BRANCH,
+							change: opts.change,
+							group
+						}, true );
+						await processCommand( 'test', {
+							branch: 'master',
+							group
+						}, true );
+					} catch ( e ) {
+						// Continue.
+					}
+				} else {
+					console.log( `*************************
+Skipping group "${group}" due to priority.
+*************************` );
+				}
+			}
+			const path = await makeReport( outputDir, html );
+			await batchSpawn.spawn( 'open', [ path ] );
+		} );
 	program.parse();
 }
 
