@@ -55,7 +55,7 @@ const tests = [
 	{
 		label: 'Z8010 (#vector-2022)',
 		path: '/wiki/Z8010'
-	},
+	}
 ];
 
 const scenarios = tests.map( ( test ) => {
