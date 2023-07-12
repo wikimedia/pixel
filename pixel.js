@@ -97,6 +97,8 @@ ${markerString}`
  */
 const getGroupConfig = ( groupName ) => {
 	switch ( groupName ) {
+		case 'login':
+			return 'configLogin.js';
 		case 'web-maintained':
 			return 'configWebMaintained.js';
 		case 'echo':

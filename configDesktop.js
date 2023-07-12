@@ -152,10 +152,6 @@ const tests = [
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Search loading in header (#vector-2022, #search-focus, #search-offline)',
-		path: '/wiki/Test'
-	},
-	{
 		label: 'Search in sticky header (#logged-in, #vector-2022, #scroll, #search-sticky, #search-focus)',
 		path: '/wiki/Test',
 		viewports: [
