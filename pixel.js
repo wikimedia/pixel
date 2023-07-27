@@ -113,6 +113,8 @@ const getGroupConfig = ( groupName ) => {
 			return 'configCampaignEvents.js';
 		case 'codex':
 			return 'configCodex.js';
+		case 'wikilambda':
+			return 'configWikiLambda';
 		default:
 			throw new Error( `Unknown test group: ${groupName}` );
 	}
