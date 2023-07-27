@@ -38,6 +38,9 @@
 	"mediawiki/extensions/SandboxLink": {
 		"path": "extensions/SandboxLink"
 	},
+	"mediawiki/extensions/Thanks": {
+		"path": "extensions/Thanks"
+	},
 	"mediawiki/extensions/UniversalLanguageSelector": {
 		"path": "extensions/UniversalLanguageSelector"
 	},
