@@ -156,6 +156,7 @@ wfLoadExtension( 'NearbyPages' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
 wfLoadExtension( 'SandboxLink' );
+wfLoadExtension( 'Thanks' );
 wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'GrowthExperiments' );
