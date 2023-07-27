@@ -79,7 +79,7 @@ module.exports = {
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
 	scenarios,
-	paths: utils.makePaths( 'desktop' ),
+	paths: utils.makePaths( 'wikilambda' ),
 	report: [],
 	engine: 'puppeteer',
 	engineOptions: {
