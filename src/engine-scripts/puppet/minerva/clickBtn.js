@@ -7,7 +7,7 @@
 module.exports = async ( page, selector ) => {
 	await page.evaluate( async ( s ) => {
 		const btn = document.querySelector( s );
-		await btn.click();
+		btn.click();
 	}, selector );
 	await page.waitForSelector( '.drawer,.overlay' );
 };

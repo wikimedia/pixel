@@ -53,7 +53,19 @@ const tests = [
 	},
 	{
 		label: 'Diff page logged in (#minerva #mobile #logged-in)',
-		path: '/wiki/Special:MobileDiff/335'
+		path: '/wiki/Special:MobileDiff/358'
+	},
+	{
+		label: 'Page issues (#minerva #mobile)',
+		path: '/wiki/Page_issue'
+	},
+	{
+		label: 'Special:Homepage (#minerva #mobile #logged-in)',
+		path: '/wiki/Special:Homepage'
+	},
+	{
+		label: 'Special:Homepage overlay (#minerva #mobile #logged-in #click-edit-suggestions)',
+		path: '/wiki/Special:Homepage'
 	}
 ];
 
