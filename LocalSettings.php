@@ -88,7 +88,7 @@ $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
 
 # InstantCommons allows wiki to use images from https://commons.wikimedia.org
-$wgUseInstantCommons = false;
+$wgUseInstantCommons = true;
 
 # Periodically send a pingback to https://www.mediawiki.org/ with basic data
 # about this MediaWiki instance. The Wikimedia Foundation shares this data
@@ -178,6 +178,9 @@ $wgLocalisationCacheConf = [
 	'forceRecache' => false,
 	'manualRecache' => false,
 ];
+
+// Shortcut for thanking.
+$wgThanksSendToBots = true;
 
 # Content Provider used to show articles from enwiki. Can be helpful when trying to see how
 # production articles look locally, but be aware that there are some gotchas
