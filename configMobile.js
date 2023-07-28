@@ -48,7 +48,11 @@ const tests = [
 		path: '/wiki/Test'
 	},
 	{
-		label: 'Test (#minerva #mobile #logged-in #click-edit)',
+		label: 'Test anonymous editor (#minerva #mobile #click-edit)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test editor (#minerva #mobile #logged-in #click-edit)',
 		path: '/wiki/Test'
 	},
 	{
@@ -62,6 +66,18 @@ const tests = [
 	{
 		label: 'Special:Homepage overlay (#minerva #mobile #logged-in #click-edit-suggestions)',
 		path: '/wiki/Special:Homepage'
+	},
+	{
+		label: 'Test reference drawer (#minerva #mobile #click-reference)',
+		path: '/wiki/References'
+	},
+	{
+		label: 'Test image overlay (#minerva #mobile #click-image)',
+		path: '/wiki/Meerkat'
+	},
+	{
+		label: 'Blank user page',
+		path: '/wiki/User:Echo100'
 	}
 ];
 
