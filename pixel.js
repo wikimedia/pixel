@@ -55,7 +55,7 @@ async function getLatestReleaseBranch() {
  * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( type, group, relativePath, nonInteractive ) {
+async function writeBannerAndOpenReportIfNecessary( type, group, relativePath, nonInteractive ) {
 	const filePathFull = `${__dirname}/${relativePath}/index.html`;
 	const markerString = '<div id="root">';
 	try {
@@ -255,31 +255,34 @@ async function processCommand( type, opts, runSilently = false ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 		).then( async () => {
-			if ( !runSilently ) {
-				await openReportIfNecessary(
-					type, group, config.paths.html_report, process.env.NONINTERACTIVE
-				);
-			}
+			await writeBannerAndOpenReportIfNecessary(
+				type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
+			);
 		}, async ( /** @type {Error} */ err ) => {
 			// Don't check error message if caller asked us not to.
-			if ( runSilently ) {
-				return Promise.resolve();
-			}
 			if ( err.message.includes( '130' ) ) {
 				// If user ends subprocess with a sigint, exit early.
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
+				if ( !runSilently ) {
+					// eslint-disable-next-line no-process-exit
+					process.exit( 1 );
+				}
 			}
 
 			if ( err.message.includes( 'Exit with error code 1' ) ) {
-				await openReportIfNecessary(
+				await writeBannerAndOpenReportIfNecessary(
 					type, group, config.paths.html_report, process.env.NONINTERACTIVE
 				);
-				// eslint-disable-next-line no-process-exit
-				process.exit( 1 );
+				if ( !runSilently ) {
+					// eslint-disable-next-line no-process-exit
+					process.exit( 1 );
+				}
 			}
 
-			throw err;
+			if ( runSilently ) {
+				return Promise.resolve();
+			} else {
+				throw err;
+			}
 		} ).finally( async () => {
 			// Reset the database if `--reset-db` option is passed.
 			if ( opts.resetDb ) {
