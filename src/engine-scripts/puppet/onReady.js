@@ -56,7 +56,7 @@ module.exports = async ( page, scenario ) => {
 			await clickBtn( page, '.growthexperiments-homepage-module-header-nav-icon' );
 		}
 		if ( hashtags.includes( '#click-reference' ) ) {
-			await clickBtn( page, '#cite_ref-1' );
+			await clickBtn( page, '#cite_ref-1 a' );
 		}
 		if ( hashtags.includes( '#click-image' ) ) {
 			await clickBtn( page, '.mw-parser-output .mw-file-element' );
