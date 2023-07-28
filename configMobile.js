@@ -60,10 +60,6 @@ const tests = [
 		path: '/wiki/Page_issue'
 	},
 	{
-		label: 'Special:Homepage (#minerva #mobile #logged-in)',
-		path: '/wiki/Special:Homepage'
-	},
-	{
 		label: 'Special:Homepage overlay (#minerva #mobile #logged-in #click-edit-suggestions)',
 		path: '/wiki/Special:Homepage'
 	}
