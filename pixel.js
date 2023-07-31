@@ -101,26 +101,32 @@ ${markerString}`
  */
 const GROUP_CONFIG = {
 	login: {
+		name: 'Login and sign up pages',
 		priority: 3,
 		config: 'configLogin.js'
 	},
 	'web-maintained': {
+		name: 'Extensions and skins maintained by web team',
 		priority: 3,
 		config: 'configWebMaintained.js'
 	},
 	echo: {
+		name: 'Echo badges',
 		priority: 3,
 		config: 'configEcho.js'
 	},
 	'desktop-dev': {
+		name: 'Zebra Vector 2022 skin',
 		priority: 3,
 		config: 'configDesktopDev.js'
 	},
 	desktop: {
+		name: 'Vector 2022 skin',
 		priority: 1,
 		config: 'configDesktop.js'
 	},
 	mobile: {
+		name: 'Minerva and MobileFrontend',
 		priority: 1,
 		config: 'configMobile.js'
 	},
@@ -428,7 +434,9 @@ function setupCli() {
 			const groups = Object.keys( GROUP_CONFIG );
 			for ( let i = 0; i < groups.length; i++ ) {
 				const group = groups[ i ];
-				html += `<li><a href="${group}/index.html">${group}</a></li>`;
+				const groupDef = GROUP_CONFIG[ group ];
+				const name = groupDef.name || group;
+				html += `<li><a href="${group}/index.html">${name} (${group})</a></li>`;
 				const groupPriority = GROUP_CONFIG[ group ].priority || 0;
 				if ( groupPriority <= priority ) {
 					console.log( `*************************
