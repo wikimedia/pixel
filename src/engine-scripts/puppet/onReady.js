@@ -60,6 +60,7 @@ module.exports = async ( page, scenario ) => {
 		}
 		if ( hashtags.includes( '#click-image' ) ) {
 			await clickBtn( page, '.mw-parser-output .mw-file-element' );
+			await page.waitForSelector( '.image-loaded' );
 		}
 	}
 
