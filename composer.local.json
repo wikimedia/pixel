@@ -1,9 +1,9 @@
 {
-  "extra": {
-    "merge-plugin": {
-      "include": [
-        "extensions/WikiLambda/composer.json"
-      ]
-    }
-  }
+	"extra": {
+		"merge-plugin": {
+			"include": [
+				"extensions/WikiLambda/composer.json"
+			]
+		}
+	}
 }

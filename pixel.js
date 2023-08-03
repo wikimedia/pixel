@@ -303,8 +303,8 @@ async function processCommand( type, opts, runSilently = false ) {
 	}
 }
 
-function setEnvironmentFlagIfGroup(envVarName, soughtGroup, group) {
-	process.env[envVarName] = group === soughtGroup ? 'true' : 'false';
+function setEnvironmentFlagIfGroup( envVarName, soughtGroup, group ) {
+	process.env[ envVarName ] = group === soughtGroup ? 'true' : 'false';
 }
 
 function setupCli() {
@@ -350,7 +350,7 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			setEnvironmentFlagIfGroup('ENABLE_WIKILAMBDA', 'wikilambda', opts.group);
+			setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', opts.group );
 			processCommand( 'reference', opts );
 		} );
 
@@ -362,7 +362,7 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			setEnvironmentFlagIfGroup('ENABLE_WIKILAMBDA', 'wikilambda', opts.group);
+			setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', opts.group );
 			processCommand( 'test', opts );
 		} );
 
