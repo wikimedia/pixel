@@ -64,6 +64,10 @@ const tests = [
 		path: '/wiki/Page_issue'
 	},
 	{
+		label: 'Page issues overlay (#minerva #mobile #click-ambox)',
+		path: '/wiki/Page_issue'
+	},
+	{
 		label: 'Special:Homepage overlay (#minerva #mobile #logged-in #click-edit-suggestions)',
 		path: '/wiki/Special:Homepage'
 	},

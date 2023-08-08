@@ -62,6 +62,9 @@ module.exports = async ( page, scenario ) => {
 			await clickBtn( page, '.mw-parser-output .mw-file-element' );
 			await page.waitForSelector( '.image-loaded' );
 		}
+		if ( hashtags.includes( '#click-ambox' ) ) {
+			await clickBtn( page, '.ambox' );
+		}
 	}
 
 	// Run Echo handlers if necessary.
