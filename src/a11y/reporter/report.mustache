@@ -6,7 +6,6 @@
 	<title>Accessibility Report For "{{pageUrl}}" ({{date}})</title>
 
 	<style>
-
 		html, body {
 			margin: 0;
 			padding: 0;
@@ -16,12 +15,28 @@
 			line-height: 22px;
 			color: #333;
 		}
+
 		li {
 			margin-bottom: 15px;
 		}
+
 		pre {
 			white-space: pre-wrap;
 			overflow: auto;
+			margin: 0;
+			width: 100%;
+		}
+
+		h2 {
+			margin-top: 32px
+		}
+
+		h4 {
+			margin: 8px 0;
+		}
+
+		p {
+			margin: 0 0 8px 0;
 		}
 
 		.page {
@@ -34,11 +49,12 @@
 			margin-top: 30px;
 			font-size: 20px;
 		}
+
 		.count {
 			display: inline-block;
-			padding: 5px;
+			padding: 10px;
 			border-radius: 5px;
-			border: 1px solid #eee;
+			border: 3px solid black;
 		}
 
 		.container {
@@ -47,13 +63,13 @@
 
 		.message {
 			margin-top: 20px;
-			padding: 0 15px 0 15px;
+			padding: 8px 15px;
 			border-radius: 5px;
-			border: 1px solid #eee;
+			border: 3px solid black;
 		}
 
 		details {
-			margin: 16px 0 16px 0;
+			margin: 8px 0;
 		}
 
 		summary {
@@ -66,28 +82,48 @@
 			list-style: none;
 		}
 
+		li {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			column-gap: 8px;
+		}
+
 		.issue {
 			border-radius: 5px;
 			padding: 10px;
-			border: 1px solid #eee;
+			border: 3px solid black;
 			background-color: white;
+			flex-grow: 1;
 		}
 
-		pre {
-			margin: 0;
+		.diff {
+			font-size: 30px;
 		}
 
 		.error {
 			background-color: #fdd;
 			border-color: #ff9696;
 		}
+
 		.warning {
 			background-color: #ffd;
 			border-color: #e7c12b;
 		}
+
 		.notice {
 			background-color: #eef4ff;
 			border-color: #b6d0ff;
+		}
+
+		.removed {
+			background-color: #D9F6D5;
+			border-color: #B9EFB0;
+		}
+
+		.added {
+			background-color: #FBECEE;
+			border-color: #F7CFD3;
 		}
 
 	</style>
@@ -102,31 +138,35 @@
 		<p><b>Generated at:</b> {{date}}</p>
 		<p><b>Page screenshot:</b> <a href="./{{{name}}}.png">{{{name}}}.png</a></p>
 
-		<nav class="counts">
-			<a href="#error" class="count error">{{errorCount}} total errors</a>
-			<a href="#warning" class="count warning">{{warningCount}} total warnings</a>
-			<a href="#notice" class="count notice">{{noticeCount}} total notices</a>
+		<h2>Diff results</h2>
+		
+		<nav class="counts" aria-label="Issue diff counts">
+			{{#removedCount}}<span class="count removed">🎉 {{.}} removed</span>{{/removedCount}}
+			{{#addedCount}}<span class="count added">⚠️ {{.}} added</span>{{/addedCount}}
+			{{^diffData}}<span class="count">✅ No change in reported issues</span>{{/diffData}}	
 		</nav>
 
-		{{#issueData}}
-		<div id="{{type}}" class="container">
-			<h2>{{typeLabel}}, {{typeCount}} rule(s)</h2>
+
+		{{#diffData}}
+		<div id="{{type}}-diff" class="container">
+			<h3>{{typeLabel}}: -{{removedCount}}, +{{addedCount}} rule(s)</h3>
 			{{#messages}}
-			<div class="message {{type}}">
-				<h3>{{message}}</h3>
+			<div class="message">
+				<h4>{{message}}</h4>
 				<p><b>Rule:</b> {{runner}}, {{code}}</p>
 				{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
 				<hr>
 				<details>
 					<summary>
-						{{issueCount}} instance(s):
+						{{issueCount}} issue(s):
 					</summary>
 					<ul class="issues-list">
 						{{#issues}}
-						<li class="issue">
-							<pre>{{selector}}</pre>
-							<hr>
-							<pre>{{context}}</pre>
+						<li>
+							<div class="diff">{{#isDeletion}}-{{/isDeletion}}{{^isDeletion}}+{{/isDeletion}}</div>
+							<div class="issue {{#isDeletion}}removed{{/isDeletion}}{{^isDeletion}}added{{/isDeletion}}">
+								<pre>{{selector}}<hr>{{context}}</pre>
+							</div>
 						</li>
 						{{/issues}}
 					</ul>
@@ -134,8 +174,41 @@
 			</div>
 			{{/messages}}
 		</div>
-		{{/issueData}}
+		{{/diffData}}
 
+		<h2>All results</h2>
+
+		<nav class="counts" aria-label="Issue counts">
+			{{#errorCount}}<a href="#error" class="count error">{{.}} error(s)</a>{{/errorCount}}
+			{{#warningCount}}<a href="#warning" class="count warning">{{.}} warning(s)</a>{{/warningCount}}
+			{{#noticeCount}}<a href="#notice" class="count notice">{{.}} notice(s)</a>{{/noticeCount}}
+		</nav>
+
+		{{#totalData}}
+		<div id="{{type}}" class="container">
+			<h3>{{typeLabel}}: {{typeCount}} rule(s)</h3>
+			{{#messages}}
+			<div class="message {{type}}">
+				<h4>{{message}}</h4>
+				<p><b>Rule:</b> {{runner}}, {{code}}</p>
+				{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
+				<hr>
+				<details>
+					<summary>
+						{{issueCount}} issue(s):
+					</summary>
+					<ul class="issues-list">
+						{{#issues}}
+						<li class="issue">
+							<pre>{{selector}}<hr>{{context}}</pre>
+						</li>
+						{{/issues}}
+					</ul>
+				</details>
+			</div>
+			{{/messages}}
+		</div>
+		{{/totalData}}
 	</div>
 
 </body>
