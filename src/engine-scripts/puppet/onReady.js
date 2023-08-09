@@ -1,6 +1,7 @@
 const deferToFrame = require( './deferToFrame' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
+const clickBtn = require( './clickBtn' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
@@ -37,11 +38,9 @@ module.exports = async ( page, scenario ) => {
 	if ( hashtags.includes( '#minerva' ) ) {
 		await require( './minerva/mainMenuState' )( page, hashtags );
 
-		const clickBtn = require( './minerva/clickBtn' );
 		// Run click handlers if necessary.
 		if ( hashtags.includes( '#click-edit' ) ) {
-			await clickBtn( page, '#ca-edit' );
-			await page.waitForSelector( '.editor-container, .ve-ui-surface' );
+			await clickBtn( page, '#ca-edit', '.editor-container, .ve-ui-surface' );
 		}
 		if ( hashtags.includes( '#click-language' ) ) {
 			await clickBtn( page, '#language-selector a' );
@@ -59,8 +58,7 @@ module.exports = async ( page, scenario ) => {
 			await clickBtn( page, '#cite_ref-1 a' );
 		}
 		if ( hashtags.includes( '#click-image' ) ) {
-			await clickBtn( page, '.mw-parser-output .mw-file-element' );
-			await page.waitForSelector( '.image-loaded' );
+			await clickBtn( page, '.mw-parser-output .mw-file-element', '.image-loaded' );
 		}
 		if ( hashtags.includes( '#click-ambox' ) ) {
 			await clickBtn( page, '.ambox' );

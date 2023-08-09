@@ -1,3 +1,4 @@
+const clickBtn = require( './clickBtn' );
 /**
  * Toggle Vector-2022's limited width button.
  *
@@ -17,9 +18,6 @@ module.exports = async ( page, hashtags ) => {
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
 		await page.waitForSelector( limitedWidthButtonSelector );
-		await page.evaluate( ( selector ) => {
-			const btn = document.querySelector( selector );
-			btn.click();
-		}, limitedWidthButtonSelector );
+		clickBtn( page, limitedWidthButtonSelector, '' );
 	}
 };
