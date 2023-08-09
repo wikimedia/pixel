@@ -9,7 +9,9 @@ module.exports = async ( page, hashtags ) => {
 	// Only disable when hashtag is provided
 	const isDisabled = hashtags.includes( '#limited-width-disabled' );
 	const isCurrentlyEnabled = await page.evaluate( () => {
-		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' );
+		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' ) ||
+			// For reference
+			document.documentElement.classList.contains( 'vector-feature-limited-width-enabled' );
 	} );
 
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
