@@ -161,8 +161,9 @@ wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'GrowthExperiments' );
 wfLoadExtension( 'VueTest' );
-// https://phabricator.wikimedia.org/T343056
-//wfLoadExtension( 'WikiLambda' );
+if ( getenv('ENABLE_WIKILAMBDA') == 'true' ) {
+	wfLoadExtension( 'WikiLambda' );
+}
 wfLoadExtension( 'WikimediaMessages' );
 
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)

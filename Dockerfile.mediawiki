@@ -20,7 +20,7 @@ COPY repositories.json /repositories.json
 RUN /src/setupRepos.js "$( cat /repositories.json )"
 
 # Needed to install WikiLambda's dependencies
-RUN cp composer.local.json-sample composer.local.json
+COPY composer.local.json composer.local.json
 
 # Now we can copy the entire src directory since setupRepos.js has executed.
 COPY src /src
