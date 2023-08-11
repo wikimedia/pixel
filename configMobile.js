@@ -16,11 +16,19 @@ const tests = [
 		path: '/wiki/Test'
 	},
 	{
+		label: 'Test (#minerva #mobile #logged-in #amc)',
+		path: '/wiki/Test'
+	},
+	{
 		label: 'Test (#minerva #mobile #mainmenu-open)',
 		path: '/wiki/Test'
 	},
 	{
 		label: 'Test (#minerva #mobile #logged-in #mainmenu-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test AMC (#minerva #mobile #logged-in #amc #mainmenu-open)',
 		path: '/wiki/Test'
 	},
 	{
