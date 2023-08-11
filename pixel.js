@@ -34,7 +34,11 @@ async function cleanCommand() {
 
 let context;
 if ( fs.existsSync( CONTEXT_PATH ) ) {
-	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
+	try {
+		context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
+	} catch ( e ) {
+		context = {};
+	}
 } else {
 	context = {};
 }
