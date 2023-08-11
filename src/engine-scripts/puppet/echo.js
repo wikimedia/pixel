@@ -22,7 +22,7 @@ module.exports = async ( page, hashtags ) => {
 		} );
 		await moduleReady(
 			page,
-			hashtags.includes( '#mobile' ) ? 'ext.echo.mobile' : 'ext.echo.ui.desktop'
+			hashtags.includes( '#mobile' ) ? 'skins.minerva.scripts' : 'ext.echo.ui.desktop'
 		);
 
 		// Wait for the OOUI pending element to disappear.
