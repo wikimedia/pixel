@@ -206,6 +206,7 @@ async function processCommand( type, opts, runSilently = false ) {
 		let active;
 		let description = '';
 		const group = opts.group;
+		setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', group );
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
@@ -350,7 +351,6 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', opts.group );
 			processCommand( 'reference', opts );
 		} );
 
@@ -362,7 +362,6 @@ function setupCli() {
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
-			setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', opts.group );
 			processCommand( 'test', opts );
 		} );
 
