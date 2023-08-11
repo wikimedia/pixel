@@ -4,7 +4,9 @@
  *   all usernames share the same password as the Admin user.
  */
 const getUsernameFromHashtags = ( hashtags ) => {
-	if ( hashtags.includes( '#echo-100' ) ) {
+	if ( hashtags.includes( '#amc' ) ) {
+		return 'AMCUser';
+	} else if ( hashtags.includes( '#echo-100' ) ) {
 		return 'Echo100';
 	} else if ( hashtags.includes( '#echo-1' ) ) {
 		return 'Echo1';
