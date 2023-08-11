@@ -18,6 +18,6 @@ module.exports = async ( page, hashtags ) => {
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
 		await page.waitForSelector( limitedWidthButtonSelector );
-		clickBtn( page, limitedWidthButtonSelector, '' );
+		clickBtn( page, limitedWidthButtonSelector, 'vector-feature-limited-width-clientpref-1' );
 	}
 };
