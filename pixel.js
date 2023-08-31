@@ -7,6 +7,7 @@ const BatchSpawn = require( './src/BatchSpawn' );
 const batchSpawn = new BatchSpawn( 1 );
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
+const makeReport = require( './src/makeReportIndex.js' );
 
 /*
  * @param {string[]} opts
@@ -33,7 +34,11 @@ async function cleanCommand() {
 
 let context;
 if ( fs.existsSync( CONTEXT_PATH ) ) {
-	context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
+	try {
+		context = JSON.parse( fs.readFileSync( CONTEXT_PATH ).toString() );
+	} catch ( e ) {
+		context = {};
+	}
 } else {
 	context = {};
 }
@@ -54,7 +59,7 @@ async function getLatestReleaseBranch() {
  * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( type, group, relativePath, nonInteractive ) {
+async function writeBannerAndOpenReportIfNecessary( type, group, relativePath, nonInteractive ) {
 	const filePathFull = `${__dirname}/${relativePath}/index.html`;
 	const markerString = '<div id="root">';
 	try {
@@ -91,6 +96,59 @@ ${markerString}`
 }
 
 /**
+ * Each group has an assigned priority based on how regular they need to run.
+ * For suites with lots of test where code seldom changes priority 2 and 3 are
+ * preferred. Feel free to modify these as development priorities shift.
+ * Priority 1 - run every hour
+ * Priority 2 - run every 12 hours
+ * Priority 3 - run every 24 hours
+ */
+const GROUP_CONFIG = {
+	login: {
+		name: 'Login and sign up pages',
+		priority: 3,
+		config: 'configLogin.js'
+	},
+	'web-maintained': {
+		name: 'Extensions and skins maintained by web team',
+		priority: 3,
+		config: 'configWebMaintained.js'
+	},
+	echo: {
+		name: 'Echo badges',
+		priority: 3,
+		config: 'configEcho.js'
+	},
+	'desktop-dev': {
+		name: 'Zebra Vector 2022 skin',
+		priority: 3,
+		config: 'configDesktopDev.js'
+	},
+	desktop: {
+		name: 'Vector 2022 skin',
+		priority: 1,
+		config: 'configDesktop.js'
+	},
+	mobile: {
+		name: 'Minerva and MobileFrontend',
+		priority: 1,
+		config: 'configMobile.js'
+	},
+	'campaign-events': {
+		priority: 2,
+		config: 'configCampaignEvents.js'
+	},
+	codex: {
+		priority: 2,
+		config: 'configCodex.js'
+	},
+	wikilambda: {
+		priority: 2,
+		config: 'configWikiLambda.js'
+	}
+};
+
+/**
  * @param {string} groupName
  * @param {boolean} a11y
  * @return {string} path to configuration file.
@@ -104,26 +162,12 @@ const getGroupConfig = ( groupName, a11y ) => {
 			default:
 				throw new Error( `Unknown test group: ${groupName}` );
 		}
-	} else {
-		switch ( groupName ) {
-			case 'web-maintained':
-				return 'configWebMaintained.js';
-			case 'echo':
-				return 'configEcho.js';
-			case 'desktop-dev':
-				return 'configDesktopDev.js';
-			case 'desktop':
-				return 'configDesktop.js';
-			case 'mobile':
-				return 'configMobile.js';
-			case 'campaign-events':
-				return 'configCampaignEvents.js';
-			case 'codex':
-				return 'configCodex.js';
-			default:
-				throw new Error( `Unknown test group: ${groupName}` );
-		}
 	}
+	const c = GROUP_CONFIG[ groupName ];
+	if ( !c ) {
+		throw new Error( `Unknown test group: ${groupName}` );
+	}
+	return c.config;
 };
 
 /**
@@ -159,14 +203,23 @@ function removeFolder( relativePath ) {
 }
 
 /**
- * @param {'test'|'reference'} type
- * @param {any} opts
+ * @typedef {Object} CommandOptions
+ * @property {string} [changeId]
+ * @property {string} [branch]
+ * @property {string} group
  */
-async function processCommand( type, opts ) {
+
+/**
+ * @param {'test'|'reference'} type
+ * @param {CommandOptions} opts
+ * @param {boolean} [runSilently]
+ */
+async function processCommand( type, opts, runSilently = false ) {
 	try {
 		let active;
 		let description = '';
 		const group = opts.group;
+		setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', group );
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
@@ -214,7 +267,7 @@ async function processCommand( type, opts ) {
 
 		if ( opts.a11y ) {
 			// Execute a11y regression tests.
-			await batchSpawn.spawn(
+			return batchSpawn.spawn(
 				'docker',
 				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile ] ) ]
 			).finally( async () => {
@@ -225,8 +278,6 @@ async function processCommand( type, opts ) {
 				}
 			} );
 		} else {
-			// Execute Visual regression tests.
-
 			// Remove test screenshots folder (if present) so that its size doesn't
 			// increase with each `test` run. BackstopJS automatically removes the
 			// reference folder when the `reference` command is run, but not the test
@@ -234,29 +285,39 @@ async function processCommand( type, opts ) {
 			if ( type === 'test' ) {
 				removeFolder( config.paths.bitmaps_test );
 			}
-			await batchSpawn.spawn(
+			// Execute Visual regression tests.
+			const finished = await batchSpawn.spawn(
 				'docker',
 				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 			).then( async () => {
-				await openReportIfNecessary(
-					type, group, config.paths.html_report, process.env.NONINTERACTIVE
+				await writeBannerAndOpenReportIfNecessary(
+					type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
 				);
 			}, async ( /** @type {Error} */ err ) => {
+				// Don't check error message if caller asked us not to.
 				if ( err.message.includes( '130' ) ) {
 					// If user ends subprocess with a sigint, exit early.
-					// eslint-disable-next-line no-process-exit
-					process.exit( 1 );
+					if ( !runSilently ) {
+						// eslint-disable-next-line no-process-exit
+						process.exit( 1 );
+					}
 				}
 
 				if ( err.message.includes( 'Exit with error code 1' ) ) {
-					await openReportIfNecessary(
+					await writeBannerAndOpenReportIfNecessary(
 						type, group, config.paths.html_report, process.env.NONINTERACTIVE
 					);
-					// eslint-disable-next-line no-process-exit
-					process.exit( 1 );
+					if ( !runSilently ) {
+						// eslint-disable-next-line no-process-exit
+						process.exit( 1 );
+					}
 				}
 
-				throw err;
+				if ( runSilently ) {
+					return Promise.resolve();
+				} else {
+					throw err;
+				}
 			} ).finally( async () => {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
@@ -264,12 +325,16 @@ async function processCommand( type, opts ) {
 					await resetDb();
 				}
 			} );
+			return finished;
 		}
 	} catch ( err ) {
-		console.error( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
 	}
+}
+
+function setEnvironmentFlagIfGroup( envVarName, soughtGroup, group ) {
+	process.env[ envVarName ] = group === soughtGroup ? 'true' : 'false';
 }
 
 function setupCli() {
@@ -291,6 +356,16 @@ function setupCli() {
 		'-g, --group <(mobile|desktop|echo|campaign-events)>',
 		'The group of tests to run. If omitted the group will be desktop.',
 		'desktop'
+	] );
+	const directoryOpt = /** @type {const} */ ( [
+		'-d, --directory <path>',
+		'Where to save the file',
+		'report'
+	] );
+	const priorityOpt = /** @type {const} */ ( [
+		'-p, --priority <number>',
+		'Only run jobs which match the provided priority',
+		'0'
 	] );
 	const resetDbOpt = /** @type {const} */ ( [
 		'--reset-db',
@@ -380,6 +455,61 @@ function setupCli() {
 			await cleanCommand();
 		} );
 
+	program
+		.command( 'runAll' )
+		.description( 'Runs all the registered tests and generates a report.' )
+		.option( ...branchOpt )
+		.option( ...changeIdOpt )
+		.option( ...groupOpt )
+		.option( ...priorityOpt )
+		.option( ...directoryOpt )
+		.option( ...resetDbOpt )
+		.action( async ( opts ) => {
+			let html = '';
+			const priority = parseInt( opts.priority, 10 );
+			const outputDir = opts.directory;
+			if ( !fs.existsSync( outputDir ) ) {
+				fs.mkdirSync( outputDir );
+			}
+			const groups = Object.keys( GROUP_CONFIG );
+			for ( let i = 0; i < groups.length; i++ ) {
+				const group = groups[ i ];
+				const groupDef = GROUP_CONFIG[ group ];
+				const name = groupDef.name || group;
+				html += `<li><a href="${group}/index.html">${name} (${group})</a></li>`;
+				const groupPriority = GROUP_CONFIG[ group ].priority || 0;
+				if ( groupPriority <= priority ) {
+					console.log( `*************************
+*************************
+*************************
+*************************
+Running regression group "${group}"
+*************************
+*************************
+*************************
+*************************` );
+					try {
+						await processCommand( 'reference', {
+							branch: LATEST_RELEASE_BRANCH,
+							change: opts.change,
+							group
+						}, true );
+						await processCommand( 'test', {
+							branch: 'master',
+							group
+						}, true );
+					} catch ( e ) {
+						// Continue.
+					}
+				} else {
+					console.log( `*************************
+Skipping group "${group}" due to priority.
+*************************` );
+				}
+			}
+			const path = await makeReport( outputDir, html );
+			await batchSpawn.spawn( 'open', [ path ] );
+		} );
 	program.parse();
 }
 

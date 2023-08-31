@@ -89,6 +89,7 @@ class MwCheckout {
 				}
 			}
 
+			await this.#updateSubmodules( path );
 			await this.#updateComposer( path );
 		} ) );
 
@@ -143,6 +144,22 @@ class MwCheckout {
 		}
 
 		throw new Error( `Branch "${branch}" of "${repoId}" not found on origin` );
+	}
+
+	/**
+	 * Makes sure submodules have been updated.
+	 *
+	 * @param {string} path
+	 */
+	async #updateSubmodules( path ) {
+		return this.#batchSpawn.spawn(
+			`
+echo "Update submodules"
+cd ${path} && git submodule update
+`,
+			[],
+			{ shell: true }
+		);
 	}
 
 	/**

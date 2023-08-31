@@ -1,6 +1,7 @@
 const deferToFrame = require( './deferToFrame' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
+const clickBtn = require( './clickBtn' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
@@ -36,6 +37,32 @@ module.exports = async ( page, scenario ) => {
 	// These only apply to Minerva
 	if ( hashtags.includes( '#minerva' ) ) {
 		await require( './minerva/mainMenuState' )( page, hashtags );
+
+		// Run click handlers if necessary.
+		if ( hashtags.includes( '#click-edit' ) ) {
+			await clickBtn( page, '#ca-edit', '.editor-container, .ve-ui-surface' );
+		}
+		if ( hashtags.includes( '#click-language' ) ) {
+			await clickBtn( page, '#language-selector a' );
+		}
+		if ( hashtags.includes( '#click-watch' ) ) {
+			await clickBtn( page, '#ca-watch' );
+		}
+		if ( hashtags.includes( '#click-redlink' ) ) {
+			await clickBtn( page, 'a.new' );
+		}
+		if ( hashtags.includes( '#click-edit-suggestions' ) ) {
+			await clickBtn( page, '.growthexperiments-homepage-module-header-nav-icon' );
+		}
+		if ( hashtags.includes( '#click-reference' ) ) {
+			await clickBtn( page, '#cite_ref-1 a' );
+		}
+		if ( hashtags.includes( '#click-image' ) ) {
+			await clickBtn( page, '.mw-parser-output .mw-file-element', '.image-loaded' );
+		}
+		if ( hashtags.includes( '#click-ambox' ) ) {
+			await clickBtn( page, '.ambox' );
+		}
 	}
 
 	// Run Echo handlers if necessary.

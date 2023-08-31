@@ -10,5 +10,5 @@ module.exports = Object.assign( {}, configDesktop, {
 			vectorzebradesign: '1'
 		} )
 	),
-	paths: utils.makePaths( 'desktop-development' )
+	paths: utils.makePaths( 'desktop-dev' )
 } );

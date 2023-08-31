@@ -15,6 +15,7 @@ services:
       - XDEBUG_CONFIG=
       - XDEBUG_ENABLE=false
       - XHPROF_ENABLE=false
+      - ENABLE_WIKILAMBDA=${ENABLE_WIKILAMBDA}
     volumes:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
@@ -70,6 +71,8 @@ services:
       - ./configDesktopDev.js:/pixel/configDesktopDev.js
       - ./configEcho.js:/pixel/configEcho.js
       - ./configCampaignEvents.js:/pixel/configCampaignEvents.js
+      - ./configWikiLambda.js:/pixel/configWikiLambda.js
+      - ./configLogin.js:/pixel/configLogin.js
       - ./configWebMaintained.js:/pixel/configWebMaintained.js
       - ./configMobile.js:/pixel/configMobile.js
       - ./configCodex.js:/pixel/configCodex.js

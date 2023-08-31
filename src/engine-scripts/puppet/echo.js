@@ -17,12 +17,12 @@ module.exports = async ( page, hashtags ) => {
 	if ( hashtags.includes( '#echo-drawer' ) ) {
 		await moduleReady( page, 'ext.echo.init' );
 		await page.evaluate( async () => {
-			const btn = document.querySelector( '#pt-notifications-alert a' );
+			const btn = document.querySelector( '#pt-notifications-alert a, a#pt-notifications-alert' );
 			btn.click();
 		} );
 		await moduleReady(
 			page,
-			hashtags.includes( '#mobile' ) ? 'ext.echo.mobile' : 'ext.echo.ui.desktop'
+			hashtags.includes( '#mobile' ) ? 'skins.minerva.scripts' : 'ext.echo.ui.desktop'
 		);
 
 		// Wait for the OOUI pending element to disappear.

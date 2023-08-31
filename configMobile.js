@@ -16,11 +16,19 @@ const tests = [
 		path: '/wiki/Test'
 	},
 	{
+		label: 'Test (#minerva #mobile #logged-in #amc)',
+		path: '/wiki/Test'
+	},
+	{
 		label: 'Test (#minerva #mobile #mainmenu-open)',
 		path: '/wiki/Test'
 	},
 	{
 		label: 'Test (#minerva #mobile #logged-in #mainmenu-open)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test AMC (#minerva #mobile #logged-in #amc #mainmenu-open)',
 		path: '/wiki/Test'
 	},
 	{
@@ -34,6 +42,54 @@ const tests = [
 	{
 		label: 'Non-existent user page (#minerva #mobile)',
 		path: '/wiki/User:Echo1'
+	},
+	{
+		label: 'Test language overlay (#minerva #mobile #click-language)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test CTADrawer (#minerva #mobile #click-watch)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test red link drawer (#minerva #mobile #click-redlink)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test anonymous editor (#minerva #mobile #click-edit)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Test editor (#minerva #mobile #logged-in #click-edit)',
+		path: '/wiki/Test'
+	},
+	{
+		label: 'Diff page logged in (#minerva #mobile #logged-in)',
+		path: '/wiki/Special:MobileDiff/358'
+	},
+	{
+		label: 'Page issues (#minerva #mobile)',
+		path: '/wiki/Page_issue'
+	},
+	{
+		label: 'Page issues overlay (#minerva #mobile #click-ambox)',
+		path: '/wiki/Page_issue'
+	},
+	{
+		label: 'Special:Homepage overlay (#minerva #mobile #logged-in #click-edit-suggestions)',
+		path: '/wiki/Special:Homepage'
+	},
+	{
+		label: 'Test reference drawer (#minerva #mobile #click-reference)',
+		path: '/wiki/References'
+	},
+	{
+		label: 'Test image overlay (#minerva #mobile #click-image)',
+		path: '/wiki/Meerkat'
+	},
+	{
+		label: 'Blank user page',
+		path: '/wiki/User:Echo100'
 	}
 ];
 

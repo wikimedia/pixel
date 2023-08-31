@@ -1,3 +1,4 @@
+const clickBtn = require( './clickBtn' );
 /**
  * Toggle Vector-2022's limited width button.
  *
@@ -9,15 +10,14 @@ module.exports = async ( page, hashtags ) => {
 	// Only disable when hashtag is provided
 	const isDisabled = hashtags.includes( '#limited-width-disabled' );
 	const isCurrentlyEnabled = await page.evaluate( () => {
-		return document.documentElement.classList.contains( 'vector-feature-limited-width-enabled' );
+		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' ) ||
+			// For reference
+			document.documentElement.classList.contains( 'vector-feature-limited-width-enabled' );
 	} );
 
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
 		await page.waitForSelector( limitedWidthButtonSelector );
-		await page.evaluate( ( selector ) => {
-			const btn = document.querySelector( selector );
-			btn.click();
-		}, limitedWidthButtonSelector );
+		clickBtn( page, limitedWidthButtonSelector, 'vector-feature-limited-width-clientpref-1' );
 	}
 };

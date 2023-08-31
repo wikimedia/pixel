@@ -13,6 +13,20 @@
 			"value": "Admin"
 		}
 	],
+	"AMCUser": [
+		{
+			"name": "my_wiki_session",
+			"value": "ocr59dsm3m0909d2k05qkcbq27d0rvl6"
+		},
+		{
+			"name": "my_wikiUserID",
+			"value": "11"
+		},
+		{
+			"name": "my_wikiUserName",
+			"value": "AMCUser"
+		}
+	],
 	"Echo1": [
 		{
 			"name": "my_wikiToken",
