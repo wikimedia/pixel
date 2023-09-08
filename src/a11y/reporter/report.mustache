@@ -17,7 +17,7 @@
 		}
 
 		li {
-			margin-bottom: 15px;
+			margin-bottom: 16px;
 		}
 
 		pre {
@@ -46,7 +46,6 @@
 		}
 
 		.counts {
-			margin-top: 30px;
 			font-size: 20px;
 		}
 
@@ -63,7 +62,7 @@
 
 		.message {
 			margin-top: 20px;
-			padding: 8px 15px;
+			padding: 8px 16px;
 			border-radius: 5px;
 			border: 3px solid black;
 		}
@@ -126,7 +125,62 @@
 			border-color: #F7CFD3;
 		}
 
+		[role="tab"],
+		[role="tab"]:focus,
+		[role="tab"]:hover {
+			display: inline-block;
+			padding: 16px;
+			border: 3px solid gray;
+    	border-radius: 5px 5px 0 0;
+			font-size: 16px;
+			font-weight: bold;
+			cursor: pointer;
+    	background-color: white;
+		}
+
+		[role="tab"][aria-selected="true"] {
+		  border-top-width: 6px;
+		  border-top-color: rgb(36 116 214);
+			border-bottom-color: white;
+		}
+
+		[role="tabpanel"] {
+			padding: 8px 16px;
+			margin-top: -3px;
+		  border: 3px solid gray;
+		  border-radius: 0 5px 5px;
+		  width: 100%;
+			box-sizing: border-box;
+		}
+
+		[role="tabpanel"].is-hidden {
+		  display: none;
+		}
 	</style>
+	<script>
+		function setSelectedTab( currentTab ) {
+		  var tabs = document.querySelectorAll('[role=tab]');
+		  var tabpanels = document.querySelectorAll('[role=tabpanel]');
+			tabs.forEach( ( tab, i ) => {
+				if (currentTab === tab) {
+  	      tab.setAttribute('aria-selected', 'true');
+  	      tabpanels[i].classList.remove('is-hidden');
+  	    } else {
+  	      tab.setAttribute('aria-selected', 'false');
+  	      tabpanels[i].classList.add('is-hidden');
+  	    }
+			} );
+  	}
+
+		window.addEventListener('load', function () {
+		  var tabs = document.querySelectorAll('[role=tab]');
+			tabs.forEach( ( tab ) => {
+				tab.addEventListener( 'click', ( e ) => {
+					setSelectedTab( e.currentTarget );
+				} );
+			} )
+		});
+	</script>
 
 </head>
 <body>
@@ -138,16 +192,18 @@
 		<p><b>Generated at:</b> {{date}}</p>
 		<p><b>Page screenshot:</b> <a href="./{{{name}}}.png">{{{name}}}.png</a></p>
 
-		<h2>Diff results</h2>
-		
+		{{#diffData}}
+		<h2>Diff</h2>
+
+		<h3>Overview</h3>
+
 		<nav class="counts" aria-label="Issue diff counts">
-			{{#removedCount}}<span class="count removed">🎉 {{.}} removed</span>{{/removedCount}}
-			{{#addedCount}}<span class="count added">⚠️ {{.}} added</span>{{/addedCount}}
+			{{#totalRemovedCount}}<span class="count removed">🎉 {{.}} removed</span>{{/totalRemovedCount}}
+			{{#totalAddedCount}}<span class="count added">⚠️ {{.}} added</span>{{/totalAddedCount}}
 			{{^diffData}}<span class="count">✅ No change in reported issues</span>{{/diffData}}	
 		</nav>
 
-
-		{{#diffData}}
+		{{#data}}
 		<div id="{{type}}-diff" class="container">
 			<h3>{{typeLabel}}: -{{removedCount}}, +{{addedCount}} rule(s)</h3>
 			{{#codes}}
@@ -174,41 +230,25 @@
 			</div>
 			{{/codes}}
 		</div>
+		{{/data}}
 		{{/diffData}}
 
-		<h2>All results</h2>
-
-		<nav class="counts" aria-label="Issue counts">
-			{{#errorCount}}<a href="#error" class="count error">{{.}} error(s)</a>{{/errorCount}}
-			{{#warningCount}}<a href="#warning" class="count warning">{{.}} warning(s)</a>{{/warningCount}}
-			{{#noticeCount}}<a href="#notice" class="count notice">{{.}} notice(s)</a>{{/noticeCount}}
-		</nav>
-
-		{{#totalData}}
-		<div id="{{type}}" class="container">
-			<h3>{{typeLabel}}: {{typeCount}} rule(s)</h3>
-			{{#codes}}
-			<div class="message {{type}}">
-				<h4>{{message}}</h4>
-				<p><b>Rule:</b> {{runner}}, {{code}}</p>
-				{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
-				<hr>
-				<details>
-					<summary>
-						{{issueCount}} issue(s):
-					</summary>
-					<ul class="issues-list">
-						{{#issues}}
-						<li class="issue">
-							<pre>{{selector}}<hr>{{context}}</pre>
-						</li>
-						{{/issues}}
-					</ul>
-				</details>
+		<div class="tabs">
+			<h2 id="tablist-label">Individual patches</h3>
+			<div role="tablist" aria-labelledby="tablist-label">
+				<button id="tab-reference" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-reference">
+					Reference
+    		</button>
+    		<button id="tab-test" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-test">
+     			Test
+    		</button>
 			</div>
-			{{/codes}}
-		</div>
-		{{/totalData}}
+			<div id="tabpanel-reference" role="tabpanel" aria-labelledby="tab-reference" class="is-hidden">
+				{{#referenceData}}{{>Results}}{{/referenceData}}
+			</div>
+	 		<div id="tabpanel-test" role="tabpanel" aria-labelledby="tab-test">
+				{{#testData}}{{>Results}}{{/testData}}
+			</div>
 	</div>
 
 </body>

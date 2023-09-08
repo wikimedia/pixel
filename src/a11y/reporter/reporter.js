@@ -1,8 +1,12 @@
 // @ts-nocheck
 'use strict';
 
+const fs = require( 'fs' );
+const path = require( 'path' );
 const mustache = require( 'mustache' );  // eslint-disable-line
 
+const reportTemplate = fs.readFileSync( path.resolve( __dirname, './Report.mustache' ), 'utf8' );
+const resultsTemplate = fs.readFileSync( path.resolve( __dirname, './Results.mustache' ), 'utf8' );
 const report = module.exports = {};
 
 // Pa11y version support
@@ -81,7 +85,25 @@ function getCodeTemplateData( type, codesByType, issuesByCode ) {
 	} );
 }
 
-function processDiffData( issues, issuesByDiff ) {
+function processDiffData( referenceIssues, testIssues ) {
+	const referenceMap = getIssuesMap( referenceIssues );
+	const testMap = getIssuesMap( testIssues );
+	const issuesByDiff = { '-': [], '+': [] };
+	const removedIssues = referenceIssues
+		.filter( ( issue ) => !testMap[ getIssueKey( issue ) ] )
+		.map( ( issue ) => {
+			issue.isDeletion = true;
+			issuesByDiff[ '-' ].push( issue );
+			return issue;
+		} );
+	const addedIssues = testIssues
+		.filter( ( issue ) => !referenceMap[ getIssueKey( issue ) ] )
+		.map( ( issue ) => {
+			issue.isDeletion = false;
+			issuesByDiff[ '+' ].push( issue );
+			return issue;
+		} );
+	const issues = addedIssues.concat( removedIssues );
 	const codesByType = getCodesByType( issues );
 	const issuesByCode = getIssuesByCode( issues );
 
@@ -93,10 +115,14 @@ function processDiffData( issues, issuesByDiff ) {
 		addedCount: issuesByDiff[ '+' ].filter( ( issue ) => issue.type === type ).length,
 		codes: getCodeTemplateData( type, codesByType, issuesByCode )
 	} ) );
-	return issueData;
+	return {
+		data: issueData,
+		totalRemovedCount: removedIssues.length > 0 && removedIssues.length,
+		totalAddedCount: addedIssues.length > 0 && addedIssues.length
+	};
 }
 
-function processTotalData( issues ) {
+function processTotalData( issues, name ) {
 	const codesByType = getCodesByType( issues );
 	const issuesByCode = getIssuesByCode( issues );
 
@@ -107,35 +133,20 @@ function processTotalData( issues ) {
 		typeCount: codesByType[ type ].length,
 		codes: getCodeTemplateData( type, codesByType, issuesByCode )
 	} ) );
-	return issueData;
+	return {
+		name,
+		data: issueData,
+		totalErrorCount: issues.filter( ( issue ) => issue.type === 'error' ).length,
+		totalWarningCount: issues.filter( ( issue ) => issue.type === 'warning' ).length,
+		totalNoticeCount: issues.filter( ( issue ) => issue.type === 'notice' ).length
+	};
 }
 
 // Compile template and output formatted results
-report.results = async ( referenceResults, testResults, reportTemplate ) => {
-	const issuesByDiff = { '-': [], '+': [] };
-	const referenceMap = getIssuesMap( referenceResults.issues );
-	const testMap = getIssuesMap( testResults.issues );
-	const removedIssues = referenceResults.issues
-		.filter( ( issue ) => !testMap[ getIssueKey( issue ) ] )
-		.map( ( issue ) => {
-			issue.isDeletion = true;
-			issuesByDiff[ '-' ].push( issue );
-			return issue;
-		} );
-	const addedIssues = testResults.issues
-		.filter( ( issue ) => !referenceMap[ getIssueKey( issue ) ] )
-		.map( ( issue ) => {
-			issue.isDeletion = false;
-			issuesByDiff[ '+' ].push( issue );
-			return issue;
-		} );
-
-	const diffData = processDiffData( addedIssues.concat( removedIssues ), issuesByDiff );
-	const totalData = processTotalData( testResults.issues );
-
-	const errorCount = testResults.issues.filter( ( issue ) => issue.type === 'error' ).length;
-	const warningCount = testResults.issues.filter( ( issue ) => issue.type === 'warning' ).length;
-	const noticeCount = testResults.issues.filter( ( issue ) => issue.type === 'notice' ).length;
+report.results = async ( referenceResults, testResults ) => {
+	const diffData = processDiffData( referenceResults.issues, testResults.issues );
+	const referenceData = processTotalData( referenceResults.issues, 'reference' );
+	const testData = processTotalData( testResults.issues, 'test' );
 
 	return mustache.render( reportTemplate, {
 		// The current date
@@ -147,14 +158,10 @@ report.results = async ( referenceResults, testResults, reportTemplate ) => {
 
 		// Results
 		diffData,
-		totalData,
-
-		// Issue counts
-		errorCount: errorCount > 0 && errorCount,
-		warningCount: warningCount > 0 && warningCount,
-		noticeCount: noticeCount > 0 && noticeCount,
-		removedCount: removedIssues.length > 0 && removedIssues.length,
-		addedCount: addedIssues.length > 0 && addedIssues.length
+		referenceData,
+		testData
+	}, {
+		Results: resultsTemplate
 	} );
 };
 

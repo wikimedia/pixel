@@ -6,7 +6,6 @@ const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-l
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
 const htmlReporter = require( path.resolve( __dirname, './reporter/reporter.js' ) );
-const reportTemplate = fs.readFileSync( path.resolve( __dirname, './reporter/report.mustache' ), 'utf8' );
 
 /**
  *  Delete and recreate the report directory
@@ -118,11 +117,7 @@ async function processTestResults( testResults, type, config, opts ) {
 	if ( type === 'test' ) {
 		const referenceResults = require( path.resolve( `${config.paths.a11y_reference}/${name}.json` ) );
 		if ( referenceResults ) {
-			const html = await htmlReporter.results(
-				referenceResults,
-				testResults,
-				reportTemplate
-			);
+			const html = await htmlReporter.results( referenceResults, testResults );
 			fs.writeFileSync( `${config.paths.a11y_report}/${name}.html`, html, 'utf8' );
 		}
 	}
