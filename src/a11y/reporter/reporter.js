@@ -85,60 +85,46 @@ function getCodeTemplateData( type, codesByType, issuesByCode ) {
 	} );
 }
 
+function processTotalData( issues, name ) {
+	const codesByType = getCodesByType( issues );
+	const issuesByCode = getIssuesByCode( issues );
+	const types = getTypes( codesByType );
+	const resultsData = types.map( ( type ) => ( {
+		type,
+		typeLabel: upperCaseFirst( type ) + 's',
+		typeCount: issues.filter( ( issue ) => issue.type === type ).length,
+		codes: getCodeTemplateData( type, codesByType, issuesByCode )
+	} ) );
+	return {
+		name,
+		totalCount: issues.length,
+		resultsData
+	};
+}
+
 function processDiffData( referenceIssues, testIssues ) {
 	const referenceMap = getIssuesMap( referenceIssues );
 	const testMap = getIssuesMap( testIssues );
-	const issuesByDiff = { '-': [], '+': [] };
 	const removedIssues = referenceIssues
 		.filter( ( issue ) => !testMap[ getIssueKey( issue ) ] )
 		.map( ( issue ) => {
 			issue.isDeletion = true;
-			issuesByDiff[ '-' ].push( issue );
 			return issue;
 		} );
 	const addedIssues = testIssues
 		.filter( ( issue ) => !referenceMap[ getIssueKey( issue ) ] )
 		.map( ( issue ) => {
 			issue.isDeletion = false;
-			issuesByDiff[ '+' ].push( issue );
 			return issue;
 		} );
-	const issues = addedIssues.concat( removedIssues );
-	const codesByType = getCodesByType( issues );
-	const issuesByCode = getIssuesByCode( issues );
-
-	const types = getTypes( codesByType );
-	const issueData = types.map( ( type ) => ( {
-		type,
-		typeLabel: upperCaseFirst( type ) + 's',
-		removedCount: issuesByDiff[ '-' ].filter( ( issue ) => issue.type === type ).length,
-		addedCount: issuesByDiff[ '+' ].filter( ( issue ) => issue.type === type ).length,
-		codes: getCodeTemplateData( type, codesByType, issuesByCode )
-	} ) );
+	const hasRemoved = removedIssues.length > 0;
+	const hasAdded = addedIssues.length > 0;
+	if ( !hasRemoved && !hasAdded ) {
+		return;
+	}
 	return {
-		data: issueData,
-		totalRemovedCount: removedIssues.length > 0 && removedIssues.length,
-		totalAddedCount: addedIssues.length > 0 && addedIssues.length
-	};
-}
-
-function processTotalData( issues, name ) {
-	const codesByType = getCodesByType( issues );
-	const issuesByCode = getIssuesByCode( issues );
-
-	const types = getTypes( codesByType );
-	const issueData = types.map( ( type ) => ( {
-		type,
-		typeLabel: upperCaseFirst( type ) + 's',
-		typeCount: codesByType[ type ].length,
-		codes: getCodeTemplateData( type, codesByType, issuesByCode )
-	} ) );
-	return {
-		name,
-		data: issueData,
-		totalErrorCount: issues.filter( ( issue ) => issue.type === 'error' ).length,
-		totalWarningCount: issues.filter( ( issue ) => issue.type === 'warning' ).length,
-		totalNoticeCount: issues.filter( ( issue ) => issue.type === 'notice' ).length
+		removedData: hasRemoved && processTotalData( removedIssues, 'removed' ),
+		addedData: hasAdded && processTotalData( addedIssues, 'added' )
 	};
 }
 

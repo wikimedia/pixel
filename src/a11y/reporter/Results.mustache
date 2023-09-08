@@ -1,21 +1,11 @@
-<h3>Overview</h3>
-
-<nav class="counts" aria-label="Issue counts">
-	{{#totalErrorCount}}<a href="#error-{{name}}" class="count error">{{.}} error(s)</a>{{/totalErrorCount}}
-	{{#totalWarningCount}}<a href="#warning-{{name}}" class="count warning">{{.}} warning(s)</a>{{/totalWarningCount}}
-	{{#totalNoticeCount}}<a href="#notice-{{name}}" class="count notice">{{.}} notice(s)</a>{{/totalNoticeCount}}
-</nav>
-
-{{#data}}
 <div id="{{type}}-{{name}}" class="container">
-	<h3>{{typeLabel}}</h3>
+	<h3>{{typeLabel}} ({{typeCount}})</h3>
 	{{#codes}}
 	<div class="message {{type}}">
 		<h4>{{message}}</h4>
-		<p><b>Rule:</b> {{runner}}, {{code}}</p>
+		<p class="rule"><b>Rule:</b> {{runner}}, {{code}}</p>
 		{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
-		<hr>
-		<details>
+		<details class="details">
 			<summary>
 				{{issueCount}} issue(s):
 			</summary>
@@ -30,4 +20,3 @@
 	</div>
 	{{/codes}}
 </div>
-{{/data}}

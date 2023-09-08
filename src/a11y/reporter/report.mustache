@@ -44,22 +44,7 @@
 			margin: 0 auto;
 			padding: 25px;
 		}
-
-		.counts {
-			font-size: 20px;
-		}
-
-		.count {
-			display: inline-block;
-			padding: 10px;
-			border-radius: 5px;
-			border: 3px solid black;
-		}
-
-		.container {
-			margin-top: 30px;
-		}
-
+		
 		.message {
 			margin-top: 20px;
 			padding: 8px 16px;
@@ -68,7 +53,9 @@
 		}
 
 		details {
-			margin: 8px 0;
+			padding: 8px 0;
+			clear: both;
+			border-top: 1px solid black;
 		}
 
 		summary {
@@ -91,61 +78,61 @@
 		.issue {
 			border-radius: 5px;
 			padding: 10px;
-			border: 3px solid black;
-			background-color: white;
+			background-color: #eee;
 			flex-grow: 1;
 		}
 
-		.diff {
-			font-size: 30px;
-		}
-
 		.error {
-			background-color: #fdd;
-			border-color: #ff9696;
+			border-color: #ff4a4a;
 		}
 
 		.warning {
-			background-color: #ffd;
 			border-color: #e7c12b;
 		}
 
 		.notice {
-			background-color: #eef4ff;
-			border-color: #b6d0ff;
+			border-color: #6a9fff;
 		}
 
-		.removed {
-			background-color: #D9F6D5;
-			border-color: #B9EFB0;
+		.rule {
+			float: left;
+			margin-right: 8px;
 		}
 
-		.added {
-			background-color: #FBECEE;
-			border-color: #F7CFD3;
-		}
-
-		[role="tab"],
-		[role="tab"]:focus,
-		[role="tab"]:hover {
+		.tab,
+		.tab:focus,
+		.tab:hover {
 			display: inline-block;
 			padding: 16px;
 			border: 3px solid gray;
     	border-radius: 5px 5px 0 0;
-			font-size: 16px;
+			font-size: 20px;
 			font-weight: bold;
 			cursor: pointer;
     	background-color: white;
 		}
 
-		[role="tab"][aria-selected="true"] {
+		.tab[aria-selected="true"] {
 		  border-top-width: 6px;
 		  border-top-color: rgb(36 116 214);
 			border-bottom-color: white;
 		}
 
-		[role="tabpanel"] {
-			padding: 8px 16px;
+		.tab.nochange {
+			border-radius: 5px;
+		}
+
+		.tab.removed {
+			background-color: #D9F6D5;
+		}
+
+		.tab.added {
+			background-color: #FBECEE;
+		}
+
+		.tabpanel {
+			padding: 16px;
+			padding-top: 0;
 			margin-top: -3px;
 		  border: 3px solid gray;
 		  border-radius: 0 5px 5px;
@@ -153,14 +140,13 @@
 			box-sizing: border-box;
 		}
 
-		[role="tabpanel"].is-hidden {
+		.tabpanel.is-hidden {
 		  display: none;
 		}
 	</style>
 	<script>
-		function setSelectedTab( currentTab ) {
-		  var tabs = document.querySelectorAll('[role=tab]');
-		  var tabpanels = document.querySelectorAll('[role=tabpanel]');
+		function setSelectedTab( currentTab, tabs, tabGroup ) {
+		  var tabpanels = tabGroup.querySelectorAll('[role=tabpanel]');
 			tabs.forEach( ( tab, i ) => {
 				if (currentTab === tab) {
   	      tab.setAttribute('aria-selected', 'true');
@@ -173,11 +159,14 @@
   	}
 
 		window.addEventListener('load', function () {
-		  var tabs = document.querySelectorAll('[role=tab]');
-			tabs.forEach( ( tab ) => {
-				tab.addEventListener( 'click', ( e ) => {
-					setSelectedTab( e.currentTarget );
-				} );
+		  var tabGroups = document.querySelectorAll('.tabs');
+			tabGroups.forEach( ( tabGroup ) => {
+		  	var tabs = tabGroup.querySelectorAll('[role=tab]');
+				tabs.forEach( ( tab ) => {
+					tab.addEventListener( 'click', ( e ) => {
+						setSelectedTab( e.currentTarget, tabs, tabGroup );
+					} );
+				} )
 			} )
 		});
 	</script>
@@ -190,65 +179,66 @@
 		<h1>Accessibility Report for "{{{name}}}"</h1>
 		<p><b>Run on:</b> {{{pageUrl}}}</p>
 		<p><b>Generated at:</b> {{date}}</p>
-		<p><b>Page screenshot:</b> <a href="./{{{name}}}.png">{{{name}}}.png</a></p>
+		<p><b>Test patch screenshot:</b> <a href="./{{{name}}}.png">{{{name}}}.png</a></p>
 
+		<h2 id="tablist-label">Overview of changes</h2>
+		{{^diffData}}
+		<div class="tab nochange">
+			✅ No change
+    </div>
+		{{/diffData}}
 		{{#diffData}}
-		<h2>Diff</h2>
-
-		<h3>Overview</h3>
-
-		<nav class="counts" aria-label="Issue diff counts">
-			{{#totalRemovedCount}}<span class="count removed">🎉 {{.}} removed</span>{{/totalRemovedCount}}
-			{{#totalAddedCount}}<span class="count added">⚠️ {{.}} added</span>{{/totalAddedCount}}
-			{{^diffData}}<span class="count">✅ No change in reported issues</span>{{/diffData}}	
-		</nav>
-
-		{{#data}}
-		<div id="{{type}}-diff" class="container">
-			<h3>{{typeLabel}}: -{{removedCount}}, +{{addedCount}} rule(s)</h3>
-			{{#codes}}
-			<div class="message">
-				<h4>{{message}}</h4>
-				<p><b>Rule:</b> {{runner}}, {{code}}</p>
-				{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
-				<hr>
-				<details>
-					<summary>
-						{{issueCount}} issue(s):
-					</summary>
-					<ul class="issues-list">
-						{{#issues}}
-						<li>
-							<div class="diff">{{#isDeletion}}-{{/isDeletion}}{{^isDeletion}}+{{/isDeletion}}</div>
-							<div class="issue {{#isDeletion}}removed{{/isDeletion}}{{^isDeletion}}added{{/isDeletion}}">
-								<pre>{{selector}}<hr>{{context}}</pre>
-							</div>
-						</li>
-						{{/issues}}
-					</ul>
-				</details>
+		<div class="tabs">
+			<div role="tablist" aria-labelledby="tablist-label">
+				{{#removedData}}
+				<button id="tab-{{name}}" type="button" class="tab removed" role="tab" aria-selected="false" aria-controls="tabpanel-{{name}}">
+					🎉 Solved issues ({{totalCount}})
+    		</button>
+				{{/removedData}}
+				{{#addedData}}
+				<button id="tab-{{name}}" type="button" class="tab added" role="tab" aria-selected="true" aria-controls="tabpanel-{{name}}">
+					⚠️ New issues ({{totalCount}})
+    		</button>
+				{{/addedData}}
 			</div>
-			{{/codes}}
+			{{#removedData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/removedData}}
+	 		{{#addedData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}" class="is-hidden">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/addedData}}
 		</div>
-		{{/data}}
 		{{/diffData}}
 
+		<h2 id="tablist-label">All issues found</h2>
 		<div class="tabs">
-			<h2 id="tablist-label">Individual patches</h3>
 			<div role="tablist" aria-labelledby="tablist-label">
-				<button id="tab-reference" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-reference">
-					Reference
+				{{#referenceData}}
+				<button id="tab-reference" type="button" class="tab" role="tab" aria-selected="false" aria-controls="tabpanel-reference">
+					Reference ({{totalCount}})
     		</button>
-    		<button id="tab-test" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-test">
-     			Test
+				{{/referenceData}}
+				{{#testData}}
+    		<button id="tab-test" type="button" class="tab" role="tab" aria-selected="true" aria-controls="tabpanel-test">
+     			Test ({{totalCount}})
     		</button>
+				{{/testData}}
 			</div>
-			<div id="tabpanel-reference" role="tabpanel" aria-labelledby="tab-reference" class="is-hidden">
-				{{#referenceData}}{{>Results}}{{/referenceData}}
+			{{#referenceData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
 			</div>
-	 		<div id="tabpanel-test" role="tabpanel" aria-labelledby="tab-test">
-				{{#testData}}{{>Results}}{{/testData}}
+			{{/referenceData}}
+			{{#testData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}" class="is-hidden">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
 			</div>
+			{{/testData}}
+		</div>
 	</div>
 
 </body>

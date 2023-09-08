@@ -18,7 +18,8 @@ const testDefaults = {
 	ignore: [
 		// Prevent axe-core from flagging all TOC links as incorrect color contrast
 		'color-contrast',
-		'WCAG2AA.Principle2.Guideline2_4.2_4_1.G1,G123,G124.NoSuchID'
+		// Prevent contrast ratio error on absolutely positioned elements
+		'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs'
 	],
 	chromeLaunchConfig: {
 		headless: true,
