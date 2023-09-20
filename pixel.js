@@ -88,7 +88,6 @@ const daysElapsed = ( new Date() - new Date('${date}') ) / ( 1000 * 60 * 60 * 24
   if ( daysElapsed > 1 ) {
     msg.style.backgroundColor = 'red';
   }
-}
 }());
 </script>
 ${markerString}`
