@@ -18,6 +18,16 @@ module.exports = async ( page, hashtags ) => {
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
 		await page.waitForSelector( limitedWidthButtonSelector );
-		clickBtn( page, limitedWidthButtonSelector, 'vector-feature-limited-width-clientpref-1' );
+		clickBtn( page, limitedWidthButtonSelector, '.vector-feature-limited-width-clientpref-1' );
+
+		// If we have disabled limited width a popup will show.
+		// Make sure it gets dismissed before showing screenshot.
+		if ( isCurrentlyEnabled ) {
+			await page.waitForSelector( '.vector-popup-notification' );
+			// Click the body to dismiss the notification.
+			await page.evaluate( async () => {
+				document.body.click();
+			} );
+		}
 	}
 };
