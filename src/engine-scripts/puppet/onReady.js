@@ -40,7 +40,7 @@ module.exports = async ( page, scenario ) => {
 
 		// Run click handlers if necessary.
 		if ( hashtags.includes( '#click-edit' ) ) {
-			await clickBtn( page, '#ca-edit', '.editor-container, .ve-ui-surface' );
+			await clickBtn( page, '#ca-edit, #ca-editsource', '.editor-container, .ve-ui-surface' );
 		}
 		if ( hashtags.includes( '#click-language' ) ) {
 			await clickBtn( page, '#language-selector a' );
