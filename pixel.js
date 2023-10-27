@@ -464,9 +464,10 @@ Running regression group "${group}"
 *************************
 *************************` );
 					try {
+						console.log( `Running reference group (with ${opts.changeId.join( ',' )}).` );
 						await processCommand( 'reference', {
 							branch: LATEST_RELEASE_BRANCH,
-							change: opts.change,
+							changeId: opts.changeId,
 							group
 						}, true );
 						await processCommand( 'test', {
