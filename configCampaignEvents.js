@@ -14,8 +14,16 @@ const tests = [
 		path: '/wiki/Special:EnableEventRegistration'
 	},
 	{
-		label: 'Event Details (#logged-in)',
+		label: 'Event Page (#logged-in)',
 		path: '/wiki/Event:1'
+	},
+	{
+		label: 'Event Details tab (#logged-in)',
+		path: '/wiki/Special:EventDetails/1'
+	},
+	{
+		label: 'Participants tab (#logged-in)',
+		path: '/w/index.php?title=Special:EventDetails/1&tab=ParticipantsPanel'
 	},
 	{
 		label: 'Delete Event Registration (#logged-in)',
