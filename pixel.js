@@ -464,7 +464,12 @@ Running regression group "${group}"
 *************************
 *************************` );
 					try {
-						console.log( `Running reference group (with ${opts.changeId.join( ',' )}).` );
+						const changeId = opts.changeId;
+						let msg = '';
+						if ( changeId ) {
+							msg = `(with ${changeId.join( ',' )}).`;
+						}
+						console.log( `Running reference group ${msg}` );
 						await processCommand( 'reference', {
 							branch: LATEST_RELEASE_BRANCH,
 							changeId: opts.changeId,
@@ -476,6 +481,7 @@ Running regression group "${group}"
 						}, true );
 					} catch ( e ) {
 						// Continue.
+						console.log( 'Error occurred' );
 					}
 				} else {
 					console.log( `*************************
