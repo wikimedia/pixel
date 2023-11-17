@@ -63,6 +63,14 @@ module.exports = async ( page, scenario ) => {
 		if ( hashtags.includes( '#click-ambox' ) ) {
 			await clickBtn( page, '.ambox' );
 		}
+
+		// Support for a generic click in the form #click[id=id])
+		hashtags.map( ( hashtag ) => {
+			const match = hashtag.match(/click\[id=([^\)]*)\]/);
+			return match && match[1];
+		} ).filter( ( selector ) => selector ).forEach( async ( selector ) => {
+			await clickBtn( page, `#${selector}` );
+		} );
 	}
 
 	// Run Echo handlers if necessary.
