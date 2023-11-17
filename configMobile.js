@@ -88,7 +88,11 @@ const tests = [
 		path: '/wiki/Meerkat'
 	},
 	{
-		label: 'Blank user page',
+		label: 'Blank user page (#minerva #mobile)',
+		path: '/wiki/User:Echo100'
+	},
+	{
+		label: 'Switch to mobile (#minerva #mobile #logged-in #click[id=mw-mf-display-toggle])',
 		path: '/wiki/User:Echo100'
 	}
 ];
