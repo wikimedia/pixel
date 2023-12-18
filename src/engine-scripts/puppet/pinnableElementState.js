@@ -9,7 +9,9 @@ module.exports = async ( page, hashtags, featureName ) => {
 	const isLoggedIn = hashtags.includes( '#logged-in' );
 	const isUnpinned = hashtags.includes( `#${featureName}-unpinned` );
 	const isCurrentlyPinned = await page.evaluate( ( name ) => {
-		return document.documentElement.classList.contains( `vector-feature-${name}-pinned-enabled` );
+		const classList = document.documentElement.classList;
+		return classList.contains( `vector-feature-${name}-pinned-clientpref-1` ) ||
+			classList.contains( `vector-feature-${name}-pinned-enabled` );
 	}, featureName );
 
 	// Pin all elements by default when logged in to ensure pinnable element state

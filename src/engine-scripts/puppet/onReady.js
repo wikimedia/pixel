@@ -40,7 +40,7 @@ module.exports = async ( page, scenario ) => {
 
 		// Run click handlers if necessary.
 		if ( hashtags.includes( '#click-edit' ) ) {
-			await clickBtn( page, '#ca-edit', '.editor-container, .ve-ui-surface' );
+			await clickBtn( page, '#ca-edit, #ca-editsource', '.editor-container, .ve-ui-surface' );
 		}
 		if ( hashtags.includes( '#click-language' ) ) {
 			await clickBtn( page, '#language-selector a' );
@@ -63,6 +63,14 @@ module.exports = async ( page, scenario ) => {
 		if ( hashtags.includes( '#click-ambox' ) ) {
 			await clickBtn( page, '.ambox' );
 		}
+
+		// Support for a generic click in the form #click[id=id])
+		hashtags.map( ( hashtag ) => {
+			const match = hashtag.match( /click\[id=([^\]]*)\]/ );
+			return match && match[ 1 ];
+		} ).filter( ( selector ) => selector ).forEach( async ( selector ) => {
+			await clickBtn( page, `#${selector}` );
+		} );
 	}
 
 	// Run Echo handlers if necessary.

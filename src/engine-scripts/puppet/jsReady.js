@@ -26,7 +26,7 @@ const getSkinModuleFromHashtags = ( hashtags ) => {
  */
 module.exports = async ( page, hashtags ) => {
 	await moduleReady( page, getSkinModuleFromHashtags( hashtags ) );
-	if ( hashtags.includes( 'quicksurvey' ) ) {
+	if ( hashtags.includes( '#quicksurvey' ) ) {
 		await moduleReady( page, 'ext.quicksurveys.lib.vue' );
 	}
 	await page.evaluate( () => {

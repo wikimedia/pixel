@@ -79,10 +79,16 @@ background-color: #eaecf0; border-color: #a2a9b1;">
 <p>Test ran on ${date}</p>
 </div>
 <script>
+(function() {
 const daysElapsed = ( new Date() - new Date('${date}') ) / ( 1000 * 60 * 60 * 24);
-if ( daysElapsed > 1 ) {
-  document.getElementById( 'mw-messagebox' ).style.backgroundColor = 'red';
-}
+  const warning = document.createElement( 'em' );
+  const msg = document.getElementById( 'mw-message-box' );
+  warning.textContent = 'This test is < ' + Math.round( parseInt( daysElapsed, 10 ) ) + ' days old.';
+  msg.appendChild( warning );
+  if ( daysElapsed > 1 ) {
+    msg.style.backgroundColor = 'red';
+  }
+}());
 </script>
 ${markerString}`
 		);
@@ -489,9 +495,15 @@ Running regression group "${group}"
 *************************
 *************************` );
 					try {
+						const changeId = opts.changeId;
+						let msg = '';
+						if ( changeId ) {
+							msg = `(with ${changeId.join( ',' )}).`;
+						}
+						console.log( `Running reference group ${msg}` );
 						await processCommand( 'reference', {
 							branch: LATEST_RELEASE_BRANCH,
-							change: opts.change,
+							changeId: opts.changeId,
 							group
 						}, true );
 						await processCommand( 'test', {
@@ -500,6 +512,7 @@ Running regression group "${group}"
 						}, true );
 					} catch ( e ) {
 						// Continue.
+						console.log( 'Error occurred' );
 					}
 				} else {
 					console.log( `*************************
