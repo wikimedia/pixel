@@ -39,7 +39,7 @@ function getTestPromises( type, config ) {
 		const { url, name, ...testOptions } = test;
 		let options = { ...testOptions, ...{
 			// Automatically enable screen capture for every test;
-			screenCapture: `${config.paths.a11y_report}/${name}.png`
+			screenCapture: `${config.paths[ `a11y_${type}` ]}/${name}.png`
 		} };
 
 		// FIXME: update this to not be hardcoded
@@ -67,7 +67,8 @@ function getTestPromises( type, config ) {
  */
 function sendMetrics( namespace, name, count ) {
 	const metricPrefix = 'ci_a11y';
-	const url = `${process.env.WMF_JENKINS_BEACON_URL}${metricPrefix}.${namespace}.${name}=${count}c`;
+	const beaconUrl = 'https://meta.wikimedia.org/beacon/statsv/?';
+	const url = `${beaconUrl}${metricPrefix}.${namespace}.${name}=${count}c`;
 	return fetch( url );
 }
 
@@ -97,7 +98,6 @@ async function processTestResults( testResults, type, config, opts ) {
 	console.log( `'${name}'- ${errorNum} errors, ${warningNum} warnings, ${noticeNum} notices` );
 
 	// Send data to Graphite
-	// WMF_JENKINS_BEACON_URL is only defined in CI env
 	if ( opts.logResults ) {
 		await sendMetrics( config.namespace, testResults.name, errorNum )
 			.then( ( response ) => {
@@ -157,9 +157,8 @@ async function main() {
 		throw new Error( 'Config missing test name' );
 	}
 
-	const canLogResults = process.env.WMF_JENKINS_BEACON_URL && config.namespace;
-	if ( opts.logResults && !canLogResults ) {
-		throw new Error( 'Unable to log results, missing config or env variables' );
+	if ( opts.logResults && config.namespace ) {
+		throw new Error( 'Unable to log results, missing config variables' );
 	}
 
 	resetDirs( type, config );

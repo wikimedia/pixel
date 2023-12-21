@@ -349,6 +349,10 @@ function setupCli() {
 		'-a, --a11y',
 		'Run automated a11y tests in addition to visual regression.'
 	] );
+	const logResultsOpt = /** @type {const} */ ( [
+		'-l, --logResults',
+		'Log accessibility results to statsv.'
+	] );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
 		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
@@ -387,6 +391,7 @@ function setupCli() {
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...a11yOpt )
+		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
@@ -399,6 +404,7 @@ function setupCli() {
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
 		.option( ...a11yOpt )
+		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
