@@ -156,10 +156,19 @@ const GROUP_CONFIG = {
 
 /**
  * @param {string} groupName
+ * @param {boolean} a11y
  * @return {string} path to configuration file.
  * @throws {Error} for unknown group
  */
-const getGroupConfig = ( groupName ) => {
+const getGroupConfig = ( groupName, a11y ) => {
+	if ( a11y ) {
+		switch ( groupName ) {
+			case 'desktop':
+				return 'configDesktopA11y.js';
+			default:
+				throw new Error( `Unknown test group: ${groupName}` );
+		}
+	}
 	const c = GROUP_CONFIG[ groupName ];
 	if ( !c ) {
 		throw new Error( `Unknown test group: ${groupName}` );
@@ -241,10 +250,9 @@ async function processCommand( type, opts, runSilently = false ) {
 			context[ group ].description = description;
 		}
 		context[ group ][ type ] = active;
+
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
-		const configFile = getGroupConfig( group );
-		const config = require( `${__dirname}/${configFile}` );
 
 		// Start docker containers.
 		await batchSpawn.spawn(
@@ -260,54 +268,71 @@ async function processCommand( type, opts, runSilently = false ) {
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 
-		// Remove test screenshots folder (if present) so that its size doesn't
-		// increase with each `test` run. BackstopJS automatically removes the
-		// reference folder when the `reference` command is run, but not the test
-		// folder when the `test` command is run.
-		if ( type === 'test' ) {
-			removeFolder( config.paths.bitmaps_test );
-		}
-		// Execute Visual regression tests.
-		const finished = await batchSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
-		).then( async () => {
-			await writeBannerAndOpenReportIfNecessary(
-				type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
-			);
-		}, async ( /** @type {Error} */ err ) => {
-			// Don't check error message if caller asked us not to.
-			if ( err.message.includes( '130' ) ) {
-				// If user ends subprocess with a sigint, exit early.
-				if ( !runSilently ) {
-					// eslint-disable-next-line no-process-exit
-					process.exit( 1 );
-				}
-			}
+		const configFile = getGroupConfig( group, opts.a11y );
+		const config = require( `${__dirname}/${configFile}` );
 
-			if ( err.message.includes( 'Exit with error code 1' ) ) {
+		if ( opts.a11y ) {
+			// Execute a11y regression tests.
+			return batchSpawn.spawn(
+				'docker',
+				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile ] ) ]
+			).finally( async () => {
+				// Reset the database if `--reset-db` option is passed.
+				if ( opts.resetDb ) {
+					console.log( 'Resetting database state...' );
+					await resetDb();
+				}
+			} );
+		} else {
+			// Remove test screenshots folder (if present) so that its size doesn't
+			// increase with each `test` run. BackstopJS automatically removes the
+			// reference folder when the `reference` command is run, but not the test
+			// folder when the `test` command is run.
+			if ( type === 'test' ) {
+				removeFolder( config.paths.bitmaps_test );
+			}
+			// Execute Visual regression tests.
+			const finished = await batchSpawn.spawn(
+				'docker',
+				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+			).then( async () => {
 				await writeBannerAndOpenReportIfNecessary(
-					type, group, config.paths.html_report, process.env.NONINTERACTIVE
+					type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
 				);
-				if ( !runSilently ) {
-					// eslint-disable-next-line no-process-exit
-					process.exit( 1 );
+			}, async ( /** @type {Error} */ err ) => {
+				// Don't check error message if caller asked us not to.
+				if ( err.message.includes( '130' ) ) {
+					// If user ends subprocess with a sigint, exit early.
+					if ( !runSilently ) {
+						// eslint-disable-next-line no-process-exit
+						process.exit( 1 );
+					}
 				}
-			}
 
-			if ( runSilently ) {
-				return Promise.resolve();
-			} else {
-				throw err;
-			}
-		} ).finally( async () => {
-			// Reset the database if `--reset-db` option is passed.
-			if ( opts.resetDb ) {
-				console.log( 'Resetting database state...' );
-				await resetDb();
-			}
-		} );
-		return finished;
+				if ( err.message.includes( 'Exit with error code 1' ) ) {
+					await writeBannerAndOpenReportIfNecessary(
+						type, group, config.paths.html_report, process.env.NONINTERACTIVE
+					);
+					if ( !runSilently ) {
+						// eslint-disable-next-line no-process-exit
+						process.exit( 1 );
+					}
+				}
+
+				if ( runSilently ) {
+					return Promise.resolve();
+				} else {
+					throw err;
+				}
+			} ).finally( async () => {
+				// Reset the database if `--reset-db` option is passed.
+				if ( opts.resetDb ) {
+					console.log( 'Resetting database state...' );
+					await resetDb();
+				}
+			} );
+			return finished;
+		}
 	} catch ( err ) {
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
@@ -320,6 +345,14 @@ function setEnvironmentFlagIfGroup( envVarName, soughtGroup, group ) {
 
 function setupCli() {
 	const { program } = require( 'commander' );
+	const a11yOpt = /** @type {const} */ ( [
+		'-a, --a11y',
+		'Run automated a11y tests in addition to visual regression.'
+	] );
+	const logResultsOpt = /** @type {const} */ ( [
+		'-l, --logResults',
+		'Log accessibility results to statsv.'
+	] );
 	const branchOpt = /** @type {const} */ ( [
 		'-b, --branch <name-of-branch>',
 		`Name of branch. Can be "${MAIN_BRANCH}" or a release branch (e.g. "origin/wmf/1.37.0-wmf.19"). Use "${LATEST_RELEASE_BRANCH}" to use the latest wmf release branch.`,
@@ -357,6 +390,8 @@ function setupCli() {
 		.command( 'reference' )
 		.description( 'Create reference (baseline) screenshots and delete the old reference screenshots.' )
 		.requiredOption( ...branchOpt )
+		.option( ...a11yOpt )
+		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
@@ -368,6 +403,8 @@ function setupCli() {
 		.command( 'test' )
 		.description( 'Create test screenshots and compare them against the reference screenshots.' )
 		.requiredOption( ...branchOpt )
+		.option( ...a11yOpt )
+		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )

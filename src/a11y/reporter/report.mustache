@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8"/>
+	<title>Accessibility Report For "{{pageUrl}}" ({{date}})</title>
+
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			background-color: #fff;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 16px;
+			line-height: 22px;
+			color: #333;
+		}
+
+		li {
+			margin-bottom: 16px;
+		}
+
+		pre {
+			white-space: pre-wrap;
+			overflow: auto;
+			margin: 0;
+			width: 100%;
+		}
+
+		h2 {
+			margin-top: 32px
+		}
+
+		h4 {
+			margin: 8px 0;
+		}
+
+		p {
+			margin: 0 0 8px 0;
+		}
+
+		.page {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 25px;
+		}
+		
+		.message {
+			margin-top: 20px;
+			padding: 8px 16px;
+			border-radius: 5px;
+			border: 3px solid black;
+		}
+
+		details {
+			padding: 8px 0;
+			clear: both;
+			border-top: 1px solid black;
+		}
+
+		summary {
+			font-weight: bold;
+		}
+
+		.issues-list {
+			margin-left: 0;
+			padding-left: 0;
+			list-style: none;
+		}
+
+		li {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			column-gap: 8px;
+		}
+
+		.issue {
+			border-radius: 5px;
+			padding: 10px;
+			background-color: #eee;
+			flex-grow: 1;
+		}
+
+		.error {
+			border-color: #ff4a4a;
+		}
+
+		.warning {
+			border-color: #e7c12b;
+		}
+
+		.notice {
+			border-color: #6a9fff;
+		}
+
+		.rule {
+			float: left;
+			margin-right: 8px;
+		}
+
+		.tab,
+		.tab:focus,
+		.tab:hover {
+			display: inline-block;
+			padding: 16px;
+			border: 3px solid gray;
+    	border-radius: 5px 5px 0 0;
+			font-size: 20px;
+			font-weight: bold;
+			cursor: pointer;
+    	background-color: white;
+		}
+
+		.tab[aria-selected="true"] {
+		  border-top-width: 6px;
+		  border-top-color: rgb(36 116 214);
+			border-bottom-color: white;
+		}
+
+		.tab.nochange {
+			border-radius: 5px;
+		}
+
+		.tab.removed {
+			background-color: #D9F6D5;
+		}
+
+		.tab.added {
+			background-color: #FBECEE;
+		}
+
+		.tabpanel {
+			padding: 16px;
+			padding-top: 0;
+			margin-top: -3px;
+		  border: 3px solid gray;
+		  border-radius: 0 5px 5px;
+		  width: 100%;
+			box-sizing: border-box;
+		}
+
+		.tabpanel.is-hidden {
+		  display: none;
+		}
+	</style>
+	<script>
+		function setSelectedTab( currentTab, tabs, tabGroup ) {
+		  var tabpanels = tabGroup.querySelectorAll('[role=tabpanel]');
+			tabs.forEach( ( tab, i ) => {
+				if (currentTab === tab) {
+  	      tab.setAttribute('aria-selected', 'true');
+  	      tabpanels[i].classList.remove('is-hidden');
+  	    } else {
+  	      tab.setAttribute('aria-selected', 'false');
+  	      tabpanels[i].classList.add('is-hidden');
+  	    }
+			} );
+  	}
+
+		window.addEventListener('load', function () {
+		  var tabGroups = document.querySelectorAll('.tabs');
+			tabGroups.forEach( ( tabGroup ) => {
+		  	var tabs = tabGroup.querySelectorAll('[role=tab]');
+				tabs.forEach( ( tab ) => {
+					tab.addEventListener( 'click', ( e ) => {
+						setSelectedTab( e.currentTarget, tabs, tabGroup );
+					} );
+				} )
+			} )
+		});
+	</script>
+
+</head>
+<body>
+
+	<div class="page">
+
+		<h1>Accessibility Report for "{{{name}}}"</h1>
+		<p><b>Run on:</b> {{{pageUrl}}}</p>
+		<p><b>Generated at:</b> {{date}}</p>
+
+		<h2 id="tablist-label">Overview of changes</h2>
+		{{^diffData}}
+		<div class="tab nochange">
+			✅ No change
+    </div>
+		{{/diffData}}
+		{{#diffData}}
+		<div class="tabs">
+			<div role="tablist" aria-labelledby="tablist-label">
+				{{#removedData}}
+				<button id="tab-{{name}}" type="button" class="tab removed" role="tab" aria-selected="false" aria-controls="tabpanel-{{name}}">
+					🎉 Solved issues ({{totalCount}})
+    		</button>
+				{{/removedData}}
+				{{#addedData}}
+				<button id="tab-{{name}}" type="button" class="tab added" role="tab" aria-selected="true" aria-controls="tabpanel-{{name}}">
+					⚠️ New issues ({{totalCount}})
+    		</button>
+				{{/addedData}}
+			</div>
+			{{#removedData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/removedData}}
+	 		{{#addedData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}" class="is-hidden">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/addedData}}
+		</div>
+		{{/diffData}}
+
+		<h2 id="tablist-label">All issues found</h2>
+		<div class="tabs">
+			<div role="tablist" aria-labelledby="tablist-label">
+				{{#referenceData}}
+				<button id="tab-reference" type="button" class="tab" role="tab" aria-selected="false" aria-controls="tabpanel-reference">
+					Reference ({{totalCount}})
+    		</button>
+				{{/referenceData}}
+				{{#testData}}
+    		<button id="tab-test" type="button" class="tab" role="tab" aria-selected="true" aria-controls="tabpanel-test">
+     			Test ({{totalCount}})
+    		</button>
+				{{/testData}}
+			</div>
+			{{#referenceData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/referenceData}}
+			{{#testData}}
+			<div id="tabpanel-{{name}}" class="tabpanel" role="tabpanel" aria-labelledby="tab-{{name}}" class="is-hidden">
+				{{#resultsData}}{{>Results}}{{/resultsData}}
+			</div>
+			{{/testData}}
+		</div>
+	</div>
+
+</body>
+</html>

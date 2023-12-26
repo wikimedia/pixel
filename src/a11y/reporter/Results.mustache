@@ -1,0 +1,22 @@
+<div id="{{type}}-{{name}}" class="container">
+	<h3>{{typeLabel}} ({{typeCount}})</h3>
+	{{#codes}}
+	<div class="message {{type}}">
+		<h4>{{message}}</h4>
+		<p class="rule"><b>Rule:</b> {{runner}}, {{code}}</p>
+		{{#runnerExtras}}<p><b>Impact:</b> {{impact}}</p>{{/runnerExtras}}
+		<details class="details">
+			<summary>
+				{{issueCount}} issue(s):
+			</summary>
+			<ul class="issues-list">
+				{{#issues}}
+				<li class="issue">
+					<pre>{{selector}}<hr>{{context}}</pre>
+				</li>
+				{{/issues}}
+			</ul>
+		</details>
+	</div>
+	{{/codes}}
+</div>
