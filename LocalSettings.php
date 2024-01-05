@@ -385,3 +385,8 @@ $wgVectorPageTools = [
 
 $wgMFAmcOutreachMinEditCount = 0;
 $wgMFAmcOutreach = true;
+$wgVectorZebraDesign = [
+	"logged_in" => true,
+	"logged_out" => true,
+	"beta" => true,
+];
