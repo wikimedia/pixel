@@ -1,6 +1,6 @@
 module.exports = async ( page ) => {
 	await page.evaluate( () => {
-		window.scrollBy( 0, window.innerHeight );
+		window.scroll( 0, window.innerHeight * 2 );
 		return true;
 	} );
 };
