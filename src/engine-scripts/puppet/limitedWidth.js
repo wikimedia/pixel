@@ -17,8 +17,9 @@ module.exports = async ( page, hashtags ) => {
 
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
+		const selectorAfterToggle = `.vector-feature-limited-width-clientpref-${isCurrentlyEnabled ? '0' : '1'}`;
 		await page.waitForSelector( limitedWidthButtonSelector );
-		clickBtn( page, limitedWidthButtonSelector, '.vector-feature-limited-width-clientpref-1' );
+		await clickBtn( page, limitedWidthButtonSelector, selectorAfterToggle );
 
 		// If we have disabled limited width a popup will show.
 		// Make sure it gets dismissed before showing screenshot.
