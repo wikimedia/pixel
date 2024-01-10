@@ -1,7 +1,7 @@
 // @ts-nocheck
 const fs = require( 'fs' );
 const path = require( 'path' );
-const pa11y = require( 'pa11y' ); // eslint-disable-line
+const pa11y = require( 'pa11y' );
 const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
