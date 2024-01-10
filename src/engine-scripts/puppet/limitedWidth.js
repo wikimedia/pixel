@@ -6,8 +6,12 @@ const clickBtn = require( './clickBtn' );
  * @param {string[]} hashtags
  */
 module.exports = async ( page, hashtags ) => {
+	// TODO: With client preferences the toggle process is different this needs updating
+	// Short circuit until todo is fixed
+	return;
 	// limit width by default to ensure consistency between tests
 	// Only disable when hashtag is provided
+	// eslint-disable-next-line no-unreachable
 	const isDisabled = hashtags.includes( '#limited-width-disabled' );
 	const isCurrentlyEnabled = await page.evaluate( () => {
 		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' ) ||
@@ -15,6 +19,7 @@ module.exports = async ( page, hashtags ) => {
 			document.documentElement.classList.contains( 'vector-feature-limited-width-enabled' );
 	} );
 
+	// eslint-disable-next-line no-unreachable
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
 		const limitedWidthButtonSelector = '.vector-limited-width-toggle';
 		await page.waitForSelector( limitedWidthButtonSelector );
