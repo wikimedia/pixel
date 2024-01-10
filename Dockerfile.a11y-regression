@@ -12,13 +12,19 @@ RUN apt-get update && \
 RUN set -ex && \
     DEBIAN_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d '=' -f2 | tr -d '"') && \
     export DEBIAN_VERSION=$DEBIAN_VERSION && \
+    ARCH=`uname -m` && \
+    if [ "$ARCH" = "x86_64" ]; then \
+           export DEB_ARCH="amd64"; \
+        else \
+           export DEB_ARCH="arm64"; \
+    fi && \
     sudo PUPPETEER_SKIP_DOWNLOAD=true PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION} puppeteer@21.7.0 puppeteer-chromium-version-finder@^1.0.1 chromium-version-deb-finder@^2.0.1 && \
     NODE_PATH="$(npm root -g):$(npm root -g)/puppeteer/node_modules" node -e " \
     const versionFinder = require('puppeteer-chromium-version-finder'); \
     const debFinder = require('chromium-version-deb-finder'); \
     (async () => { \
     const version = await versionFinder.getPuppeteerChromiumVersion(); \
-    const debUrls = await debFinder.getDebUrlsForVersionAndArch(version.MAJOR, version.MINOR, process.env.DEBIAN_VERSION, 'arm64'); \
+    const debUrls = await debFinder.getDebUrlsForVersionAndArch(version.MAJOR, version.MINOR, process.env.DEBIAN_VERSION, process.env.DEB_ARCH); \
     console.log(debUrls.join('\n')); \
     })(); \
     " | \
