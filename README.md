@@ -13,6 +13,8 @@ regressions before users see them. It *currently* integrates
 [MediaWiki-Docker](https://www.mediawiki.org/wiki/MediaWiki-Docker), and Docker
 under the hood.
 
+Pixel can also be used for accessibility regression testing using [Pa11y](https://github.com/pa11y/pa11y) and [axe-core](https://github.com/dequelabs/axe-core) as the automated accessibility testing engine. Similar to visual regression testing, this makes it easier to see accessibility changes by comparing the results of accessibility tests between two patches.
+
 Check out the hourly reports Pixel has generated at https://pixel.wmcloud.org
 which compare the latest release branch against master, and read
 [T302246](https://phabricator.wikimedia.org/T302246) for the motivation behind
@@ -100,6 +102,17 @@ be used to interact with/debug the same server that the tests use.
 
 If you want to run the mobile visual regression test suite pass the `--group
 mobile` flag.
+
+### 3) Accessibility regression testing
+
+Pixel can also compare accessibility errors between a reference and test patch. In order to use this feature, just add the `--a11y` flag when running reference and test commands.
+
+```sh
+./pixel.js reference -b latest-release --a11y
+./pixel.js test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2 --a11y
+```
+
+The HTML report of the test results can be found at `report-a11y/<name-of-test-group>/<name-of-test>.html`.
 
 ### Stopping the services
 
