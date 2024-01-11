@@ -83,6 +83,7 @@ module.exports = {
 	report: [],
 	engine: 'puppeteer',
 	engineOptions: {
+		headless: 'new',
 		args: [
 			'--no-sandbox'
 		]
