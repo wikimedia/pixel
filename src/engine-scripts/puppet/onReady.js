@@ -2,6 +2,7 @@ const deferToFrame = require( './deferToFrame' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
 const clickBtn = require( './clickBtn' );
+const pinnableElementState = require( './pinnableElementState' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
@@ -20,9 +21,7 @@ module.exports = async ( page, scenario ) => {
 	// These only apply to Vector 2022
 	if ( hashtags.includes( '#vector-2022' ) ) {
 		await require( './limitedWidth' )( page, hashtags );
-		await require( './pinnableElementState' )( page, hashtags, 'main-menu' );
-		await require( './pinnableElementState' )( page, hashtags, 'page-tools' );
-		await require( './pinnableElementState' )( page, hashtags, 'toc' );
+		await pinnableElementState( page, hashtags, [ 'main-menu', 'page-tools', 'toc' ] );
 		// Only 1 dropdown can be open at time
 		await require( './userLinksDropdownState' )( page, hashtags );
 		await require( './mainMenuDropdownState' )( page, hashtags );
