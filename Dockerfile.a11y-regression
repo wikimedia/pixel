@@ -33,9 +33,6 @@ RUN set -ex && \
     rm -f ./*.deb && \
     sudo test -f /usr/bin/chromium && sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser && sudo ln -s /usr/bin/chromium /usr/bin/chrome;
 
-RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
-RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-
 RUN apt-get -qqy update \
   && apt-get -qqy --no-install-recommends install \
     libxshmfence-dev \
