@@ -1,5 +1,4 @@
 const dropdownState = require( './dropdownState' );
-const fastForwardAnimations = require( './fastForwardAnimations' );
 
 /**
  * Open or close Vector-2022's page tools dropdown
@@ -15,10 +14,4 @@ module.exports = async ( page, hashtags ) => {
 	}
 
 	await dropdownState( page, '.vector-page-tools-landmark input', isClosed );
-
-	await page.evaluate( async () => {
-		document.body.click();
-	} );
-
-	await fastForwardAnimations( page );
 };
