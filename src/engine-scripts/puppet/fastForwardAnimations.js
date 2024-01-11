@@ -26,6 +26,15 @@ async function fastForwardAnimations( page ) {
 			}
 		} );
 
+		// Hide all popup notifications
+		const popupNotifications = document.querySelectorAll( '.vector-popup-notification' );
+		if ( popupNotifications && popupNotifications.length > 0 ) {
+			popupNotifications.forEach( ( popupNotification ) => {
+				popupNotification.style = '';
+				popupNotification.classList.add( 'oo-ui-element-hidden' );
+			} );
+		}
+
 		// Wait until the next frame before resolving.
 		return new Promise( ( resolve ) => {
 			requestAnimationFrame( () => {

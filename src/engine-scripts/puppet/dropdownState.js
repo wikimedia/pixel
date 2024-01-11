@@ -26,10 +26,6 @@ const dropdownState = async ( page, buttonSelector, isClosed ) => {
 		}
 	}, buttonSelector, isClosed );
 
-	await page.evaluate( async () => {
-		document.body.click();
-	} );
-
 	// Vector-2022 menus currently have transition animations when opened.
 	await fastForwardAnimations( page );
 };
