@@ -1,7 +1,9 @@
 FROM docker-registry.wikimedia.org/dev/buster-php74-fpm:1.0.0-s3
 
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-	&& apt-get install -y nodejs
+COPY node-preparation.sh /node-preparation.sh
+
+RUN /node-preparation.sh ensure_node_major_version_installed 16 || \
+    (echo "Failed to install Node" && exit 1)
 
 WORKDIR /var/www/html/w
 
