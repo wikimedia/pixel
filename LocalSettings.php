@@ -365,6 +365,8 @@ $wgQuickSurveysConfig = [
 $wgHooks['BeforePageDisplay'][] = function ( $out ) {
 	$css = <<<HTML
 <style type="text/css">
+	/* Popup notifications are hidden in visual regression suite as they can appear unpredictably. */
+	.vector-popup-notification { display: none !important; }
 </style>
 HTML;
 	$out->addHTML( $css );
