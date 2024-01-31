@@ -88,5 +88,8 @@
 	},
 	"mediawiki/core": {
 		"path": "."
+	},
+	"design/codex": {
+		"path": "codex"
 	}
 }

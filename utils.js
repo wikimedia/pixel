@@ -68,6 +68,7 @@ const addFeatureFlagQueryStringsToScenario = ( scenario, featureFlags ) => {
  * @property {string} [hash]
  * @property {Object} [query]
  * @property {string[]} [hashtags]
+ * @property {number} [misMatchThreshold]
  * @property {string} label
  * @property {string[]} selectors
  *
