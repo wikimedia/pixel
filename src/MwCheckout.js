@@ -93,6 +93,21 @@ class MwCheckout {
 
 			await this.#updateSubmodules( path );
 			await this.#updateComposer( path );
+
+			if ( repoId === 'design/codex' ) {
+				// Build the Codex sandbox and its dependencies
+				await this.#batchSpawn.spawn(
+					`
+					cd ${path}
+					npm ci
+					npm run build -w @wikimedia/codex-icons
+					npm run build -w @wikimedia/codex-design-tokens
+					CODEX_DOC_ROOT=/w/codex/packages/codex/dist npm run build -w @wikimedia/codex
+					`,
+					[],
+					{ shell: true }
+				);
+			}
 		} ) );
 
 		// The final step is to run maintenance/update script to perform any
@@ -234,12 +249,19 @@ cd ${path} && git submodule update
 
 			const path = repos[ change.project ].path;
 
+			branch = branch || `origin/${change.branch}`;
+
+			// Use the `main` branch instead of `master` if `main` is available and
+			// `master` is unavailable.
+			const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
+			const branches = stdout.split( '\n' );
+			branch = branch === 'origin/master' && !branches.includes( 'origin/master' ) && branches.includes( 'origin/main' ) ? 'origin/main' : branch;
+
 			if ( !change.current_revision ) {
 				throw new Error( `Could not find current revision for Change-Id "${changeId}".` );
 			}
 
 			commands[ change.project ] = commands[ change.project ] || [];
-			branch = branch || `origin/${change.branch}`;
 			commands[ change.project ].unshift(
 				`
 				git -C "${path}" fetch origin ${change.revisions[ change.current_revision ].ref} && 

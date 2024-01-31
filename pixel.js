@@ -53,6 +53,15 @@ async function getLatestReleaseBranch() {
 }
 
 /**
+ * @return {Promise<string>}
+ */
+async function getLatestCodexVersion() {
+	// Get the version tag with the highest number
+	const { stdout } = await exec( 'git ls-remote -t --sort="-version:refname" https://gerrit.wikimedia.org/r/design/codex --patterns "refs/tags/v[0-9.]*" | head -1' );
+	return `${stdout.split( 'refs/tags/' )[ 1 ].trim()}`;
+}
+
+/**
  * @param {'test'|'reference'} type
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
  * @param {string} relativePath Relative path to report.
@@ -145,7 +154,7 @@ const GROUP_CONFIG = {
 		config: 'configCampaignEvents.js'
 	},
 	codex: {
-		priority: 2,
+		priority: 1,
 		config: 'configCodex.js'
 	},
 	wikilambda: {
@@ -243,7 +252,9 @@ async function processCommand( type, opts, runSilently = false ) {
 		// latest release branch.
 		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
 			opts.branch = await getLatestReleaseBranch();
-			console.log( `Using latest branch "${opts.branch}"` );
+			const codexTag = await getLatestCodexVersion();
+			opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexTag}` ];
+			console.log( `Using latest branch "${opts.branch}" (for Codex, "${codexTag}")` );
 			if ( opts.changeId ) {
 				description = ` (Includes ${opts.changeId.join( ',' )})`;
 			}
