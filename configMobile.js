@@ -94,6 +94,11 @@ const tests = [
 	{
 		label: 'Switch to mobile (#minerva #mobile #logged-in #click[id=mw-mf-display-toggle])',
 		path: '/wiki/User:Echo100'
+	},
+	{
+		// Gallery JS causes reflows so restricted to JS disabled (T242143)
+		label: 'Galleries (#minerva #mobile #js-disabled)',
+		path: '/wiki/Gallery_test_page'
 	}
 ];
 

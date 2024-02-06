@@ -195,6 +195,11 @@ const tests = [
 			VIEWPORT_DESKTOP_WIDEST
 		]
 	},
+	{
+		// Gallery JS causes reflows so restricted to JS disabled (T242143)
+		label: 'Galleries (#vector-2022 #js-disabled)',
+		path: '/wiki/Gallery_test_page'
+	},
 	//
 	// Legacy Vector
 	//

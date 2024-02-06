@@ -29,4 +29,7 @@ module.exports = async ( page, scenario ) => {
 	if ( requireLogin ) {
 		await require( './loadCookies' )( page, getUsernameFromHashtags( hashtags ) );
 	}
+	if ( hashtags.includes( '#js-disabled' ) ) {
+		await page.setJavaScriptEnabled( false );
+	}
 };
