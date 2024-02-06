@@ -135,6 +135,13 @@ const GROUP_CONFIG = {
 		priority: 1,
 		config: 'configDesktop.js'
 	},
+	'desktop-a11y': {
+		name: 'Vector 2022 skin accessibility',
+		priority: 2,
+		a11y: true,
+		logResults: true,
+		config: 'configDesktopA11y.js'
+	},
 	mobile: {
 		name: 'Minerva and MobileFrontend',
 		priority: 1,
@@ -161,17 +168,10 @@ const GROUP_CONFIG = {
  * @throws {Error} for unknown group
  */
 const getGroupConfig = ( groupName, a11y ) => {
-	if ( a11y ) {
-		switch ( groupName ) {
-			case 'desktop':
-				return 'configDesktopA11y.js';
-			default:
-				throw new Error( `Unknown test group: ${groupName}` );
-		}
-	}
-	const c = GROUP_CONFIG[ groupName ];
+	const groupKey = a11y ? `${groupName}-a11y` : groupName;
+	const c = GROUP_CONFIG[ groupKey ];
 	if ( !c ) {
-		throw new Error( `Unknown test group: ${groupName}` );
+		throw new Error( `Unknown test group: ${groupKey}` );
 	}
 	return c.config;
 };
@@ -275,7 +275,7 @@ async function processCommand( type, opts, runSilently = false ) {
 			// Execute a11y regression tests.
 			return batchSpawn.spawn(
 				'docker',
-				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile ] ) ]
+				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile, !!opts.logResults ] ) ]
 			).finally( async () => {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
