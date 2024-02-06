@@ -1,7 +1,8 @@
 // @ts-nocheck
 const fs = require( 'fs' );
+const fetch = require( 'node-fetch' ); // eslint-disable-line
 const path = require( 'path' );
-const pa11y = require( 'pa11y' );
+const pa11y = require( 'pa11y' ); // eslint-disable-line
 const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
@@ -78,9 +79,9 @@ function sendMetrics( namespace, name, count ) {
  * @param {Object[]} testResults
  * @param {string} type
  * @param {Object} config
- * @param {Object} opts
+ * @param {boolean} logResults
  */
-async function processTestResults( testResults, type, config, opts ) {
+async function processTestResults( testResults, type, config, logResults ) {
 	testResults.issues = testResults.issues.filter( ( issue ) => {
 		// Clean up test results
 		// Remove htmlcs notices (there are too manu) and issues missing data about the element
@@ -98,7 +99,7 @@ async function processTestResults( testResults, type, config, opts ) {
 	console.log( `'${name}'- ${errorNum} errors, ${warningNum} warnings, ${noticeNum} notices` );
 
 	// Send data to Graphite
-	if ( opts.logResults ) {
+	if ( logResults ) {
 		await sendMetrics( config.namespace, testResults.name, errorNum )
 			.then( ( response ) => {
 				if ( response.ok ) {
@@ -129,11 +130,8 @@ async function processTestResults( testResults, type, config, opts ) {
 async function main() {
 	const type = process.argv[ 2 ];
 	const configFile = process.argv[ 3 ];
+	const logResults = process.argv[ 4 ] === 'true';
 	const config = require( `${process.cwd()}/${configFile}` );
-	// FIXME: update this to not be hardcoded
-	const opts = {
-		logResults: false
-	};
 
 	if ( !process.env.PIXEL_MW_SERVER ) {
 		throw new Error( 'Missing env variables' );
@@ -157,7 +155,7 @@ async function main() {
 		throw new Error( 'Config missing test name' );
 	}
 
-	if ( opts.logResults && config.namespace ) {
+	if ( logResults && !config.namespace ) {
 		throw new Error( 'Unable to log results, missing config variables' );
 	}
 
@@ -165,7 +163,7 @@ async function main() {
 	const testPromises = getTestPromises( type, config );
 	const testResults = await Promise.all( testPromises );
 	const resultPromises = testResults.map( async ( result ) => {
-		await processTestResults( result, type, config, opts );
+		await processTestResults( result, type, config, logResults );
 	} );
 	await Promise.all( resultPromises );
 	process.exit(); // eslint-disable-line
