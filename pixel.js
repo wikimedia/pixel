@@ -136,7 +136,7 @@ const GROUP_CONFIG = {
 		config: 'configDesktop.js'
 	},
 	'desktop-a11y': {
-		name: 'Vector 2022 skin accessibility',
+		name: 'Vector 2022 accessibility',
 		priority: 2,
 		a11y: true,
 		logResults: true,
@@ -146,6 +146,13 @@ const GROUP_CONFIG = {
 		name: 'Minerva and MobileFrontend',
 		priority: 1,
 		config: 'configMobile.js'
+	},
+	'mobile-a11y': {
+		name: 'Minerva and MobileFrontend accessibility',
+		priority: 2,
+		a11y: true,
+		logResults: true,
+		config: 'configMobileA11y.js'
 	},
 	'campaign-events': {
 		priority: 2,
