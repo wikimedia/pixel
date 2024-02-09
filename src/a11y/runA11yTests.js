@@ -1,9 +1,9 @@
 // @ts-nocheck
 const fs = require( 'fs' );
-const fetch = require( 'node-fetch' ); // eslint-disable-line
+const fetch = require( 'node-fetch' ); // eslint-disable-line node/no-missing-require
 const path = require( 'path' );
-const pa11y = require( 'pa11y' ); // eslint-disable-line
-const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line
+const pa11y = require( 'pa11y' ); // eslint-disable-line node/no-missing-require
+const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line node/no-missing-require
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
 const htmlReporter = require( path.resolve( __dirname, './reporter/reporter.js' ) );
