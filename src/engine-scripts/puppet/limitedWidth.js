@@ -8,6 +8,15 @@ const clickBtn = require( './clickBtn' );
 module.exports = async ( page, hashtags ) => {
 	// limit width by default to ensure consistency between tests
 	// Only disable when hashtag is provided
+	const isClientPrefs = await page.evaluate( () => {
+		return document.documentElement.classList.contains( 'vector-feature-client-preferences-enabled' );
+	} );
+
+	if ( isClientPrefs ) {
+		// FIXME: Handle limited width with client pref menu instead
+		return;
+	}
+
 	const isDisabled = hashtags.includes( '#limited-width-disabled' );
 	const isCurrentlyEnabled = await page.evaluate( () => {
 		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' ) ||
