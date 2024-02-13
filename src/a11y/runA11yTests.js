@@ -1,8 +1,8 @@
 // @ts-nocheck
 const fs = require( 'fs' );
-const fetch = require( 'node-fetch' ); // eslint-disable-line node/no-missing-require
+const fetch = require( 'node-fetch' );
 const path = require( 'path' );
-const pa11y = require( 'pa11y' ); // eslint-disable-line node/no-missing-require
+const pa11y = require( 'pa11y' );
 const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line node/no-missing-require
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
