@@ -85,7 +85,7 @@ services:
       context: .
       dockerfile: Dockerfile.a11y-regression
       args:
-        - PA11Y_VERSION=6.2.3
+        - PA11Y_VERSION=7.0.0
     working_dir: /pixel
     env_file:
       - .env
