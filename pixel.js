@@ -135,24 +135,10 @@ const GROUP_CONFIG = {
 		priority: 1,
 		config: 'configDesktop.js'
 	},
-	'desktop-a11y': {
-		name: 'Vector 2022 accessibility',
-		priority: 2,
-		a11y: true,
-		logResults: true,
-		config: 'configDesktopA11y.js'
-	},
 	mobile: {
 		name: 'Minerva and MobileFrontend',
 		priority: 1,
 		config: 'configMobile.js'
-	},
-	'mobile-a11y': {
-		name: 'Minerva and MobileFrontend accessibility',
-		priority: 2,
-		a11y: true,
-		logResults: true,
-		config: 'configMobileA11y.js'
 	},
 	'campaign-events': {
 		priority: 2,
@@ -168,6 +154,23 @@ const GROUP_CONFIG = {
 	}
 };
 
+const A11Y_GROUP_CONFIG = {
+	desktop: {
+		name: 'Vector 2022 accessibility',
+		priority: 2,
+		a11y: true,
+		logResults: true,
+		config: 'configDesktopA11y.js'
+	},
+	mobile: {
+		name: 'Minerva and MobileFrontend accessibility',
+		priority: 2,
+		a11y: true,
+		logResults: true,
+		config: 'configMobileA11y.js'
+	}
+};
+
 /**
  * @param {string} groupName
  * @param {boolean} a11y
@@ -175,10 +178,9 @@ const GROUP_CONFIG = {
  * @throws {Error} for unknown group
  */
 const getGroupConfig = ( groupName, a11y ) => {
-	const groupKey = a11y ? `${groupName}-a11y` : groupName;
-	const c = GROUP_CONFIG[ groupKey ];
+	const c = a11y ? A11Y_GROUP_CONFIG[ groupName ] : GROUP_CONFIG[ groupName ];
 	if ( !c ) {
-		throw new Error( `Unknown test group: ${groupKey}` );
+		throw new Error( `Unknown test group: ${groupName}` );
 	}
 	return c.config;
 };
@@ -232,6 +234,9 @@ async function processCommand( type, opts, runSilently = false ) {
 		let active;
 		let description = '';
 		const group = opts.group;
+		const configFile = getGroupConfig( group, opts.a11y );
+		const config = require( `${__dirname}/${configFile}` );
+
 		setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', group );
 		// Check if `-b latest-release` was used and, if so, set opts.branch to the
 		// latest release branch.
@@ -274,9 +279,6 @@ async function processCommand( type, opts, runSilently = false ) {
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
-
-		const configFile = getGroupConfig( group, opts.a11y );
-		const config = require( `${__dirname}/${configFile}` );
 
 		if ( opts.a11y ) {
 			// Execute a11y regression tests.
@@ -341,6 +343,7 @@ async function processCommand( type, opts, runSilently = false ) {
 			return finished;
 		}
 	} catch ( err ) {
+		console.log( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
 	}
@@ -490,13 +493,18 @@ function setupCli() {
 			if ( !fs.existsSync( outputDir ) ) {
 				fs.mkdirSync( outputDir );
 			}
-			const groups = Object.keys( GROUP_CONFIG );
-			for ( let i = 0; i < groups.length; i++ ) {
-				const group = groups[ i ];
-				const groupDef = GROUP_CONFIG[ group ];
+
+			// Update keys in a11y group config to avoid duplicate group names
+			const updatedA11yGroupConfig = {};
+			for ( const key in A11Y_GROUP_CONFIG ) {
+				updatedA11yGroupConfig[ key + 'a11y' ] = A11Y_GROUP_CONFIG[ key ];
+			}
+
+			const groups = { ...GROUP_CONFIG, ...updatedA11yGroupConfig };
+			for ( const [ group, groupDef ] of Object.entries( groups ) ) {
 				const name = groupDef.name || group;
 				html += `<li><a href="${group}/index.html">${name} (${group})</a></li>`;
-				const groupPriority = GROUP_CONFIG[ group ].priority || 0;
+				const groupPriority = groupDef.priority || 0;
 				if ( groupPriority <= priority ) {
 					console.log( `*************************
 *************************
