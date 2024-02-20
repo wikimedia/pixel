@@ -212,6 +212,11 @@ const tests = [
 		label: 'Legacy Vector article talk page (#vector)',
 		path: '/wiki/Talk:Test?useskin=vector',
 		delay: 1500
+	},
+	{
+		label: 'Talk page discussions (#vector)',
+		path: '/wiki/Talk:Test?useskin=vector',
+		delay: 1500
 	}
 ];
 
