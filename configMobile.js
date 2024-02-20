@@ -8,6 +8,10 @@ const tests = [
 		path: '/wiki/Tree'
 	},
 	{
+		label: 'Talk:Test (#minerva #mobile)',
+		path: '/wiki/Talk:Test'
+	},
+	{
 		label: 'Test (#minerva #mobile)',
 		path: '/wiki/Test'
 	},

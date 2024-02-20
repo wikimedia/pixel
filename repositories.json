@@ -8,6 +8,9 @@
 	"mediawiki/extensions/Cite": {
 		"path": "extensions/Cite"
 	},
+	"mediawiki/extensions/DiscussionTools": {
+		"path": "extensions/DiscussionTools"
+	},
 	"mediawiki/extensions/Echo": {
 		"path": "extensions/Echo"
 	},
@@ -19,6 +22,9 @@
 	},
 	"mediawiki/extensions/GrowthExperiments": {
 		"path": "extensions/GrowthExperiments"
+	},
+	"mediawiki/extensions/Linter": {
+		"path": "extensions/Linter"
 	},
 	"mediawiki/extensions/MobileFrontend": {
 		"path": "extensions/MobileFrontend"

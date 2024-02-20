@@ -151,6 +151,8 @@ wfLoadExtension( 'Echo' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'GlobalPreferences' );
 wfLoadExtension( 'QuickSurveys' );
+wfLoadExtension( 'Linter' );
+wfLoadExtension( 'DiscussionTools' );
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'NearbyPages' );
 wfLoadExtension( 'Popups' );
