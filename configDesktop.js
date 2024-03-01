@@ -51,6 +51,14 @@ const tests = [
 		label: 'Article talk page (#vector-2022)',
 		path: '/wiki/Talk:Test'
 	},
+	{
+		label: 'Article talk page DT Disabled (#vector-2022)',
+		path: '/wiki/Talk:Test?dtenable=0'
+	},
+	{
+		label: 'Talk page discussions Parsoid (#vector-2022)',
+		path: '/wiki/Talk:Test?useparsoid=1'
+	},
 	//
 	// Layout
 	//
@@ -217,6 +225,15 @@ const tests = [
 		label: 'Talk page discussions (#vector)',
 		path: '/wiki/Talk:Test?useskin=vector',
 		delay: 1500
+	},
+	{
+		label: 'Talk page discussions Parsoid (#vector)',
+		path: '/wiki/Talk:Test?useskin=vector&useparsoid=1',
+		delay: 1500
+	},
+	{
+		label: 'Article talk page Discussion Tools Disabled (#vector-2022)',
+		path: '/wiki/Talk:Test?dtenable=0'
 	}
 ];
 
