@@ -234,6 +234,10 @@ const tests = [
 	{
 		label: 'Article talk page DT Disabled (#vector-2022)',
 		path: '/wiki/Talk:Test?dtenable=0'
+	},
+	{
+		label: 'MathML (#vector-2022)',
+		path: '/wiki/MathTestNative'
 	}
 ];
 

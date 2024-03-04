@@ -26,6 +26,9 @@
 	"mediawiki/extensions/Linter": {
 		"path": "extensions/Linter"
 	},
+	"mediawiki/extensions/Math": {
+		"path": "extensions/Math"
+	},
 	"mediawiki/extensions/MobileFrontend": {
 		"path": "extensions/MobileFrontend"
 	},
@@ -43,6 +46,9 @@
 	},
 	"mediawiki/extensions/SandboxLink": {
 		"path": "extensions/SandboxLink"
+	},
+	"mediawiki/extensions/SyntaxHighlight_GeSHi": {
+		"path": "extensions/SyntaxHighlight_GeSHi"
 	},
 	"mediawiki/extensions/Thanks": {
 		"path": "extensions/Thanks"
