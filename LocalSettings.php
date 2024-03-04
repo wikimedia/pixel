@@ -153,7 +153,9 @@ wfLoadExtension( 'GlobalPreferences' );
 wfLoadExtension( 'QuickSurveys' );
 wfLoadExtension( 'Linter' );
 wfLoadExtension( 'DiscussionTools' );
+wfLoadExtension( 'Math');
 wfLoadExtension( 'MobileFrontend' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'NearbyPages' );
 wfLoadExtension( 'Popups' );
 wfLoadExtension( 'RelatedArticles' );
@@ -171,6 +173,8 @@ wfLoadExtension( 'WikimediaMessages' );
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)
 // last indefinitely.
 $wgExtendedLoginCookieExpiration = 0;
+$wgMaxArticleSize = 80;
+$wgAPIMaxResultSize = $wgMaxArticleSize * 4096;
 
 // Use same localisation cache settings as production. This also seems to get
 // rid of localisation errors associated with the `array` store (set by
