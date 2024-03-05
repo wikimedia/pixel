@@ -62,8 +62,9 @@ class MwCheckout {
 	 * `main` are passed, these will be converted to `origin/master` and
 	 * `origin/main`, respectively.
 	 * @param {string[]} changeIds An array of Gerrit Change-Ids
+	 * @param {Object.<string, string>} repoBranches
 	 */
-	async checkout( branch, changeIds ) {
+	async checkout( branch, changeIds, repoBranches = {} ) {
 		if ( branch === 'master' || branch === 'main' ) {
 			branch = `origin/${branch}`;
 		}
@@ -73,8 +74,9 @@ class MwCheckout {
 
 		await Promise.all( Object.keys( this.#repos ).map( async ( repoId ) => {
 			const path = this.#repos[ repoId ].path;
+			const repoBranch = repoBranches[ repoId ] ?? branch;
 			await this.#fetch( path );
-			await this.#checkoutBranch( path, branch, repoId );
+			await this.#checkoutBranch( path, repoBranch, repoId );
 
 			// Apply Gerrit patches, if any.
 			// @ts-ignore

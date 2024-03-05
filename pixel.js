@@ -219,8 +219,9 @@ function removeFolder( relativePath ) {
 
 /**
  * @typedef {Object} CommandOptions
- * @property {string} [changeId]
+ * @property {string[]} [changeId]
  * @property {string} [branch]
+ * @property {string[]} [repoBranch]
  * @property {string} group
  */
 
@@ -254,6 +255,9 @@ async function processCommand( type, opts, runSilently = false ) {
 			}
 		} else {
 			active = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
+		}
+		if ( opts.repoBranch && opts.repoBranch.length > 0 ) {
+			active += ` (with custom branches: ${opts.repoBranch.join( ', ' )})`;
 		}
 		if ( !context[ group ] ) {
 			context[ group ] = { description };
@@ -372,6 +376,10 @@ function setupCli() {
 		'-c, --change-id <Change-Id...>',
 		'The Change-Id to use. Use multiple flags to use multiple Change-Ids (e.g. -c <Change-Id> -c <Change-Id>)'
 	] );
+	const repoBranchOpt = /** @type {const} */ ( [
+		'--repo-branch <repo:branch...>',
+		'Override the branch name for a specific repository. Specify the repository name, then a colon, then the branch name, e.g. `mediawiki/skins/Vector:new-vector-features`. Use multiple flags to override branches for multiple repositories.'
+	] );
 	const groupOpt = /** @type {const} */ ( [
 		'-g, --group <(mobile|desktop|echo|campaign-events)>',
 		'The group of tests to run. If omitted the group will be desktop.',
@@ -403,6 +411,7 @@ function setupCli() {
 		.option( ...a11yOpt )
 		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
+		.option( ...repoBranchOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
@@ -416,6 +425,7 @@ function setupCli() {
 		.option( ...a11yOpt )
 		.option( ...logResultsOpt )
 		.option( ...changeIdOpt )
+		.option( ...repoBranchOpt )
 		.option( ...groupOpt )
 		.option( ...resetDbOpt )
 		.action( ( opts ) => {
@@ -482,6 +492,7 @@ function setupCli() {
 		.description( 'Runs all the registered tests and generates a report.' )
 		.option( ...branchOpt )
 		.option( ...changeIdOpt )
+		.option( ...repoBranchOpt )
 		.option( ...groupOpt )
 		.option( ...priorityOpt )
 		.option( ...directoryOpt )

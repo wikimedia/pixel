@@ -7,6 +7,13 @@ const BatchSpawn = require( './BatchSpawn' );
 const benchmark = require( './benchmark' );
 const MwCheckout = require( './MwCheckout' );
 
+/** @type {Object.<string, string>} */
+const repoBranches = {};
+for ( const rb of ( opts.repoBranch ?? [] ) ) {
+	const [ repo, branch ] = rb.split( ':' );
+	repoBranches[ repo ] = branch;
+}
+
 /**
  * The number of processing units available.
  *
@@ -21,7 +28,7 @@ async function init() {
 	benchmark( async () => {
 		const batchSpawn = new BatchSpawn( await getProcessingUnitsAvailable() );
 		const mwCheckout = new MwCheckout( repos, batchSpawn );
-		await mwCheckout.checkout( opts.branch, opts.changeId ?? [] );
+		await mwCheckout.checkout( opts.branch, opts.changeId ?? [], repoBranches );
 	} );
 }
 
