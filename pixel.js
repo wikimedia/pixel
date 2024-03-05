@@ -497,20 +497,21 @@ function setupCli() {
 			// Update keys in a11y group config to avoid duplicate group names
 			const updatedA11yGroupConfig = {};
 			for ( const key in A11Y_GROUP_CONFIG ) {
-				updatedA11yGroupConfig[ key + 'a11y' ] = A11Y_GROUP_CONFIG[ key ];
+				updatedA11yGroupConfig[ key + '-a11y' ] = A11Y_GROUP_CONFIG[ key ];
 			}
 
 			const groups = { ...GROUP_CONFIG, ...updatedA11yGroupConfig };
-			for ( const [ group, groupDef ] of Object.entries( groups ) ) {
+			for ( const [ groupName, groupDef ] of Object.entries( groups ) ) {
+				const group = groupDef.a11y ? groupName.slice( 0, -5 ) : groupName;
 				const name = groupDef.name || group;
-				html += `<li><a href="${group}/index.html">${name} (${group})</a></li>`;
+				html += `<li><a href="${groupName}/index.html">${name} (${groupName})</a></li>`;
 				const groupPriority = groupDef.priority || 0;
 				if ( groupPriority <= priority ) {
 					console.log( `*************************
 *************************
 *************************
 *************************
-Running regression group "${group}"
+Running regression group "${groupName}"
 *************************
 *************************
 *************************
@@ -537,7 +538,7 @@ Running regression group "${group}"
 					}
 				} else {
 					console.log( `*************************
-Skipping group "${group}" due to priority.
+Skipping group "${groupName}" due to priority.
 *************************` );
 				}
 			}

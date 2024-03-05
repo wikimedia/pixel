@@ -39,11 +39,11 @@ const makePaths = ( path ) => {
 const makeA11yPaths = ( path ) => {
 	return {
 		// eslint-disable-next-line camelcase
-		a11y_reference: `report-a11y/reference-json-${path}`,
+		a11y_reference: `report/reference-json-${path}-a11y`,
 		// eslint-disable-next-line camelcase
-		a11y_test: `report-a11y/test-json-${path}`,
+		a11y_test: `report/test-json-${path}-a11y`,
 		// eslint-disable-next-line camelcase
-		a11y_report: `report-a11y/${path}`
+		a11y_report: `report/${path}-a11y`
 	};
 };
 

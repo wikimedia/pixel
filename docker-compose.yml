@@ -94,6 +94,6 @@ services:
       - ./viewports.js:/pixel/viewports.js
       - ./utils.js:/pixel/utils.js
       - ./configDesktopA11y.js:/pixel/configDesktopA11y.js
-      - ./configDesktopA11y.js:/pixel/configMobileA11y.js
+      - ./configMobileA11y.js:/pixel/configMobileA11y.js
       - ./src:/pixel/src
-      - ./report-a11y:/pixel/report-a11y
+      - ./report:/pixel/report

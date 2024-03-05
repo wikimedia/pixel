@@ -112,7 +112,7 @@ Pixel can also compare accessibility errors between a reference and test patch. 
 ./pixel.js test -c Iff231a976c473217b0fa4da1aa9a8d1c2a1a19f2 --a11y
 ```
 
-The HTML report of the test results can be found at `report-a11y/<name-of-test-group>/<name-of-test>.html`.
+The HTML report of the test results can be found at `report/<name-of-test-group>-a11y/index.html`.
 
 ### Stopping the services
 
