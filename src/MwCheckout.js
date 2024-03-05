@@ -126,7 +126,7 @@ class MwCheckout {
 	 * @param {string} repoId
 	 */
 	async #checkoutBranch( path, branch, repoId ) {
-		const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
+		const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ refs/tags/ --format='%(refname:short)'` );
 		const branches = stdout.split( '\n' );
 		// Use the `main` branch instead of `master` if `main` is available and
 		// `master` is unavailable.
