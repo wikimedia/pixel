@@ -6,7 +6,8 @@ const pa11y = require( 'pa11y' ); // eslint-disable-line node/no-missing-require
 const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line node/no-missing-require
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
-const htmlReporter = require( path.resolve( __dirname, './reporter/reporter.js' ) );
+const htmlReporter = require( path.resolve( __dirname, './reporter/reporter.js' ) ).results;
+const htmlSummary = require( path.resolve( __dirname, './reporter/summary.js' ) ).results;
 
 /**
  *  Delete and recreate the report directory
@@ -118,10 +119,20 @@ async function processTestResults( testResults, type, config, logResults ) {
 	if ( type === 'test' ) {
 		const referenceResults = require( path.resolve( `${config.paths.a11y_reference}/${name}.json` ) );
 		if ( referenceResults ) {
-			const html = await htmlReporter.results( referenceResults, testResults );
+			const html = await htmlReporter( referenceResults, testResults );
 			fs.writeFileSync( `${config.paths.a11y_report}/${name}.html`, html, 'utf8' );
 		}
 	}
+}
+
+/**
+ * Generate html summary of all tests for pixel cloud instance
+ *
+ * @param {Object} config
+ */
+async function createSummaryReport( config ) {
+	const html = await htmlSummary( config );
+	fs.writeFileSync( `${config.paths.a11y_report}/index.html`, html, 'utf8' );
 }
 
 /**
@@ -165,6 +176,9 @@ async function main() {
 	const resultPromises = testResults.map( async ( result ) => {
 		await processTestResults( result, type, config, logResults );
 	} );
+	if ( type === 'test' ) {
+		await createSummaryReport( config );
+	}
 	await Promise.all( resultPromises );
 	process.exit(); // eslint-disable-line
 }
