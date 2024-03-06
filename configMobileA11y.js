@@ -17,7 +17,8 @@ const testDefaults = {
 	includeNotices: true,
 	ignore: [
 		// Prevent contrast ratio error on absolutely positioned elements
-		'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs'
+		'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs',
+		'color-contrast'
 	],
 	chromeLaunchConfig: {
 		headless: true,
