@@ -31,13 +31,13 @@
 		<p><b>Generated at:</b> {{date}}</p>
 
 		<ul>
-			{{#names}}
+			{{#tests}}
 			<li>
-				<a class="tab" href="./{{.}}.html">
-				{{{.}}}
+				<a class="tab" href="./{{name}}.html">
+				{{{name}}} (-{{#removedData}}{{totalCount}}{{/removedData}}, +{{#addedData}}{{totalCount}}{{/addedData}} )
    		 	</a>
 			</li>
-			{{/names}}
+			{{/tests}}
 		</ul>
 	</div>
 

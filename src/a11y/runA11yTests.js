@@ -6,8 +6,8 @@ const pa11y = require( 'pa11y' ); // eslint-disable-line node/no-missing-require
 const puppeteer = require( 'pa11y/node_modules/puppeteer' ); // eslint-disable-line node/no-missing-require
 const loadCookies = require( '../engine-scripts/puppet/loadCookies' );
 
-const htmlReporter = require( path.resolve( __dirname, './reporter/reporter.js' ) ).results;
-const htmlSummary = require( path.resolve( __dirname, './reporter/summary.js' ) ).results;
+const { processDiffData } = require( './reporter/reporterHelper.js' );
+const { generateTestHTML, generateSummaryHTML } = require( './reporter/reporter.js' );
 
 /**
  *  Delete and recreate the report directory
@@ -81,6 +81,7 @@ function sendMetrics( namespace, name, count ) {
  * @param {string} type
  * @param {Object} config
  * @param {boolean} logResults
+ * @return {Object} summary data
  */
 async function processTestResults( testResults, type, config, logResults ) {
 	testResults.issues = testResults.issues.filter( ( issue ) => {
@@ -119,19 +120,23 @@ async function processTestResults( testResults, type, config, logResults ) {
 	if ( type === 'test' ) {
 		const referenceResults = require( path.resolve( `${config.paths.a11y_reference}/${name}.json` ) );
 		if ( referenceResults ) {
-			const html = await htmlReporter( referenceResults, testResults );
+			const html = await generateTestHTML( referenceResults, testResults );
+			const diffData = processDiffData( referenceResults.issues, testResults.issues );
 			fs.writeFileSync( `${config.paths.a11y_report}/${name}.html`, html, 'utf8' );
+			return { name, ...diffData };
 		}
 	}
+	return null;
 }
 
 /**
  * Generate html summary of all tests for pixel cloud instance
  *
  * @param {Object} config
+ * @param {Object} summaryData
  */
-async function createSummaryReport( config ) {
-	const html = await htmlSummary( config );
+async function createSummaryReport( config, summaryData ) {
+	const html = await generateSummaryHTML( config, summaryData );
 	fs.writeFileSync( `${config.paths.a11y_report}/index.html`, html, 'utf8' );
 }
 
@@ -174,12 +179,12 @@ async function main() {
 	const testPromises = getTestPromises( type, config );
 	const testResults = await Promise.all( testPromises );
 	const resultPromises = testResults.map( async ( result ) => {
-		await processTestResults( result, type, config, logResults );
+		return await processTestResults( result, type, config, logResults );
 	} );
+	const summaryData = await Promise.all( resultPromises );
 	if ( type === 'test' ) {
-		await createSummaryReport( config );
+		await createSummaryReport( config, summaryData );
 	}
-	await Promise.all( resultPromises );
 	process.exit(); // eslint-disable-line
 }
 
