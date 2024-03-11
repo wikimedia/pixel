@@ -526,11 +526,15 @@ Running regression group "${groupName}"
 						await processCommand( 'reference', {
 							branch: LATEST_RELEASE_BRANCH,
 							changeId: opts.changeId,
-							group
+							group,
+							a11y: groupDef.a11y,
+							logResults: groupDef.logResults
 						}, true );
 						await processCommand( 'test', {
 							branch: 'master',
-							group
+							group,
+							a11y: groupDef.a11y,
+							logResults: groupDef.logResults
 						}, true );
 					} catch ( e ) {
 						// Continue.
