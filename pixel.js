@@ -158,7 +158,7 @@ const GROUP_CONFIG = {
 		config: 'configCodex.js'
 	},
 	wikilambda: {
-		priority: 2,
+		priority: 4,
 		config: 'configWikiLambda.js'
 	}
 };
