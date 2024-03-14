@@ -41,6 +41,7 @@ module.exports = {
 		{
 			name: 'logged_in',
 			url: BASE_URL + '/wiki/Test?useskin=minerva',
+			loggedin: true,
 			...testDefaults
 		}
 	]

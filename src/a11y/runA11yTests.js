@@ -38,14 +38,13 @@ function resetDirs( type, config ) {
  */
 function getTestPromises( type, config ) {
 	return config.tests.map( async ( test ) => {
-		const { url, name, ...testOptions } = test;
+		const { url, name, loggedin, ...testOptions } = test;
 		let options = { ...testOptions, ...{
 			// Automatically enable screen capture for every test;
 			screenCapture: `${config.paths[ `a11y_${type}` ]}/${name}.png`
 		} };
 
-		// FIXME: update this to not be hardcoded
-		if ( name === 'logged_in' ) {
+		if ( loggedin ) {
 			const browser = await puppeteer.launch( { args: [ '--no-sandbox' ] } );
 			const page = await browser.newPage();
 			await loadCookies( page, 'Admin' );
