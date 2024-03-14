@@ -27,14 +27,14 @@
 <body>
 
 	<div class="page">
-		<h1>Accessibility summary for "{{{group}}}"</h1>
+		<h1>Accessibility Summary for "{{{group}}}"</h1>
 		<p><b>Generated at:</b> {{date}}</p>
 
 		<ul>
 			{{#tests}}
 			<li>
 				<a class="tab" href="./{{name}}.html">
-				{{{name}}} (-{{#removedData}}{{totalCount}}{{/removedData}}, +{{#addedData}}{{totalCount}}{{/addedData}} )
+				{{{name}}} ({{#removedData}}-{{totalCount}}{{/removedData}}{{^removedData}}-0{{/removedData}}, {{#addedData}}+{{totalCount}}{{/addedData}}{{^addedData}}+0{{/addedData}} )
    		 	</a>
 			</li>
 			{{/tests}}
