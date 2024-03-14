@@ -134,10 +134,13 @@ const GROUP_CONFIG = {
 		priority: 3,
 		config: 'configEcho.js'
 	},
-	'desktop-dev': {
-		name: 'Zebra Vector 2022 skin',
-		priority: 3,
-		config: 'configDesktopDev.js'
+	wikilambda: {
+		priority: 2,
+		config: 'configWikiLambda.js'
+	},
+	'campaign-events': {
+		priority: 2,
+		config: 'configCampaignEvents.js'
 	},
 	desktop: {
 		name: 'Vector 2022 skin',
@@ -149,17 +152,14 @@ const GROUP_CONFIG = {
 		priority: 1,
 		config: 'configMobile.js'
 	},
-	'campaign-events': {
-		priority: 2,
-		config: 'configCampaignEvents.js'
-	},
 	codex: {
 		priority: 1,
 		config: 'configCodex.js'
 	},
-	wikilambda: {
-		priority: 2,
-		config: 'configWikiLambda.js'
+	'desktop-dev': {
+		name: 'Zebra Vector 2022 skin',
+		priority: 3,
+		config: 'configDesktopDev.js'
 	}
 };
 
