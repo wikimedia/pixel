@@ -1,0 +1,10 @@
+FROM alpine
+
+COPY optimizePNG.sh /opt/scripts/optimizePNG.sh
+COPY optimizePNG_supervisord.conf /ect/optimizePNG_supervisord.conf
+
+WORKDIR /pixel/report
+
+RUN apk add --no-cache supervisor inotify-tools optipng exiftool bash
+
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/optimizePNG_supervisord.conf"]

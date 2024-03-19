@@ -97,3 +97,11 @@ services:
       - ./configMobileA11y.js:/pixel/configMobileA11y.js
       - ./src:/pixel/src
       - ./report:/pixel/report
+  png-optimizer:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimizePNG
+    volumes:
+      - ./report:/pixel/report
+      - ./optimizePNG.sh:/opt/scripts/optimizePNG.sh
+    working_dir: /pixel/report
