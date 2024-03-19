@@ -73,7 +73,7 @@ optimize_png() {
   remove_lock_file "$LOCK_FILE"
 }
 
-monitor_dir_and_optimize_pngs_upon_creation() {
+monitor_dir_optimizing_pngs_upon_creation() {
   local DIR
   DIR=$1
   local FILE_LOWER
@@ -98,4 +98,4 @@ ensure_dependencies_present() {
 
 ensure_dependencies_present
 
-monitor_dir_and_optimize_pngs_upon_creation "$DIR_TO_MONITOR"
+monitor_dir_optimizing_pngs_upon_creation"$DIR_TO_MONITOR"
