@@ -14,74 +14,73 @@ debug_log() {
 }
 
 remove_lock_file() {
-  local LOCK_FILE
-  LOCK_FILE=$1
-  if [ -f "$LOCK_FILE" ]; then
-    rm -f "$LOCK_FILE" || true
+  local lock_file
+  lock_file=$1
+  if [ -f "$lock_file" ]; then
+    rm -f "$lock_file" || true
   fi
 }
 
 optimize_png() {
   sleep 1
 
-  local FILE
-  FILE=$1
+  local file
+  file=$1
 
-  if exiftool -quiet -Software "$FILE" | grep -q "$OPTIMIZATION_TAG"; then
-    debug_log "$FILE already optimized, skipping"
+  if exiftool -quiet -Software "$file" | grep -q "$OPTIMIZATION_TAG"; then
+    debug_log "$file already optimized, skipping"
     return
   fi
 
-  # Replace '/' with '_' in the file path to create a unique lock file name
-  local LOCK_FILE
-  LOCK_FILE="/tmp/$(echo "$FILE" | sed 's/\//_/g').lock"
+  local lock_file
+  lock_file="/tmp/$(echo "$file" | sed 's/\//_/g').lock"
 
-  if [ -f "$LOCK_FILE" ]; then
-    debug_log "$FILE already being processed, skipping"
+  if [ -f "$lock_file" ]; then
+    debug_log "$file already being processed, skipping"
     return
   fi
 
-  touch "$LOCK_FILE"
+  touch "$lock_file"
 
-  local SIZE_BEFORE
-  SIZE_BEFORE=$(stat -c%s "$FILE")
+  local size_before
+  size_before=$(stat -c%s "$file")
 
-  optipng -silent -fix -o2 "$FILE"
+  optipng -silent -fix -o2 "$file"
 
-  exiftool -quiet -overwrite_original_in_place -Software="$OPTIMIZATION_TAG" "$FILE"
+  exiftool -quiet -overwrite_original_in_place -Software="$OPTIMIZATION_TAG" "$file"
 
-  if ! exiftool -quiet -Software "$FILE" | grep -q "$OPTIMIZATION_TAG"; then
-    debug_log "$FILE failed to write processed flag"
-    remove_lock_file "$LOCK_FILE"
+  if ! exiftool -quiet -Software "$file" | grep -q "$OPTIMIZATION_TAG"; then
+    debug_log "$file failed to write processed flag"
+    remove_lock_file "$lock_file"
     return
   fi
 
-  local SIZE_AFTER
-  SIZE_AFTER=$(stat -c%s "$FILE")
+  local size_after
+  size_after=$(stat -c%s "$file")
 
-  local SIZE_REDUCTION
-  SIZE_REDUCTION=$((SIZE_BEFORE - SIZE_AFTER))
-  local SIZE_PERCENT_REDUCTION
-  if [ "$SIZE_BEFORE" -ne 0 ]; then
-    SIZE_PERCENT_REDUCTION=$(echo "scale=2; ($SIZE_REDUCTION / $SIZE_BEFORE) * 100" | bc)
+  local size_reduction
+  size_reduction=$((size_before - size_after))
+  local size_percent_reduction
+  if [ "$size_before" -ne 0 ]; then
+    size_percent_reduction=$(echo "scale=2; ($size_reduction / $size_before) * 100" | bc)
   else
-    SIZE_PERCENT_REDUCTION=0
+    size_percent_reduction=0
   fi
 
-  echo "$FILE optimized: Size reduction = $SIZE_PERCENT_REDUCTION%"
+  echo "$file optimized: Size reduction = $size_percent_reduction%"
 
-  remove_lock_file "$LOCK_FILE"
+  remove_lock_file "$lock_file"
 }
 
 monitor_dir_optimizing_pngs_upon_creation() {
-  local DIR
-  DIR=$1
-  local FILE_LOWER
+  local dir
+  dir=$1
+  local file_lower
   while true; do
-    inotifywait -r -m -e create --format '%w%f' "$DIR" | while read FILE; do
-      FILE_LOWER=$(echo "$FILE" | tr '[:upper:]' '[:lower:]')
-      if [[ "$FILE_LOWER" =~ \.png$ ]]; then
-        optimize_png "$FILE" &
+    inotifywait -r -m -e create --format '%w%f' "$dir" | while read file; do
+      file_lower=$(echo "$file" | tr '[:upper:]' '[:lower:]')
+      if [[ "$file_lower" =~ \.png$ ]]; then
+        optimize_png "$file" &
       fi
     done
   done
@@ -98,4 +97,4 @@ ensure_dependencies_present() {
 
 ensure_dependencies_present
 
-monitor_dir_optimizing_pngs_upon_creation"$DIR_TO_MONITOR"
+monitor_dir_optimizing_pngs_upon_creation "$DIR_TO_MONITOR"
