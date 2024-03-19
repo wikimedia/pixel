@@ -104,4 +104,5 @@ services:
     volumes:
       - ./report:/pixel/report
       - ./optimizePNG.sh:/opt/scripts/optimizePNG.sh
+      - ./optimizePNG_supervisord.conf:/ect/optimizePNG_supervisord.conf
     working_dir: /pixel/report
