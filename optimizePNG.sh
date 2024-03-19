@@ -89,8 +89,10 @@ monitor_dir_and_optimize_pngs_upon_creation() {
 }
 
 ensure_dependencies_present() {
-  if ! command -v inotifywait &> /dev/null || ! command -v optipng &> /dev/null || ! command -v exiftool &> /dev/null; then
-      debug_log "Required tools are missing. Please install inotify-tools, optipng, and exiftool."
+  if ! command -v inotifywait &> /dev/null || 
+     ! command -v optipng &> /dev/null || 
+     ! command -v exiftool &> /dev/null; then
+      debug_log "Required tools are missing. The Dockerfile should install inotify-tools, optipng, and exiftool."
       exit 1
   fi
 }
