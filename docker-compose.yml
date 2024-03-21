@@ -77,7 +77,7 @@ services:
       - ./configMobile.js:/pixel/configMobile.js
       - ./configCodex.js:/pixel/configCodex.js
       - ./src:/pixel/src
-      - ./report:/pixel/report
+      - ${PIXEL_REPORT_DIRECTORY}:/pixel/report
   a11y-regression:
     init: true
     network_mode: host
@@ -96,4 +96,4 @@ services:
       - ./configDesktopA11y.js:/pixel/configDesktopA11y.js
       - ./configMobileA11y.js:/pixel/configMobileA11y.js
       - ./src:/pixel/src
-      - ./report:/pixel/report
+      - ${PIXEL_REPORT_DIRECTORY}:/pixel/report
