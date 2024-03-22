@@ -284,6 +284,11 @@ async function processCommand( type, opts, runSilently = false ) {
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 
+		await batchSpawn.spawn(
+			'docker',
+			[ 'build', '-f', 'Dockerfile.base-regression', '-t', 'base_regression:latest', '.' ]
+		);
+
 		// Start docker containers.
 		await batchSpawn.spawn(
 			'docker',
