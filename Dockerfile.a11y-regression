@@ -1,76 +1,11 @@
-FROM --platform=linux/amd64 node:18.19.1-bullseye
+FROM --platform=linux/amd64 base_regression:latest
 
 ARG PA11Y_VERSION
 
-ENV \
-	PA11Y_VERSION=$PA11Y_VERSION
-
-# Base packages
-RUN apt-get update && \
-	apt-get install -y git sudo software-properties-common
+ENV PA11Y_VERSION=$PA11Y_VERSION
 
 RUN set -ex && \
-    sudo npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION};
-
-RUN apt-get update -qq \
-  && apt-get install -y --no-install-recommends \
-    libfontconfig \
-    libfreetype6 \
-    xfonts-cyrillic \
-    xfonts-scalable \
-    fonts-liberation \
-    fonts-ipafont-gothic \
-    fonts-wqy-zenhei \
-    libgbm-dev \
-    gconf-service \
-    libxext6 \
-    libxfixes3 \
-    libxi6 \
-    libxrandr2 \
-    libxrender1 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libexpat1 \
-    libfontconfig1 \
-    libgcc1 \
-    libgconf-2-4 \
-    libgdk-pixbuf2.0-0 \
-    libglib2.0-0 \
-    libgtk-3-0 \
-    libnspr4 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libstdc++6 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxss1 \
-    libxtst6 \
-    libappindicator1 \
-    libnss3 \
-    libasound2 \
-    libatk1.0-0 \
-    libc6 \
-    ca-certificates \
-    lsb-release \
-    xdg-utils \
-    wget \
-    libatk-bridge2.0-0 \
-    libdrm2 \
-    libgbm1 \
-    libxkbcommon0 \
-    procps \
-    tree \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get clean -qy
-
-RUN sudo npm install -g mustache
-RUN sudo npm install -g node-fetch@2
-
-ENV NODE_PATH=/usr/local/lib/node_modules
+    sudo npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION} \
+    mustache node-fetch@2;
 
 ENTRYPOINT ["node", "src/a11y/runA11yTests.js"]
