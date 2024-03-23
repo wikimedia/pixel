@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 base_regression:latest
+FROM --platform=linux/amd64 pixel-base-regression:latest
 
 ARG BACKSTOPJS_VERSION
 
