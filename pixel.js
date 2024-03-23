@@ -283,7 +283,7 @@ async function processCommand( type, opts, runSilently = false ) {
 
 		await batchSpawn.spawn(
 			'docker',
-			[ 'build', '-f', 'Dockerfile.base-regression', '-t', 'base_regression:latest', '.' ]
+			[ 'build', '-f', 'Dockerfile.base-regression', '-t', 'pixel-base-regression:latest', '.' ]
 		);
 
 		// Start docker containers.
