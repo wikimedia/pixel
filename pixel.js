@@ -15,6 +15,7 @@ const makeReport = require( './src/makeReportIndex.js' );
  */
 function getComposeOpts( opts ) {
 	return [
+		'--progress', 'plain',
 		'--project-directory', __dirname,
 		'-f', `${__dirname}/docker-compose.yml`,
 		...opts
