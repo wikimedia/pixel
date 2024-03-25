@@ -5,7 +5,8 @@
 
 # Reminder: can use this when debugging this file:
 #    docker compose --progress=plain build mediawiki
-# It's faster than doing docker compose up since it limits itself to the mediawiki image which uses this file
+# It's faster than doing docker compose up since it limits itself to the
+# mediawiki image which uses this file
 
 set -eu
 
