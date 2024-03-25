@@ -16,10 +16,10 @@ RUN git config --global user.email "app@example.com" && git config --global user
 # See:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
 COPY src/BatchSpawn.js /src/BatchSpawn.js
-COPY src/setupRepos.js /src/setupRepos.js
+COPY src/setupRepos.sh /src/setupRepos.sh
 COPY repositories.json /repositories.json
 
-RUN /src/setupRepos.js "$( cat /repositories.json )"
+RUN /src/setupRepos.sh "$( cat /repositories.json )"
 
 # Needed to install WikiLambda's dependencies
 COPY composer.local.json composer.local.json
