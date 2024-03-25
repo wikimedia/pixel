@@ -9,7 +9,7 @@
 
 set -eu
 
-repositories_json="$1"
+REPOSITORIES_JSON="$1"
 
 get_default_branch() {
     local path=$1
@@ -56,7 +56,7 @@ setup_core() {
 }
 
 setup_repos() {
-  echo -e "\n$repositories_json" | python3 -c "\
+  echo -e "\n$REPOSITORIES_JSON" | python3 -c "\
 import sys, json; \
 [print(key, value['path']) \
 for key, value in json.load(sys.stdin).items() \
