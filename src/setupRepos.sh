@@ -10,12 +10,6 @@ set -eu
 
 REPOSITORIES_JSON="$1"
 
-GIT_CLONE_MAX_RETRIES=5
-
-CORE_CLONE_TIMEOUT=$((60 * 10)) # 10 minutes before retrying
-
-NON_CORE_CLONE_TIMEOUT=$((60 * 3)) # 3 minutes before retrying
-
 get_default_branch() {
   local path=$1
   git -C "${path}" symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
@@ -48,7 +42,9 @@ setup_repo() {
   local id=$1
   echo -e "\n\nSetting up $id"
   local path=$2
-  if ! clone_with_retries "https://gerrit.wikimedia.org/r/${id}" "${path}" $GIT_CLONE_MAX_RETRIES $NON_CORE_CLONE_TIMEOUT; then
+  local max_retries=5
+  local timeout_seconds=$((60 * 3)) # 3 minutes before retrying
+  if ! clone_with_retries "https://gerrit.wikimedia.org/r/${id}" "${path}" $max_retries $timeout_seconds; then
     exit 1
   fi
   git -C "${path}" checkout --progress "$(get_default_branch "$path")"
@@ -69,7 +65,9 @@ setup_repo() {
 setup_core() {
   echo -e "\nSetting up mediawiki/core"
   local core_git='https://gerrit.wikimedia.org/r/mediawiki/core.git'
-  if ! clone_with_retries "${core_git}" . $GIT_CLONE_MAX_RETRIES $CORE_CLONE_TIMEOUT; then
+  local max_retries=5
+  local timeout_seconds=$((60 * 10)) # 10 minutes before retrying
+  if ! clone_with_retries "${core_git}" . $max_retries $timeout_seconds; then
     echo "Failed to clone the repository from '${core_git}'"
     exit 1
   fi
