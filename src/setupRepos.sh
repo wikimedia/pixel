@@ -3,26 +3,52 @@
 # IMPORTANT: Any local dependency listed here MUST have a `COPY` command in
 # Dockerfile.mediawiki before this file is executed.
 
-# Reminder: can use this when debugging this file:
+# For faster debugging this builds only the image using this file:
 #    docker compose --progress=plain build mediawiki
-# It's faster than doing docker compose up since it limits itself to the
-# mediawiki image which uses this file
 
 set -eu
 
 REPOSITORIES_JSON="$1"
+
+GIT_CLONE_MAX_RETRIES=5
+
+CORE_CLONE_TIMEOUT=$((60 * 10)) # 10 minutes before retrying
+
+NON_CORE_CLONE_TIMEOUT=$((60 * 3)) # 3 minutes before retrying
 
 get_default_branch() {
   local path=$1
   git -C "${path}" symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 }
 
+clone_with_retries() {
+  local repo_url=$1
+  local clone_path=$2
+  local max_retries=${3:-3}
+  local clone_timeout=${4:-600}  # Timeout in seconds, default 10 minutes
+  local attempt=1
+  while [ $attempt -le $max_retries ]; do
+    echo "Cloning '${repo_url}', attempt $attempt of $max_retries, with a timeout of $clone_timeout seconds before forcing a retry"
+    if [ -d "${clone_path}" ]; then
+      find "${clone_path}" -mindepth 1 -delete
+    fi
+    if timeout $clone_timeout git clone "${repo_url}" "${clone_path}" --progress; then
+      return 0
+    else
+      echo "Attempt $attempt to clone '${repo_url}' failed"
+      attempt=$((attempt+1))
+      sleep 5
+    fi
+  done
+  echo "Failed to clone '${repo_url}' after $max_retries attempts"
+  return 1
+}
+
 setup_repo() {
-  echo -e "\n\nSetting up $id"
   local id=$1
+  echo -e "\n\nSetting up $id"
   local path=$2
-  if ! git clone "https://gerrit.wikimedia.org/r/${id}" "${path}" --progress; then
-    echo "Failed to clone '${id}' repository"
+  if ! clone_with_retries "https://gerrit.wikimedia.org/r/${id}" "${path}" $GIT_CLONE_MAX_RETRIES $NON_CORE_CLONE_TIMEOUT; then
     exit 1
   fi
   git -C "${path}" checkout --progress "$(get_default_branch "$path")"
@@ -43,7 +69,7 @@ setup_repo() {
 setup_core() {
   echo -e "\nSetting up mediawiki/core"
   local core_git='https://gerrit.wikimedia.org/r/mediawiki/core.git'
-  if ! git clone "${core_git}" . --progress; then
+  if ! clone_with_retries "${core_git}" . $GIT_CLONE_MAX_RETRIES $CORE_CLONE_TIMEOUT; then
     echo "Failed to clone the repository from '${core_git}'"
     exit 1
   fi
@@ -76,4 +102,4 @@ setup_repos
 
 end_time=$(date +%s)
 
-echo -e "\nFinished in $((end_time - start_time)) seconds"
+echo -e "\nFinished setupRepos.sh in $((end_time - start_time)) seconds"
