@@ -9,8 +9,8 @@ WORKDIR /var/www/html/w
 
 RUN git config --global user.email "app@example.com" && git config --global user.name "app"
 
-# IMPORTANT: Any local dependency that `setupRepos.js` needs MUST have a `COPY`
-# statement here before `setupRepos.js` is executed. We copy individual files
+# IMPORTANT: Any local dependency that `setupRepos.sh` needs MUST have a `COPY`
+# statement here before `setupRepos.sh` is executed. We copy individual files
 # instead of copying the entire `src` directory so that Docker's build cache
 # isn't unnecessarily busted each time a file in the `src` directory changes.
 # See:
@@ -24,5 +24,5 @@ RUN /src/setupRepos.sh "$( cat /repositories.json )"
 # Needed to install WikiLambda's dependencies
 COPY composer.local.json composer.local.json
 
-# Now we can copy the entire src directory since setupRepos.js has executed.
+# Now we can copy the entire src directory since setupRepos.sh has executed.
 COPY src /src
