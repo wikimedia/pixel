@@ -1,7 +1,7 @@
 FROM alpine
 
 COPY optimizePNG.sh /opt/scripts/optimizePNG.sh
-COPY optimizePNG_supervisord.conf /ect/optimizePNG_supervisord.conf
+COPY optimizePNG_supervisord.conf /etc/optimizePNG_supervisord.conf
 
 WORKDIR /pixel/report
 
