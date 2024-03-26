@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# IMPORTANT: Any local dependency listed here MUST have a `COPY` command in
-# Dockerfile.mediawiki before this file is executed.
-
 # For faster debugging this builds only the image using this file:
 #    docker compose --progress=plain build mediawiki
 
