@@ -569,7 +569,9 @@ Skipping group "${groupName}" due to priority.
 				}
 			}
 			const path = await makeReport( outputDir, html );
-			await batchSpawn.spawn( 'open', [ path ] );
+			if ( !process.env.NONINTERACTIVE ) {
+				await batchSpawn.spawn( 'open', [ path ] );
+			}
 		} );
 	program.parse();
 }
