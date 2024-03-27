@@ -107,6 +107,7 @@ ${markerString}`
 		}
 	} catch ( e ) {
 		console.log( `Could not open report, but it is located at ${filePathFull}` );
+		console.error( e );
 	}
 }
 
@@ -358,7 +359,7 @@ async function processCommand( type, opts, runSilently = false ) {
 			return finished;
 		}
 	} catch ( err ) {
-		console.log( err );
+		console.error( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
 	}
@@ -561,6 +562,7 @@ Running regression group "${groupName}"
 					} catch ( e ) {
 						// Continue.
 						console.log( 'Error occurred' );
+						console.error( e );
 					}
 				} else {
 					console.log( `*************************
