@@ -1,4 +1,4 @@
-FROM node:16.15.1-bullseye
+FROM node:18.19.1-bullseye
 
 ARG BACKSTOPJS_VERSION
 
