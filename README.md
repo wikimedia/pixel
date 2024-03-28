@@ -258,3 +258,8 @@ Please file all bugs, requests, and issues on the [web team's visual regression 
 Future plans can be seen by visiting the [web team's visual regression
 phabricator board](https://phabricator.wikimedia.org/project/board/5933/) under
 the "Roadmap (Epics)" column.
+
+
+## Changelog
+
+For more information about what's changed in each version, please refer to the [Changelog](./CHANGELOG.md)
