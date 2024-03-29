@@ -31,6 +31,7 @@ function getComposeOpts( opts ) {
  */
 async function cleanCommand() {
 	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
+	await batchSpawn.spawn( 'docker', [ 'system', 'prune', '-af' ] );
 }
 
 let context;
