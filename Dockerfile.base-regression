@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18.19.1-bullseye
+FROM --platform=linux/amd64 node:18.19.1-bullseye-slim
 
 # Base packages and Chrome dependencies
 RUN apt-get update -qq \
@@ -10,6 +10,12 @@ RUN apt-get update -qq \
     libfreetype6 \
     xfonts-cyrillic \
     xfonts-scalable \
+    fonts-dejavu \
+    fonts-dejavu-core \
+    fonts-dejavu-extra \
+    fonts-linex \
+    fonts-texgyre \
+    fonts-noto \
     fonts-liberation \
     fonts-ipafont-gothic \
     fonts-wqy-zenhei \
@@ -58,6 +64,8 @@ RUN apt-get update -qq \
     procps \
     tree \
   && apt-get clean -qy \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && echo "Installed fonts:" \
+  && fc-list
 
 ENV NODE_PATH=/usr/local/lib/node_modules
