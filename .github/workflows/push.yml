@@ -29,6 +29,7 @@ jobs:
         - name: Run tests
           run: npm test
         - name: Run visual regression
-          shell: 'script -q -e -c "bash {0}"'
           run: |
-            script -e -c "./pixel.js reference && ./pixel.js test"
+                ./pixel.js reference
+                ./pixel.js test
+          shell: bash
