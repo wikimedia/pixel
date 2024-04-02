@@ -14,7 +14,7 @@ jobs:
       matrix:
         runs-on: ['ubuntu-latest', 'macos-14']
     runs-on: ${{ matrix.os }}
-    name: Lint, test, and run visual regression tests on ${{ matrix.runs-on }}
+    name: Lint, test, and run visual regression tests on ${{ matrix.os }}
     timeout-minutes: 20
     steps:
         - name: Checkout branch
