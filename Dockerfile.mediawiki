@@ -1,28 +1,22 @@
 FROM docker-registry.wikimedia.org/dev/buster-php74-fpm:1.0.0-s3
 
-COPY node-preparation.sh /node-preparation.sh
-
-RUN /node-preparation.sh ensure_node_major_version_installed 18 || \
-    (echo "Failed to install Node" && exit 1)
-
-WORKDIR /var/www/html/w
-
-RUN git config --global user.email "app@example.com" && git config --global user.name "app"
-
 # IMPORTANT: Any local dependency that `setupRepos.sh` needs MUST have a `COPY`
 # statement here before `setupRepos.sh` is executed. We copy individual files
 # instead of copying the entire `src` directory so that Docker's build cache
 # isn't unnecessarily busted each time a file in the `src` directory changes.
-# See:
-# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
+# See: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
+COPY node-preparation.sh /node-preparation.sh
 COPY src/BatchSpawn.js /src/BatchSpawn.js
 COPY src/setupRepos.sh /src/setupRepos.sh
 COPY repositories.json /repositories.json
-
-RUN /src/setupRepos.sh "$( cat /repositories.json )"
-
-# Needed to install WikiLambda's dependencies
 COPY composer.local.json composer.local.json
 
-# Now we can copy the entire src directory since setupRepos.sh has executed.
+WORKDIR /var/www/html/w
+
+RUN /node-preparation.sh ensure_node_major_version_installed 18 || \
+    (echo "Failed to install Node" && exit 1) && \
+    git config --global user.email "app@example.com" && \
+    git config --global user.name "app" && \
+    /src/setupRepos.sh "$( cat /repositories.json )"
+
 COPY src /src

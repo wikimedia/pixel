@@ -1,59 +1,11 @@
-FROM node:18.19.1-bullseye
+FROM --platform=linux/amd64 pixel-base-regression:latest
 
 ARG PA11Y_VERSION
 
-ENV \
-	PA11Y_VERSION=$PA11Y_VERSION
-
-# Base packages
-RUN apt-get update && \
-	apt-get install -y git sudo software-properties-common
+ENV PA11Y_VERSION=$PA11Y_VERSION
 
 RUN set -ex && \
-    DEBIAN_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d '=' -f2 | tr -d '"') && \
-    export DEBIAN_VERSION=$DEBIAN_VERSION && \
-    ARCH=`uname -m` && \
-    if [ "$ARCH" = "x86_64" ]; then \
-       sudo npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION}; \
-    else \
-       sudo PUPPETEER_SKIP_DOWNLOAD=true PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION} puppeteer@21.7.0 puppeteer-chromium-version-finder@^1.0.1 chromium-version-deb-finder@^2.0.1 && \
-       NODE_PATH="$(npm root -g):$(npm root -g)/puppeteer/node_modules" node -e " \
-          const versionFinder = require('puppeteer-chromium-version-finder'); \
-          const debFinder = require('chromium-version-deb-finder'); \
-          (async () => { \
-            const version = await versionFinder.getPuppeteerChromiumVersion(); \
-            const debUrls = await debFinder.getDebUrlsForVersionAndArch(version.MAJOR, version.MINOR, process.env.DEBIAN_VERSION, 'arm64'); \
-            console.log(debUrls.join('\n')); \
-          })(); \
-       " | \
-       xargs -I % sh -c 'set -x; echo "Downloading: %"; wget -c -t 10 -w 10 -T 120 %; echo "Downloaded: %"' && \
-       apt install -y ./*.deb && \
-       rm -f ./*.deb && \
-       sudo test -f /usr/bin/chromium && sudo ln -s /usr/bin/chromium /usr/bin/chromium-browser && sudo ln -s /usr/bin/chromium /usr/bin/chrome; \
-    fi
+    sudo npm install -g --unsafe-perm=true --allow-root pa11y@${PA11Y_VERSION} \
+    mustache node-fetch@2;
 
-RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
-RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
-
-RUN apt-get -qqy update \
-  && apt-get -qqy --no-install-recommends install \
-    libxshmfence-dev \
-    libfontconfig \
-    libfreetype6 \
-    xfonts-cyrillic \
-    xfonts-scalable \
-    fonts-liberation \
-    fonts-ipafont-gothic \
-    fonts-wqy-zenhei \
-    libgbm-dev \
-    gconf-service libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxss1 libxtst6 libappindicator1 libnss3 libasound2 libatk1.0-0 libc6 ca-certificates fonts-liberation lsb-release xdg-utils wget \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get -qyy clean
-
-RUN sudo npm install -g mustache
-RUN sudo npm install -g node-fetch@2
-
-ENV NODE_PATH=/usr/local/lib/node_modules
-
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
 ENTRYPOINT ["node", "src/a11y/runA11yTests.js"]
