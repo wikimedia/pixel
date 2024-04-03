@@ -332,6 +332,7 @@ async function processCommand( type, opts, runSilently = false ) {
 					type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
 				);
 			}, async ( /** @type {Error} */ err ) => {
+				console.error( err );
 				// Don't check error message if caller asked us not to.
 				if ( err.message.includes( '130' ) ) {
 					// If user ends subprocess with a sigint, exit early.
