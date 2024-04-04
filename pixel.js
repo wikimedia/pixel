@@ -278,7 +278,7 @@ async function processCommand( type, opts, runSilently = false ) {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
 					console.log( 'Resetting database state...' );
-					await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
+					await exec( './reset-db.sh' );
 				}
 			} );
 		} else {
@@ -327,7 +327,7 @@ async function processCommand( type, opts, runSilently = false ) {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
 					console.log( 'Resetting database state...' );
-					await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
+					await exec( './reset-db.sh' );
 				}
 			} );
 			return finished;
