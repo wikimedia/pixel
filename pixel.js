@@ -426,13 +426,6 @@ function setupCli() {
 		} );
 
 	program
-		.command( 'clean' )
-		.description( 'Removes all containers, images, networks, and volumes associated with Pixel so that it can start with a clean slate. If Pixel is throwing errors, try running this command.' )
-		.action( async () => {
-			await batchSpawn.spawn( './clean.sh', [], { shell: true } );
-		} );
-
-	program
 		.command( 'runAll' )
 		.description( 'Runs all the registered tests and generates a report.' )
 		.option( ...branchOpt )
