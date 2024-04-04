@@ -441,10 +441,7 @@ function setupCli() {
 		.command( 'stop' )
 		.description( 'Stops all Docker containers associated with Pixel' )
 		.action( async () => {
-			await batchSpawn.spawn(
-				'docker',
-				[ 'compose', ...getComposeOpts( [ 'stop' ] ) ]
-			);
+			await batchSpawn.spawn( './stop.sh', [], { shell: true } );
 		} );
 
 	program
