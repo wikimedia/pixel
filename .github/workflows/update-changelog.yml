@@ -18,11 +18,16 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Build the Docker container
-      run: docker build -t auto-changelog -f Dockerfile.auto-changelog .
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21'
 
-    - name: Run the container
-      run: docker run --rm -v "${{ github.workspace }}:/app" auto-changelog
+    - name: Install auto-changelog
+      run: npm install -g auto-changelog
+
+    - name: Generate changelog
+      run: auto-changelog
 
     - name: Commit and push changes
       run: |
