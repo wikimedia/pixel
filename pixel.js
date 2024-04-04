@@ -22,18 +22,6 @@ function getComposeOpts( opts ) {
 	];
 }
 
-/**
- * Removes all images, containers, networks, and volumes associated with Pixel.
- * This will often be used after updates to the Docker images and/or volumes and
- * will reset everything so that Pixel starts with a clean slate.
- *
- * @return {Promise}
- */
-async function cleanCommand() {
-	await batchSpawn.spawn( 'docker', [ 'compose', ...getComposeOpts( [ 'down', '--rmi', 'all', '--volumes', '--remove-orphans' ] ) ] );
-	await batchSpawn.spawn( 'docker', [ 'system', 'prune', '-af' ] );
-}
-
 let context;
 if ( fs.existsSync( CONTEXT_PATH ) ) {
 	try {
@@ -441,7 +429,7 @@ function setupCli() {
 		.command( 'clean' )
 		.description( 'Removes all containers, images, networks, and volumes associated with Pixel so that it can start with a clean slate. If Pixel is throwing errors, try running this command.' )
 		.action( async () => {
-			await cleanCommand();
+			await batchSpawn.spawn( './clean.sh', [], { shell: true } );
 		} );
 
 	program
