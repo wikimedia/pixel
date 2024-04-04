@@ -143,7 +143,7 @@ issues with the containers you just want to throw away everything and start
 Pixel with a clean slate. To do that, run:
 
 ```sh
-./pixel.js clean
+./clean.sh
 ```
 
 You can also reset Pixel's database to its original state with:
@@ -233,7 +233,7 @@ list of these.
 To add a skin or extension that isn't currently supported:
 
 1) Add it to the [repositories.json](repositories.json) file
-2) Make Pixel rebuild its code volume by running `./pixel.js clean`. This will
+2) Make Pixel rebuild its code volume by running `./clean.sh`. This will
 destroy every container, image, volume, network associated with Pixel so they
 can be rebuilt. 
 3) Configure the extension or skin in [LocalSettings.php](LocalSettings.php).
