@@ -149,7 +149,7 @@ Pixel with a clean slate. To do that, run:
 You can also reset Pixel's database to its original state with:
 
 ```sh
-./pixel.js reset-db
+./reset-db.sh
 ```
 
 ## Development
