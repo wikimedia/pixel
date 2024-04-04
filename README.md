@@ -128,7 +128,7 @@ Updating Pixel to the latest version can be done with the following command when
 you are on the `main` branch:
 
 ```sh
-./pixel.js update
+./update.sh
 ```
 
 This command will `git pull` the latest code from the `main` branch and destroy
