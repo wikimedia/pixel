@@ -119,7 +119,7 @@ The HTML report of the test results can be found at `report/<name-of-test-group>
 If you want to stop all of Pixel's services, run:
 
 ```sh
-./pixel.js stop
+./stop.sh
 ```
 
 ### Updates
