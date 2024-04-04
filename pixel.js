@@ -198,31 +198,6 @@ const getGroupConfig = ( groupName, a11y ) => {
 };
 
 /**
- * Resets the database to the physical backup downloaded from the
- * Dockerfile.database docker image.
- */
-async function resetDb() {
-	// Mysql server needs to be shutdown before restoring a physical backup:
-	// See: https://www.percona.com/doc/percona-xtrabackup/2.1/xtrabackup_bin/restoring_a_backup.html
-	await batchSpawn.spawn(
-		'docker',
-		[ 'compose', ...getComposeOpts( [ 'stop', 'database' ] ) ]
-	);
-
-	// Run seedDb.sh script which rsyncs the physical backup into the mysql folder.
-	await batchSpawn.spawn(
-		'docker',
-		[ 'compose', ...getComposeOpts( [ 'run', '--rm', '--entrypoint', 'bash -c "/docker-entrypoint-initdb.d/seedDb.sh"', 'database' ] ) ]
-	);
-
-	// Start mysql server.
-	await batchSpawn.spawn(
-		'docker',
-		[ 'compose', ...getComposeOpts( [ 'up', '-d', 'database' ] ) ]
-	);
-}
-
-/**
  * @param {string} relativePath Relative path to folder.
  */
 function removeFolder( relativePath ) {
@@ -315,7 +290,7 @@ async function processCommand( type, opts, runSilently = false ) {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
 					console.log( 'Resetting database state...' );
-					await resetDb();
+					await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
 				}
 			} );
 		} else {
@@ -364,7 +339,7 @@ async function processCommand( type, opts, runSilently = false ) {
 				// Reset the database if `--reset-db` option is passed.
 				if ( opts.resetDb ) {
 					console.log( 'Resetting database state...' );
-					await resetDb();
+					await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
 				}
 			} );
 			return finished;
@@ -459,7 +434,7 @@ function setupCli() {
 		.command( 'reset-db' )
 		.description( 'Destroys all data in the database and resets it.' )
 		.action( async () => {
-			await resetDb();
+			await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
 		} );
 
 	program
