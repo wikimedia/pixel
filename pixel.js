@@ -419,13 +419,6 @@ function setupCli() {
 		} );
 
 	program
-		.command( 'reset-db' )
-		.description( 'Destroys all data in the database and resets it.' )
-		.action( async () => {
-			await batchSpawn.spawn( './reset-db.sh', [], { shell: true } );
-		} );
-
-	program
 		.command( 'runAll' )
 		.description( 'Runs all the registered tests and generates a report.' )
 		.option( ...branchOpt )
