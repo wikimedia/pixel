@@ -438,13 +438,6 @@ function setupCli() {
 		} );
 
 	program
-		.command( 'stop' )
-		.description( 'Stops all Docker containers associated with Pixel' )
-		.action( async () => {
-			await batchSpawn.spawn( './stop.sh', [], { shell: true } );
-		} );
-
-	program
 		.command( 'update' )
 		.description( 'Updates Pixel to the latest version. This command also destroys all containers, images, networks, and volumes associated with Pixel to ensure it is using the latest code.' )
 		.action( async () => {
