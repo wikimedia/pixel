@@ -69,7 +69,7 @@ const tests = [
 	},
 	{
 		label: 'Diff page logged in (#minerva #mobile #logged-in)',
-		path: '/wiki/Special:MobileDiff/358'
+		path: '/w/index.php?title=Test&diff=358&oldid=349'
 	},
 	{
 		label: 'Page issues (#minerva #mobile)',
