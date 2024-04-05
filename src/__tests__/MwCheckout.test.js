@@ -6,7 +6,7 @@ jest.mock( '../GerritClient' );
 jest.mock( '../BatchSpawn' );
 
 function create() {
-	const batchSpawn = new BatchSpawn( 1 );
+	const batchSpawn = new BatchSpawn();
 	const mwCheckout = new MwCheckout( {
 		'mediawiki/skins/Vector': {
 			path: 'skins/Vector'

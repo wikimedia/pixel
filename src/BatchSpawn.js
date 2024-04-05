@@ -1,66 +1,40 @@
 const { spawn } = require( 'child_process' );
 const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
+const path = require( 'path' );
 
-/**
- * @typedef {Object} Command
- * @property {'exec'|'spawn'} method
- * @property {Function} resolve
- * @property {string} command
- * @property {string[]} args
- * @property {Object} opts
- */
-
-/**
- * Extends Node's spawn and exec functions to enable parallel processing of commands
- * limited by a batch size.
- */
 class BatchSpawn {
-	#batchSize;
-	/** @type { Command[] } */ #commandQueue = [];
-	/** @type { Map<Promise<any>, boolean> } */ #promiseMap = new Map();
-
 	/**
-	 * @param {number} [batchSize = 1]
+	 * Log the command execution details.
+	 *
+	 * @param {string} methodName
+	 * @param {string} command
+	 * @param {string[]} args
 	 */
-	constructor( batchSize = 1 ) {
-		this.#batchSize = batchSize;
+	logExecution( methodName, command, args = [] ) {
+		if ( process.env.SPAWN_DEBUG !== '1' ) {
+			return;
+		}
+		const callerInfo = this.getCallerInfo();
+		const completeCommand = `${command} ${args.join( ' ' )}`;
+		console.log( '\x1b[32m%s\x1b[0m', `\n\nShell '${methodName}' invocation` );
+		console.log( '\x1b[32m%s\x1b[0m', `( ${callerInfo} )` );
+		console.log( '\x1b[34m%s\x1b[0m', `\n${completeCommand}\n\n` );
 	}
 
 	/**
-	 * Promisify Node's exec function. If the number of commands that are
-	 * currently being processed has exceeded the `batchSize`, the command will
-	 * be queued until the number of parallel commands is less than the batchSize.
+	 * Promisify Node's exec function.
 	 *
 	 * @param {string} command
 	 * @return {Promise<{stdout: string, stderr: string}>}
 	 */
 	exec( command ) {
-		if ( this.#promiseMap.size >= this.#batchSize ) {
-			return new Promise( ( resolve ) => {
-				this.#commandQueue.push( {
-					method: 'exec',
-					resolve,
-					command,
-					args: [],
-					opts: {}
-				} );
-			} );
-		}
-
-		const promise = exec( command ).finally( () => {
-			this.#dequeue( promise );
-		} );
-
-		this.#promiseMap.set( promise, true );
-
-		return promise;
+		this.logExecution( 'exec', command );
+		return exec( command );
 	}
 
 	/**
-	 * Promisify Node's spawn function. If the number of commands that are
-	 * currently being processed has exceeded the `batchSize`, the command will
-	 * be queued until the number of parallel commands is less than the batchSize.
+	 * Promisify Node's spawn function.
 	 *
 	 * @param {string} command
 	 * @param {string[]} args
@@ -68,34 +42,15 @@ class BatchSpawn {
 	 * @return {Promise<undefined>}
 	 */
 	spawn( command, args, opts ) {
-		if ( this.#promiseMap.size >= this.#batchSize ) {
-			return new Promise( ( resolve ) => {
-				this.#commandQueue.push( {
-					method: 'spawn',
-					resolve,
-					command,
-					args,
-					opts: opts || {}
-				} );
-			} );
-		}
-
-		const promise = new Promise( ( resolve, reject ) => {
-			const childProcess = spawn(
-				command,
-				args,
-				{ stdio: 'inherit', ...opts }
-			);
+		this.logExecution( 'spawn', command, args );
+		return new Promise( ( resolve, reject ) => {
+			const childProcess = spawn( command, args, { stdio: 'inherit', ...opts } );
 
 			childProcess.on( 'error', ( err ) => {
-				this.#dequeue( promise );
-
 				reject( err );
 			} );
 
 			childProcess.on( 'exit', ( code ) => {
-				this.#dequeue( promise );
-
 				if ( code === 0 ) {
 					resolve( undefined );
 					return;
@@ -103,29 +58,37 @@ class BatchSpawn {
 
 				reject( new Error( `Exit with error code ${code}` ) );
 			} );
-
 		} );
-
-		this.#promiseMap.set( promise, true );
-
-		return promise;
 	}
 
 	/**
-	 * Removes the passed in promise from the promiseMap and executes the next
-	 * command in queue (if any).
+	 * Get the file name, function name, and line number of the caller.
 	 *
-	 * @param {Promise<any>} promise
+	 * @return {string}
 	 */
-	#dequeue( promise ) {
-		this.#promiseMap.delete( promise );
+	getCallerInfo() {
+		const originalPrepareStackTrace = Error.prepareStackTrace;
+		Error.prepareStackTrace = ( _, innerStack ) => innerStack;
+		const error = new Error();
+		const stack = error.stack;
+		Error.prepareStackTrace = originalPrepareStackTrace;
 
-		if ( this.#commandQueue.length ) {
-			const command = /** @type {Command} */ ( this.#commandQueue.shift() );
-			command.resolve(
-				this[ command.method ]( command.command, command.args, command.opts )
-			);
+		if ( Array.isArray( stack ) ) {
+			const externalCaller = stack.find( ( caller ) => {
+				return caller.getFileName && !caller.getFileName().endsWith( 'BatchSpawn.js' );
+			} );
+
+			if ( externalCaller ) {
+				const callerFile = externalCaller.getFileName() || '';
+				const callerFileName = path.basename( callerFile );
+				const callerFunction = externalCaller.getFunctionName();
+				const callerLineNumber = externalCaller.getLineNumber();
+
+				return `called by '${callerFunction || ''}' in '${callerFileName}' on line ${callerLineNumber}`;
+			}
 		}
+
+		return 'Unknown location';
 	}
 
 }
