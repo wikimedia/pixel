@@ -9,13 +9,13 @@ git -C "$(dirname "$0")" pull origin main
 npm i
 
 # Stop and remove Docker containers, networks, and volumes
-docker compose --progress plain --project-directory . -f ./docker-compose.yml down --volumes --remove-orphans
+docker compose --progress=plain --project-directory . -f ./docker-compose.yml down --volumes --remove-orphans
 
 # Build the pixel-base-regression image
-docker build --progress plain -f Dockerfile.base-regression -t pixel-base-regression:latest .
+docker build --progress=plain -f Dockerfile.base-regression -t pixel-base-regression:latest .
 
 # Build or rebuild services
-docker compose --progress plain --project-directory . -f ./docker-compose.yml build
+docker compose --progress=plain --project-directory . -f ./docker-compose.yml build
 
 # Remove any dangling images
 docker image prune -f
