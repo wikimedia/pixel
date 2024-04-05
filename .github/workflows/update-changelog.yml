@@ -1,0 +1,38 @@
+name: Update Changelog
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21'
+
+    - name: Install auto-changelog
+      run: npm install -g auto-changelog
+
+    - name: Generate changelog
+      run: auto-changelog
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add CHANGELOG.md
+        git commit -m "Update changelog"
+        git push origin HEAD:main
