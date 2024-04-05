@@ -15,7 +15,7 @@ const makeReport = require( './src/makeReportIndex.js' );
  */
 function getComposeOpts( opts ) {
 	return [
-		'--progress', 'plain',
+		'--progress=plain',
 		'--project-directory', __dirname,
 		'-f', `${__dirname}/docker-compose.yml`,
 		...opts
@@ -249,7 +249,7 @@ async function processCommand( type, opts, runSilently = false ) {
 
 		await simpleSpawn.spawn(
 			'docker',
-			[ 'build', '--progress', 'plain', '-f', 'Dockerfile.base-regression', '-t', 'pixel-base-regression:latest', '.' ]
+			[ 'build', '--progress=plain', '-f', 'Dockerfile.base-regression', '-t', 'pixel-base-regression:latest', '.' ]
 		);
 
 		// Start docker containers.
