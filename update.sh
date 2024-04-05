@@ -12,7 +12,7 @@ npm i
 docker compose --progress=plain --project-directory . -f ./docker-compose.yml down --volumes --remove-orphans
 
 # Build the pixel-base-regression image
-docker build --progress=plain -f Dockerfile.base-regression -t pixel-base-regression:latest .
+./build-base-regression-image.sh
 
 # Build or rebuild services
 docker compose --progress=plain --project-directory . -f ./docker-compose.yml build

@@ -247,10 +247,7 @@ async function processCommand( type, opts, runSilently = false ) {
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 
-		await simpleSpawn.spawn(
-			'docker',
-			[ 'build', '--progress=plain', '-f', 'Dockerfile.base-regression', '-t', 'pixel-base-regression:latest', '.' ]
-		);
+		await simpleSpawn.spawn( './build-base-regression-image.sh' );
 
 		// Start docker containers.
 		await simpleSpawn.spawn(
