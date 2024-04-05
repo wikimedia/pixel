@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const repos = require( '../repositories.json' );
 const opts = JSON.parse( process.argv[ 2 ] );
-const BatchSpawn = require( './BatchSpawn' );
+const SimpleSpawn = require( './SimpleSpawn' );
 const benchmark = require( './benchmark' );
 const MwCheckout = require( './MwCheckout' );
 
@@ -14,8 +14,8 @@ for ( const rb of ( opts.repoBranch ?? [] ) ) {
 
 async function init() {
 	benchmark( async () => {
-		const batchSpawn = new BatchSpawn();
-		const mwCheckout = new MwCheckout( repos, batchSpawn );
+		const simpleSpawn = new SimpleSpawn();
+		const mwCheckout = new MwCheckout( repos, simpleSpawn );
 		await mwCheckout.checkout( opts.branch, opts.changeId ?? [], repoBranches );
 	} );
 }

@@ -1,12 +1,12 @@
 const GerritClient = require( '../GerritClient' );
-const BatchSpawn = require( '../BatchSpawn' );
+const SimpleSpawn = require( '../SimpleSpawn' );
 const MwCheckout = require( '../MwCheckout' );
 const gerritResponses = require( './__responses__/gerritResponses' );
 jest.mock( '../GerritClient' );
-jest.mock( '../BatchSpawn' );
+jest.mock( '../SimpleSpawn' );
 
 function create() {
-	const batchSpawn = new BatchSpawn();
+	const simpleSpawn = new SimpleSpawn();
 	const mwCheckout = new MwCheckout( {
 		'mediawiki/skins/Vector': {
 			path: 'skins/Vector'
@@ -14,7 +14,7 @@ function create() {
 		'mediawiki/core': {
 			path: '.'
 		}
-	}, batchSpawn );
+	}, simpleSpawn );
 	// @ts-ignore
 	const gerritClient = GerritClient.mock.instances[ 0 ];
 	gerritClient.get.mockImplementation( async ( /** @type {string} */ path ) => {
@@ -22,14 +22,14 @@ function create() {
 	} );
 
 	// @ts-ignore
-	batchSpawn.exec.mockImplementation( async () => {
+	simpleSpawn.exec.mockImplementation( async () => {
 		return {
 			stdout: 'origin/master'
 		};
 	} );
 
 	return {
-		batchSpawn,
+		simpleSpawn,
 		mwCheckout,
 		gerritClient
 	};
@@ -40,7 +40,7 @@ describe( 'MwCheckout.js', () => {
 		// @ts-ignore
 		GerritClient.mockClear();
 		// @ts-ignore
-		BatchSpawn.mockClear();
+		SimpleSpawn.mockClear();
 	} );
 
 	describe( 'checkout', () => {
@@ -49,7 +49,7 @@ describe( 'MwCheckout.js', () => {
 
 			await factory.mwCheckout.checkout( 'master', [ 'I8d3af86fdc3daf42441a93fc5b64ebcef37c5fb4' ] );
 
-			expect( factory.batchSpawn.spawn ).toHaveBeenLastCalledWith( 'php maintenance/run.php update.php --quick', expect.anything(), expect.anything() );
+			expect( factory.simpleSpawn.spawn ).toHaveBeenLastCalledWith( 'php maintenance/run.php update.php --quick', expect.anything(), expect.anything() );
 		} );
 
 		it( 'throws an error when branch is not found', async () => {

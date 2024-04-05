@@ -3,7 +3,7 @@ const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const path = require( 'path' );
 
-class BatchSpawn {
+class SimpleSpawn {
 	/**
 	 * Log the command execution details.
 	 *
@@ -75,7 +75,7 @@ class BatchSpawn {
 
 		if ( Array.isArray( stack ) ) {
 			const externalCaller = stack.find( ( caller ) => {
-				return caller.getFileName && !caller.getFileName().endsWith( 'BatchSpawn.js' );
+				return caller.getFileName && !caller.getFileName().endsWith( 'SimpleSpawn.js' );
 			} );
 
 			if ( externalCaller ) {
@@ -93,4 +93,4 @@ class BatchSpawn {
 
 }
 
-module.exports = BatchSpawn;
+module.exports = SimpleSpawn;

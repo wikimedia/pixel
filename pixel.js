@@ -3,8 +3,8 @@ const util = require( 'util' );
 const exec = util.promisify( require( 'child_process' ).exec );
 const LATEST_RELEASE_BRANCH = 'latest-release';
 const MAIN_BRANCH = 'master';
-const BatchSpawn = require( './src/BatchSpawn' );
-const batchSpawn = new BatchSpawn();
+const SimpleSpawn = require( './src/SimpleSpawn' );
+const simpleSpawn = new SimpleSpawn();
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
 const makeReport = require( './src/makeReportIndex.js' );
@@ -93,7 +93,7 @@ ${markerString}`
 		);
 		fs.writeFileSync( filePathFull, fileString );
 		if ( !nonInteractive ) {
-			await batchSpawn.spawn( 'open', [ filePathFull ] );
+			await simpleSpawn.spawn( 'open', [ filePathFull ] );
 		}
 	} catch ( e ) {
 		console.log( `Could not open report, but it is located at ${filePathFull}` );
@@ -247,13 +247,13 @@ async function processCommand( type, opts, runSilently = false ) {
 		// store details of this run.
 		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
 
-		await batchSpawn.spawn(
+		await simpleSpawn.spawn(
 			'docker',
 			[ 'build', '--progress', 'plain', '-f', 'Dockerfile.base-regression', '-t', 'pixel-base-regression:latest', '.' ]
 		);
 
 		// Start docker containers.
-		await batchSpawn.spawn(
+		await simpleSpawn.spawn(
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'up', '-d' ] ) ]
 		);
@@ -261,7 +261,7 @@ async function processCommand( type, opts, runSilently = false ) {
 		// Execute main.js. Pass the `-T` flag if the `NONINTERACTIVE` env variable
 		// is set. This might be needed when Pixel is running inside a cron job, for
 		// example.
-		await batchSpawn.spawn(
+		await simpleSpawn.spawn(
 			'docker',
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
@@ -271,7 +271,7 @@ async function processCommand( type, opts, runSilently = false ) {
 
 		if ( opts.a11y ) {
 			// Execute a11y regression tests.
-			return batchSpawn.spawn(
+			return simpleSpawn.spawn(
 				'docker',
 				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile, !!opts.logResults ] ) ]
 			).finally( async () => {
@@ -290,7 +290,7 @@ async function processCommand( type, opts, runSilently = false ) {
 				removeFolder( config.paths.bitmaps_test );
 			}
 			// Execute Visual regression tests.
-			const finished = await batchSpawn.spawn(
+			const finished = await simpleSpawn.spawn(
 				'docker',
 				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 			).then( async () => {
@@ -491,7 +491,7 @@ Skipping group "${groupName}" due to priority.
 			}
 			const path = await makeReport( outputDir, html );
 			if ( !process.env.NONINTERACTIVE ) {
-				await batchSpawn.spawn( 'open', [ path ] );
+				await simpleSpawn.spawn( 'open', [ path ] );
 			}
 		} );
 	program.parse();

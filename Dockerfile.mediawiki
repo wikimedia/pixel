@@ -6,7 +6,7 @@ FROM docker-registry.wikimedia.org/dev/buster-php74-fpm:1.0.0-s3
 # isn't unnecessarily busted each time a file in the `src` directory changes.
 # See: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
 COPY node-preparation.sh /node-preparation.sh
-COPY src/BatchSpawn.js /src/BatchSpawn.js
+COPY src/SimpleSpawn.js /src/SimpleSpawn.js
 COPY src/setupRepos.sh /src/setupRepos.sh
 COPY repositories.json /repositories.json
 
