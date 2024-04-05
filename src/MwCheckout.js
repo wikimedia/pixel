@@ -1,4 +1,4 @@
-const BatchSpawn = require( './BatchSpawn' );
+const SimpleSpawn = require( './SimpleSpawn' );
 const GerritClient = require( './GerritClient' );
 const GERRIT_BASE_URL = 'https://gerrit.wikimedia.org/r';
 
@@ -44,16 +44,16 @@ const GERRIT_BASE_URL = 'https://gerrit.wikimedia.org/r';
  */
 class MwCheckout {
 	#repos;
-	#batchSpawn;
+	#simpleSpawn;
 	#gerritClient;
 
 	/**
 	 * @param {Repos} repos
-	 * @param {BatchSpawn} batchSpawn
+	 * @param {SimpleSpawn} simpleSpawn
 	 */
-	constructor( repos, batchSpawn ) {
+	constructor( repos, simpleSpawn ) {
 		this.#repos = repos;
-		this.#batchSpawn = batchSpawn;
+		this.#simpleSpawn = simpleSpawn;
 		this.#gerritClient = new GerritClient( GERRIT_BASE_URL );
 	}
 
@@ -83,7 +83,7 @@ class MwCheckout {
 			if ( patchCommands[ repoId ] ) {
 				for ( const command of patchCommands[ repoId ] ) {
 					// Execute patch command.
-					await this.#batchSpawn.spawn(
+					await this.#simpleSpawn.spawn(
 						command,
 						[],
 						{ shell: true }
@@ -96,7 +96,7 @@ class MwCheckout {
 
 			if ( repoId === 'design/codex' ) {
 				// Build the Codex sandbox and its dependencies
-				await this.#batchSpawn.spawn(
+				await this.#simpleSpawn.spawn(
 					`
 					cd ${path}
 					npm ci
@@ -112,7 +112,7 @@ class MwCheckout {
 
 		// The final step is to run maintenance/update script to perform any
 		// database migrations.
-		await this.#batchSpawn.spawn(
+		await this.#simpleSpawn.spawn(
 			'php maintenance/run.php update.php --quick',
 			[],
 			{ shell: true }
@@ -125,7 +125,7 @@ class MwCheckout {
 	 * @param {string} path
 	 */
 	async #fetch( path ) {
-		await this.#batchSpawn.spawn(
+		await this.#simpleSpawn.spawn(
 			`
 			echo "Git fetch: ${path}"
 			git -C "${path}" fetch origin
@@ -143,14 +143,14 @@ class MwCheckout {
 	 * @param {string} repoId
 	 */
 	async #checkoutBranch( path, branch, repoId ) {
-		const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ refs/tags/ --format='%(refname:short)'` );
+		const { stdout } = await this.#simpleSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ refs/tags/ --format='%(refname:short)'` );
 		const branches = stdout.split( '\n' );
 		// Use the `main` branch instead of `master` if `main` is available and
 		// `master` is unavailable.
 		branch = branch === 'origin/master' && !branches.includes( 'origin/master' ) && branches.includes( 'origin/main' ) ? 'origin/main' : branch;
 
 		if ( branches.includes( branch ) ) {
-			return this.#batchSpawn.spawn(
+			return this.#simpleSpawn.spawn(
 				`
 				echo "Git checkout: ${path}"
 				git -C "${path}" checkout -f ${branch}
@@ -169,7 +169,7 @@ class MwCheckout {
 	 * @param {string} path
 	 */
 	async #updateSubmodules( path ) {
-		return this.#batchSpawn.spawn(
+		return this.#simpleSpawn.spawn(
 			`
 echo "Update submodules"
 cd ${path} && git submodule update
@@ -187,7 +187,7 @@ cd ${path} && git submodule update
 	 * @param {string} path
 	 */
 	async #updateComposer( path ) {
-		return this.#batchSpawn.spawn(
+		return this.#simpleSpawn.spawn(
 			`
 			if [ ! -e "${path}/composer.json" ]; then 
 				exit
@@ -253,7 +253,7 @@ cd ${path} && git submodule update
 
 			// Use the `main` branch instead of `master` if `main` is available and
 			// `master` is unavailable.
-			const { stdout } = await this.#batchSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
+			const { stdout } = await this.#simpleSpawn.exec( `git -C "${path}" for-each-ref refs/remotes/origin/ --format='%(refname:short)'` );
 			const branches = stdout.split( '\n' );
 			branch = branch === 'origin/master' && !branches.includes( 'origin/master' ) && branches.includes( 'origin/main' ) ? 'origin/main' : branch;
 
