@@ -1,12 +1,12 @@
 const BASE_URL = process.env.PIXEL_MW_SERVER;
-const utils = require( './utils' );
+const utils = require( '../utils' );
 const {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
 	VIEWPORT_DESKTOP,
 	VIEWPORT_DESKTOP_WIDE,
 	VIEWPORT_DESKTOP_WIDEST
-} = require( './viewports' );
+} = require( '../viewports' );
 
 const tests = [
 	{
