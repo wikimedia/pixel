@@ -1,9 +1,9 @@
-const utils = require( './utils' );
+const utils = require( '../utils' );
 const {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
 	VIEWPORT_DESKTOP
-} = require( './viewports' );
+} = require( '../viewports' );
 
 // List of all components on the Codex sandbox
 // TODO ideally we would automate this based on what's actually in the sandbox

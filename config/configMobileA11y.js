@@ -1,7 +1,7 @@
 // @ts-nocheck
-const utils = require( './utils' );
+const utils = require( '../utils' );
 
-const NAMESPACE = 'desktop';
+const NAMESPACE = 'mobile';
 const BASE_URL = process.env.PIXEL_MW_SERVER;
 
 const testDefaults = {
@@ -21,7 +21,7 @@ const testDefaults = {
 		'color-contrast'
 	],
 	chromeLaunchConfig: {
-		headless: 'new',
+		headless: true,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox'
@@ -35,12 +35,12 @@ module.exports = {
 	tests: [
 		{
 			name: 'default',
-			url: BASE_URL + '/wiki/Test?useskin=vector-2022',
+			url: BASE_URL + '/wiki/Test?useskin=minerva',
 			...testDefaults
 		},
 		{
 			name: 'logged_in',
-			url: BASE_URL + '/wiki/Test?useskin=vector-2022',
+			url: BASE_URL + '/wiki/Test?useskin=minerva',
 			loggedin: true,
 			...testDefaults
 		}

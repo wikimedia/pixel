@@ -1,4 +1,4 @@
-const utils = require( './utils' );
+const utils = require( '../utils' );
 
 const {
 	VIEWPORT_PHONE,
@@ -6,7 +6,7 @@ const {
 	VIEWPORT_DESKTOP,
 	VIEWPORT_DESKTOP_WIDE,
 	VIEWPORT_DESKTOP_WIDEST
-} = require( './viewports' );
+} = require( '../viewports' );
 
 const scenarios = utils.makeScenariosForSkins( [
 	{

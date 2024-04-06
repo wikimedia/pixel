@@ -114,7 +114,7 @@ const getGroupConfig = ( groupName, a11y ) => {
 	if ( !c ) {
 		throw new Error( `Unknown test group: ${groupName}` );
 	}
-	return c.config;
+	return `config/${c.config}`;
 };
 
 /**

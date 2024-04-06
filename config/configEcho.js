@@ -1,5 +1,5 @@
 const configDesktop = require( './configDesktop.js' );
-const utils = require( './utils' );
+const utils = require( '../utils' );
 
 const BASE_URL = process.env.PIXEL_MW_SERVER;
 

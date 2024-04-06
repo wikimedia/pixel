@@ -67,15 +67,7 @@ services:
       - ./context.json:/pixel/context.json
       - ./viewports.js:/pixel/viewports.js
       - ./utils.js:/pixel/utils.js
-      - ./configDesktop.js:/pixel/configDesktop.js
-      - ./configDesktopDev.js:/pixel/configDesktopDev.js
-      - ./configEcho.js:/pixel/configEcho.js
-      - ./configCampaignEvents.js:/pixel/configCampaignEvents.js
-      - ./configWikiLambda.js:/pixel/configWikiLambda.js
-      - ./configLogin.js:/pixel/configLogin.js
-      - ./configWebMaintained.js:/pixel/configWebMaintained.js
-      - ./configMobile.js:/pixel/configMobile.js
-      - ./configCodex.js:/pixel/configCodex.js
+      - ./config:/pixel/config
       - ./src:/pixel/src
       - ./report:/pixel/report
   a11y-regression:
@@ -93,8 +85,7 @@ services:
       - ./context.json:/pixel/context.json
       - ./viewports.js:/pixel/viewports.js
       - ./utils.js:/pixel/utils.js
-      - ./configDesktopA11y.js:/pixel/configDesktopA11y.js
-      - ./configMobileA11y.js:/pixel/configMobileA11y.js
+      - ./config:/pixel/config
       - ./src:/pixel/src
       - ./report:/pixel/report
   png-optimizer:
