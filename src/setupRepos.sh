@@ -25,7 +25,7 @@ clone_with_retries() {
     depth_flag="--depth $depth"
   fi
   while [ $attempt -le $max_retries ]; do
-    echo "Cloning '${repo_url}', attempt $attempt of $max_retries, with a timeout of $clone_timeout seconds before forcing a retry"
+    echo -e "\n\033[32mCloning '${repo_url}', attempt $attempt of $max_retries, with a timeout of $clone_timeout seconds before forcing a retry (clone depth: ${depth:-full})\033[0m\n"
     if [ -d "${clone_path}" ]; then
       find "${clone_path}" -mindepth 1 -delete
     fi
