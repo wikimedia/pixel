@@ -12,18 +12,24 @@ get_default_branch() {
   git -C "${path}" symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 }
 
+
 clone_with_retries() {
   local repo_url=$1
   local clone_path=$2
   local max_retries=${3:-3}
   local clone_timeout=${4:-600}  # Timeout in seconds, default 10 minutes
+  local depth=${5:-}
   local attempt=1
+  local depth_flag=""
+  if [ -n "$depth" ]; then
+    depth_flag="--depth $depth"
+  fi
   while [ $attempt -le $max_retries ]; do
     echo "Cloning '${repo_url}', attempt $attempt of $max_retries, with a timeout of $clone_timeout seconds before forcing a retry"
     if [ -d "${clone_path}" ]; then
       find "${clone_path}" -mindepth 1 -delete
     fi
-    if timeout $clone_timeout git clone "${repo_url}" "${clone_path}" --progress; then
+    if timeout $clone_timeout git clone $depth_flag "${repo_url}" "${clone_path}" --progress; then
       return 0
     else
       echo "Attempt $attempt to clone '${repo_url}' failed"
@@ -41,7 +47,7 @@ setup_repo() {
   local path=$2
   local max_retries=5
   local timeout_seconds=$((60 * 3)) # 3 minutes before retrying
-  if ! clone_with_retries "https://gerrit.wikimedia.org/r/${id}" "${path}" $max_retries $timeout_seconds; then
+  if ! clone_with_retries "https://gerrit.wikimedia.org/r/${id}" "${path}" $max_retries $timeout_seconds "${CLONE_DEPTH:-}"; then
     exit 1
   fi
   git -C "${path}" checkout --progress "$(get_default_branch "$path")"
@@ -56,7 +62,7 @@ setup_core() {
   local core_git='https://gerrit.wikimedia.org/r/mediawiki/core.git'
   local max_retries=5
   local timeout_seconds=$((60 * 10)) # 10 minutes before retrying
-  if ! clone_with_retries "${core_git}" . $max_retries $timeout_seconds; then
+  if ! clone_with_retries "${core_git}" . $max_retries $timeout_seconds "${CLONE_DEPTH:-}"; then
     echo "Failed to clone the repository from '${core_git}'"
     exit 1
   fi

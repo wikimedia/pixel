@@ -8,6 +8,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.mediawiki
+      args:
+        - CLONE_DEPTH=
     env_file:
       - .env
     environment:
