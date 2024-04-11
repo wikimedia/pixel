@@ -10,6 +10,9 @@ COPY src/SimpleSpawn.js /src/SimpleSpawn.js
 COPY src/setupRepos.sh /src/setupRepos.sh
 COPY repositories.json /repositories.json
 
+ARG CLONE_DEPTH
+ENV CLONE_DEPTH=$CLONE_DEPTH
+
 WORKDIR /var/www/html/w
 
 RUN /node-preparation.sh ensure_node_major_version_installed 18 || \
