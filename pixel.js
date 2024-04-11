@@ -182,10 +182,7 @@ async function processCommand( type, opts, runSilently = false ) {
 		await simpleSpawn.spawn( './build-base-regression-image.sh' );
 
 		// Start docker containers.
-		await simpleSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'up', '-d' ] ) ]
-		);
+		await simpleSpawn.spawn( './start.sh' );
 
 		// Execute main.js. Pass the `-T` flag if the `NONINTERACTIVE` env variable
 		// is set. This might be needed when Pixel is running inside a cron job, for
