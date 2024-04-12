@@ -7,7 +7,6 @@ const SimpleSpawn = require( './src/SimpleSpawn' );
 const simpleSpawn = new SimpleSpawn();
 const fs = require( 'fs' );
 const CONTEXT_PATH = `${__dirname}/context.json`;
-const makeReport = require( './src/makeReportIndex.js' );
 const GROUP_CONFIG = require( './config/groupConfig' );
 const A11Y_GROUP_CONFIG = require( './config/a11yGroupConfig' );
 
@@ -415,9 +414,11 @@ Skipping group "${groupName}" due to priority.
 *************************` );
 				}
 			}
-			const path = await makeReport( outputDir, html );
+			const indexFilePath = `${outputDir}/index.html`;
+			const { stdout } = await exec( `source ./src/makeReportIndex.sh && makeReport "${indexFilePath}" "${html.replace( /"/g, '\\"' )}"` );
+			console.log( stdout );
 			if ( !process.env.NONINTERACTIVE ) {
-				await simpleSpawn.spawn( 'open', [ path ] );
+				await simpleSpawn.spawn( 'open', [ indexFilePath ] );
 			}
 		} );
 	program.parse();
