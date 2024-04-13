@@ -138,130 +138,152 @@ function removeFolder( relativePath ) {
  */
 async function processCommand( type, opts, runSilently = false ) {
 	try {
-		let active;
-		let description = '';
 		const group = opts.group;
 		const configFile = getGroupConfig( group, opts.a11y );
 		const config = require( `${__dirname}/${configFile}` );
 
 		setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', group );
-		// Check if `-b latest-release` was used and, if so, set opts.branch to the
-		// latest release branch.
-		if ( opts.branch === LATEST_RELEASE_BRANCH ) {
-			opts.branch = await getLatestReleaseBranch();
-			const codexTag = await getLatestCodexVersion();
-			opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexTag}` ];
-			console.log( `Using latest branch "${opts.branch}" (for Codex, "${codexTag}")` );
-			if ( opts.changeId ) {
-				description = ` (Includes ${opts.changeId.join( ',' )})`;
-			}
-			active = opts.branch;
-		} else if ( opts.branch !== 'master' ) {
-			active = opts.branch;
-			if ( opts.changeId ) {
-				description = ` (Includes ${opts.changeId.join( ',' )})`;
-			}
-		} else {
-			active = opts.changeId ? opts.changeId[ 0 ] : opts.branch;
-		}
-		if ( opts.repoBranch && opts.repoBranch.length > 0 ) {
-			active += ` (with custom branches: ${opts.repoBranch.join( ', ' )})`;
-		}
-		if ( !context[ group ] ) {
-			context[ group ] = { description };
-		}
-		if ( type === 'reference' ) {
-			context[ group ].description = description;
-		}
-		context[ group ][ type ] = active;
 
-		// store details of this run.
-		fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
+		const activeBranch = await getActiveBranch( opts );
+		const description = getDescription( opts );
+		updateContext( group, type, activeBranch, description );
 
-		await simpleSpawn.spawn( './build-base-regression-image.sh' );
-
-		// Start docker containers.
-		await simpleSpawn.spawn( './start.sh' );
-
-		// Execute main.js. Pass the `-T` flag if the `NONINTERACTIVE` env variable
-		// is set. This might be needed when Pixel is running inside a cron job, for
-		// example.
-		await simpleSpawn.spawn(
-			'docker',
-			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
-		);
+		await prepareDockerEnvironment( opts );
 
 		const { stdout } = await exec( './purgeParserCache.sh' );
 		console.log( stdout );
 
 		if ( opts.a11y ) {
-			// Execute a11y regression tests.
-			return simpleSpawn.spawn(
-				'docker',
-				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile, !!opts.logResults ] ) ]
-			).finally( async () => {
-				// Reset the database if `--reset-db` option is passed.
-				if ( opts.resetDb ) {
-					console.log( 'Resetting database state...' );
-					await exec( './reset-db.sh' );
-				}
-			} );
+			return await runA11yRegressionTests( type, configFile, opts.logResults, opts );
 		} else {
-			// Remove test screenshots folder (if present) so that its size doesn't
-			// increase with each `test` run. BackstopJS automatically removes the
-			// reference folder when the `reference` command is run, but not the test
-			// folder when the `test` command is run.
-			if ( type === 'test' ) {
-				removeFolder( config.paths.bitmaps_test );
-			}
-			// Execute Visual regression tests.
-			const finished = await simpleSpawn.spawn(
-				'docker',
-				[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
-			).then( async () => {
-				await writeBannerAndOpenReportIfNecessary(
-					type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
-				);
-			}, async ( /** @type {Error} */ err ) => {
-				console.error( err );
-				// Don't check error message if caller asked us not to.
-				if ( err.message.includes( '130' ) ) {
-					// If user ends subprocess with a sigint, exit early.
-					if ( !runSilently ) {
-						// eslint-disable-next-line no-process-exit
-						process.exit( 1 );
-					}
-				}
-
-				if ( err.message.includes( 'Exit with error code 1' ) ) {
-					await writeBannerAndOpenReportIfNecessary(
-						type, group, config.paths.html_report, process.env.NONINTERACTIVE
-					);
-					if ( !runSilently ) {
-						// eslint-disable-next-line no-process-exit
-						process.exit( 1 );
-					}
-				}
-
-				if ( runSilently ) {
-					return Promise.resolve();
-				} else {
-					throw err;
-				}
-			} ).finally( async () => {
-				// Reset the database if `--reset-db` option is passed.
-				if ( opts.resetDb ) {
-					console.log( 'Resetting database state...' );
-					await exec( './reset-db.sh' );
-				}
-			} );
-			return finished;
+			return await runVisualRegressionTests(
+				type, config, group, runSilently, configFile, opts.resetDb
+			);
 		}
 	} catch ( err ) {
 		console.error( err );
 		// eslint-disable-next-line no-process-exit
 		process.exit( 1 );
 	}
+}
+
+async function getActiveBranch( opts ) {
+	if ( opts.branch === LATEST_RELEASE_BRANCH ) {
+		return await getLatestReleaseBranchAndUpdateOpts( opts );
+	} else if ( opts.branch !== 'master' ) {
+		return opts.branch;
+	} else {
+		return opts.changeId ? opts.changeId[ 0 ] : opts.branch;
+	}
+}
+
+async function getLatestReleaseBranchAndUpdateOpts( opts ) {
+	opts.branch = await getLatestReleaseBranch();
+	const codexTag = await getLatestCodexVersion();
+	opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexTag}` ];
+	console.log( `Using latest branch "${opts.branch}" (for Codex, "${codexTag}")` );
+	return opts.branch;
+}
+
+function getDescription( opts ) {
+	let description = '';
+
+	if ( opts.changeId ) {
+		description = ` (Includes ${opts.changeId.join( ',' )})`;
+	}
+
+	if ( opts.repoBranch && opts.repoBranch.length > 0 ) {
+		description += ` (with custom branches: ${opts.repoBranch.join( ', ' )})`;
+	}
+
+	return description;
+}
+
+function updateContext( group, type, activeBranch, description ) {
+	if ( !context[ group ] ) {
+		context[ group ] = { description };
+	}
+	if ( type === 'reference' ) {
+		context[ group ].description = description;
+	}
+	context[ group ][ type ] = activeBranch;
+
+	fs.writeFileSync( `${__dirname}/context.json`, JSON.stringify( context ) );
+}
+
+async function prepareDockerEnvironment( opts ) {
+	await simpleSpawn.spawn( './build-base-regression-image.sh' );
+	await simpleSpawn.spawn( './start.sh' );
+	await simpleSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
+	);
+}
+
+async function runA11yRegressionTests( type, configFile, logResults, opts ) {
+	const { resetDb } = opts;
+	return simpleSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'a11y-regression', type, configFile, !!logResults ] ) ]
+	).finally( async () => {
+		if ( resetDb ) {
+			await resetDatabase();
+		}
+	} );
+}
+
+async function runVisualRegressionTests( type, config, group, runSilently, configFile, resetDb ) {
+	if ( type === 'test' ) {
+		removeFolder( config.paths.bitmaps_test );
+	}
+
+	const finished = await simpleSpawn.spawn(
+		'docker',
+		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+	).then( async () => {
+		await writeBannerAndOpenReportIfNecessary(
+			type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
+		);
+	}, async ( err ) => {
+		await handleTestError( err, type, group, config.paths.html_report, runSilently );
+	} ).finally( async () => {
+		if ( resetDb ) {
+			await resetDatabase();
+		}
+	} );
+
+	return finished;
+}
+
+async function handleTestError( err, type, group, reportPath, runSilently ) {
+	console.error( err );
+	if ( err.message.includes( '130' ) ) {
+		if ( !runSilently ) {
+			// eslint-disable-next-line no-process-exit
+			process.exit( 1 );
+		}
+	}
+
+	if ( err.message.includes( 'Exit with error code 1' ) ) {
+		await writeBannerAndOpenReportIfNecessary(
+			type, group, reportPath, process.env.NONINTERACTIVE
+		);
+		if ( !runSilently ) {
+			// eslint-disable-next-line no-process-exit
+			process.exit( 1 );
+		}
+	}
+
+	if ( runSilently ) {
+		return Promise.resolve();
+	} else {
+		throw err;
+	}
+}
+
+async function resetDatabase() {
+	console.log( 'Resetting database state...' );
+	await exec( './reset-db.sh' );
 }
 
 function setEnvironmentFlagIfGroup( envVarName, soughtGroup, group ) {
