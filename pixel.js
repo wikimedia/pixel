@@ -376,7 +376,6 @@ function setupCli() {
 		.option( ...directoryOpt )
 		.option( ...resetDbOpt )
 		.action( async ( opts ) => {
-			let html = '';
 			const priority = parseInt( opts.priority, 10 );
 			const outputDir = opts.directory;
 			if ( !fs.existsSync( outputDir ) ) {
@@ -390,10 +389,9 @@ function setupCli() {
 			}
 
 			const groups = { ...GROUP_CONFIG, ...updatedA11yGroupConfig };
+			let html = '';
 			for ( const [ groupName, groupDef ] of Object.entries( groups ) ) {
-				const group = groupDef.a11y ? groupName.slice( 0, -5 ) : groupName;
-				const name = groupDef.name || group;
-				html += `<li><a href="${groupName}/index.html">${name} (${groupName})</a></li>`;
+				html += generateGroupHtml( groupName, groupDef );
 				const groupPriority = groupDef.priority || 0;
 				if ( groupPriority <= priority ) {
 					console.log( `*************************
@@ -406,27 +404,8 @@ Running regression group "${groupName}"
 *************************
 *************************` );
 					try {
-						const changeId = opts.changeId;
-						let msg = '';
-						if ( changeId ) {
-							msg = `(with ${changeId.join( ',' )}).`;
-						}
-						console.log( `Running reference group ${msg}` );
-						await processCommand( 'reference', {
-							branch: LATEST_RELEASE_BRANCH,
-							changeId: opts.changeId,
-							group,
-							a11y: groupDef.a11y,
-							logResults: groupDef.logResults
-						}, true );
-						await processCommand( 'test', {
-							branch: 'master',
-							group,
-							a11y: groupDef.a11y,
-							logResults: groupDef.logResults
-						}, true );
+						await runRegressionGroup( groupName, groupDef, opts );
 					} catch ( e ) {
-						// Continue.
 						console.log( 'Error occurred' );
 						console.error( e );
 					}
@@ -436,14 +415,48 @@ Skipping group "${groupName}" due to priority.
 *************************` );
 				}
 			}
-			const indexFilePath = `${outputDir}/index.html`;
-			const { stdout } = await exec( `source ./src/makeReportIndex.sh && makeReport "${indexFilePath}" "${html.replace( /"/g, '\\"' )}"` );
-			console.log( stdout );
+			const indexFilePath = await generateIndexFile( outputDir, html );
 			if ( !process.env.NONINTERACTIVE ) {
 				await simpleSpawn.spawn( 'open', [ indexFilePath ] );
 			}
 		} );
 	program.parse();
+}
+
+function generateGroupHtml( groupName, groupDef ) {
+	const group = groupDef.a11y ? groupName.slice( 0, -5 ) : groupName;
+	const name = groupDef.name || group;
+	return `<li><a href="${groupName}/index.html">${name} (${groupName})</a></li>`;
+}
+
+async function runRegressionGroup( groupName, groupDef, opts ) {
+	const group = groupDef.a11y ? groupName.slice( 0, -5 ) : groupName;
+	const changeId = opts.changeId;
+	let msg = '';
+	if ( changeId ) {
+		msg = `(with ${changeId.join( ',' )}).`;
+	}
+	console.log( `Running reference group ${msg}` );
+	await processCommand( 'reference', {
+		branch: LATEST_RELEASE_BRANCH,
+		changeId: opts.changeId,
+		group,
+		a11y: groupDef.a11y,
+		logResults: groupDef.logResults
+	}, true );
+	await processCommand( 'test', {
+		branch: 'master',
+		group,
+		a11y: groupDef.a11y,
+		logResults: groupDef.logResults
+	}, true );
+}
+
+async function generateIndexFile( outputDir, html ) {
+	const indexFilePath = `${outputDir}/index.html`;
+	const { stdout } = await exec( `source ./src/makeReportIndex.sh && makeReport "${indexFilePath}" "${html.replace( /"/g, '\\"' )}"` );
+	console.log( stdout );
+	return indexFilePath;
 }
 
 setupCli();
