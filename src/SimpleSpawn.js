@@ -41,7 +41,7 @@ class SimpleSpawn {
 	 * @param {Object} [opts]
 	 * @return {Promise<undefined>}
 	 */
-	spawn( command, args, opts ) {
+	spawn( command, args = [], opts = {} ) {
 		this.logExecution( 'spawn', command, args );
 		return new Promise( ( resolve, reject ) => {
 			const childProcess = spawn( command, args, { stdio: 'inherit', ...opts } );
@@ -56,7 +56,14 @@ class SimpleSpawn {
 					return;
 				}
 
-				reject( new Error( `Exit with error code ${code}` ) );
+				reject( new Error( `
+=========================
+command exited: ${command}
+error code: ${code}
+args: ${args.join( ',' )}
+opts: ${JSON.stringify( opts, null, 2 )}
+=========================
+				` ) );
 			} );
 		} );
 	}
