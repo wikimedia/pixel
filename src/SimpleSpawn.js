@@ -58,10 +58,9 @@ class SimpleSpawn {
 
 				reject( new Error( `
 =========================
-command exited: ${command}
-error code: ${code}
-args: ${args.join( ',' )}
-opts: ${JSON.stringify( opts, null, 2 )}
+command exited: \x1b[34m${command} ${args.join( ' ' )}\x1b[0m
+error code: \x1b[31m${code}\x1b[0m
+opts: \x1b[32m${JSON.stringify( opts, null, 2 )}\x1b[0m
 =========================
 				` ) );
 			} );
