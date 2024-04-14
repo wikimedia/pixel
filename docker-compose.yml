@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile.mediawiki
       args:
-        - CLONE_DEPTH=
+        - CLONE_DEPTH=${CLONE_DEPTH}
     env_file:
       - .env
     environment:
