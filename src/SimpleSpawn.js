@@ -56,13 +56,15 @@ class SimpleSpawn {
 					return;
 				}
 
-				reject( new Error( `
+				console.log( `
 =========================
 command exited: \x1b[34m${command} ${args.join( ' ' )}\x1b[0m
 error code: \x1b[31m${code}\x1b[0m
 opts: \x1b[32m${JSON.stringify( opts, null, 2 )}\x1b[0m
 =========================
-				` ) );
+				` );
+
+				reject( new Error( `Exit with error code ${code}` ) );
 			} );
 		} );
 	}
