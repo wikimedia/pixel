@@ -45,14 +45,6 @@ setup_repo() {
     exit 1
   fi
   git -C "${path}" checkout --progress "$(get_default_branch "$path")"
-  if [ -e "$(pwd)/${path}/composer.json" ]; then
-    echo -e "\nRunning composer install for $path..."
-    local composer_output=$(composer install --working-dir="${path}" --no-dev -n 2>&1) || {
-      echo -e "${id} Composer install failed with output:\n${composer_output}"
-      exit 1
-    }
-    echo -e "\e[32mSuccess!\e[0m"
-  fi
   if [ -e "${path}/.gitmodules" ]; then
     echo "Git submodule update: ${path}"
     git -C "${path}" submodule update --init
@@ -69,7 +61,12 @@ setup_core() {
     exit 1
   fi
   git checkout --progress "$(get_default_branch ".")"
-  echo -e "\nRunning composer install for Mediawiki Core..."
+  echo -e "\e[32mSuccess!\e[0m"
+}
+
+install_php_dependencies() {
+  echo -e "\nRunning composer install for Mediawiki Core, extensions and skins..."
+  mv ./composer.local.json-sample ./composer.local.json
   local composer_output=$(composer install --no-dev -n 2>&1) || {
     echo -e "Mediawiki Core Composer install failed with output:\n${composer_output}"
     exit 1
@@ -94,6 +91,8 @@ start_time=$(date +%s)
 setup_core
 sleep 1
 setup_repos
+sleep 1
+install_php_dependencies
 
 end_time=$(date +%s)
 

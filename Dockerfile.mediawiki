@@ -9,7 +9,6 @@ COPY node-preparation.sh /node-preparation.sh
 COPY src/BatchSpawn.js /src/BatchSpawn.js
 COPY src/setupRepos.sh /src/setupRepos.sh
 COPY repositories.json /repositories.json
-COPY composer.local.json composer.local.json
 
 WORKDIR /var/www/html/w
 
