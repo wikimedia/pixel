@@ -23,6 +23,7 @@ services:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
       - ./src:/src
+      - ./repositories.json:/repositories.json
     depends_on:
       database:
         condition: service_healthy
