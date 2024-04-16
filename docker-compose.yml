@@ -18,6 +18,7 @@ services:
       - XDEBUG_ENABLE=false
       - XHPROF_ENABLE=false
       - ENABLE_WIKILAMBDA=${ENABLE_WIKILAMBDA}
+      - CLONE_DEPTH=${CLONE_DEPTH}
     volumes:
       - mwcode:/var/www/html/w
       - ./LocalSettings.php:/var/www/html/w/LocalSettings.php
