@@ -72,13 +72,12 @@ function prependBannerToIndexFile( indexFileFullPath, bannerContent ) {
 
 /**
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
- * @param {string} indexFileFullPath Full path to index file.
- * @return {Promise<undefined>}
+ * @return {string}
  */
-async function generateAndPrependBannerToIndexFile( group, indexFileFullPath ) {
+function getBannerForGroup( group ) {
 	const ctx = context[ group ];
 	const date = new Date();
-	const bannerContent = `<div id="mw-message-box" style="color: #000; box-sizing: border-box;
+	return `<div id="mw-message-box" style="color: #000; box-sizing: border-box;
 margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
@@ -99,7 +98,6 @@ const daysElapsed = (new Date() - new Date('${date}')) / (1000 * 60 * 60 * 24);
 }());
 </script>
 `;
-	prependBannerToIndexFile( indexFileFullPath, bannerContent );
 }
 
 /**
@@ -260,9 +258,8 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	).then( async () => {
 		if ( type !== 'reference' ) {
 			const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
-			await generateAndPrependBannerToIndexFile(
-				group, indexFileFullPath
-			);
+			const banner = getBannerForGroup( group );
+			prependBannerToIndexFile( indexFileFullPath, banner );
 			await openReportIfNecessary(
 				config.paths.html_report, runSilently || process.env.NONINTERACTIVE
 			);
@@ -290,9 +287,8 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 	if ( err.message.includes( 'Exit with error code 1' ) ) {
 		if ( type !== 'reference' ) {
 			const indexFileFullPath = `${__dirname}/${reportPath}/index.html`;
-			await generateAndPrependBannerToIndexFile(
-				group, indexFileFullPath
-			);
+			const banner = getBannerForGroup( group );
+			prependBannerToIndexFile( indexFileFullPath, banner );
 			await openReportIfNecessary(
 				reportPath, process.env.NONINTERACTIVE
 			);
