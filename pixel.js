@@ -53,19 +53,15 @@ async function getLatestCodexVersion() {
 }
 
 /**
- * @param {'test'|'reference'} type
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
  * @param {string} relativePath Relative path to report.
  * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function writeBannerAndOpenReportIfNecessary( type, group, relativePath, nonInteractive ) {
+async function writeBannerAndOpenReportIfNecessary( group, relativePath, nonInteractive ) {
 	const filePathFull = `${__dirname}/${relativePath}/index.html`;
 	const markerString = '<div id="root">';
 	try {
-		if ( type === 'reference' ) {
-			return;
-		}
 		const ctx = context[ group ];
 		const date = new Date();
 		const fileString = fs.readFileSync( filePathFull ).toString().replace(
@@ -241,9 +237,11 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 	).then( async () => {
-		await writeBannerAndOpenReportIfNecessary(
-			type, group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
-		);
+		if ( type !== 'reference' ) {
+			await writeBannerAndOpenReportIfNecessary(
+				group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
+			);
+		}
 	}, async ( err ) => {
 		await handleTestError( err, type, group, config.paths.html_report, runSilently );
 	} ).finally( async () => {
@@ -265,9 +263,11 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 	}
 
 	if ( err.message.includes( 'Exit with error code 1' ) ) {
-		await writeBannerAndOpenReportIfNecessary(
-			type, group, reportPath, process.env.NONINTERACTIVE
-		);
+		if ( type !== 'reference' ) {
+			await writeBannerAndOpenReportIfNecessary(
+				group, reportPath, process.env.NONINTERACTIVE
+			);
+		}
 		if ( !runSilently ) {
 			// eslint-disable-next-line no-process-exit
 			process.exit( 1 );
