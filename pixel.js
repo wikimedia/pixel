@@ -53,19 +53,32 @@ async function getLatestCodexVersion() {
 }
 
 /**
+ * @param {string} indexFileFullPath Full path to the index file.
+ * @param {string} bannerContent The banner content to prepend.
+ */
+function prependBannerToIndexFile( indexFileFullPath, bannerContent ) {
+	try {
+		const markerString = '<div id="root">';
+		const fileString = fs.readFileSync( indexFileFullPath ).toString().replace(
+			markerString,
+			`${bannerContent}${markerString}`
+		);
+		fs.writeFileSync( indexFileFullPath, fileString );
+	} catch ( e ) {
+		console.log( `Could not write banner to ${indexFileFullPath}` );
+		console.error( e );
+	}
+}
+
+/**
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
- * @param {string} relativePath Relative path to report.
+ * @param {string} indexFileFullPath Full path to index file.
  * @return {Promise<undefined>}
  */
-async function writeBanner( group, relativePath ) {
-	const filePathFull = `${__dirname}/${relativePath}/index.html`;
-	const markerString = '<div id="root">';
-	try {
-		const ctx = context[ group ];
-		const date = new Date();
-		const fileString = fs.readFileSync( filePathFull ).toString().replace(
-			markerString,
-			`<div id="mw-message-box" style="color: #000; box-sizing: border-box;
+async function generateAndPrependBannerToIndexFile( group, indexFileFullPath ) {
+	const ctx = context[ group ];
+	const date = new Date();
+	const bannerContent = `<div id="mw-message-box" style="color: #000; box-sizing: border-box;
 margin-bottom: 16px;border: 1px solid; padding: 12px 24px;
 word-wrap: break-word; overflow-wrap: break-word; overflow: hidden;
 background-color: #eaecf0; border-color: #a2a9b1;">
@@ -75,23 +88,18 @@ background-color: #eaecf0; border-color: #a2a9b1;">
 </div>
 <script>
 (function() {
-const daysElapsed = ( new Date() - new Date('${date}') ) / ( 1000 * 60 * 60 * 24);
-  const warning = document.createElement( 'em' );
-  const msg = document.getElementById( 'mw-message-box' );
-  warning.textContent = 'This test is < ' + Math.round( parseInt( daysElapsed, 10 ) ) + ' days old.';
-  msg.appendChild( warning );
-  if ( daysElapsed > 1 ) {
+const daysElapsed = (new Date() - new Date('${date}')) / (1000 * 60 * 60 * 24);
+  const warning = document.createElement('em');
+  const msg = document.getElementById('mw-message-box');
+  warning.textContent = 'This test is < ' + Math.round(parseInt(daysElapsed, 10)) + ' days old.';
+  msg.appendChild(warning);
+  if (daysElapsed > 1) {
     msg.style.backgroundColor = 'red';
   }
 }());
 </script>
-${markerString}`
-		);
-		fs.writeFileSync( filePathFull, fileString );
-	} catch ( e ) {
-		console.log( `Could not write banner to ${filePathFull}` );
-		console.error( e );
-	}
+`;
+	prependBannerToIndexFile( indexFileFullPath, bannerContent );
 }
 
 /**
@@ -251,8 +259,9 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 	).then( async () => {
 		if ( type !== 'reference' ) {
-			await writeBanner(
-				group, config.paths.html_report
+			const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
+			await generateAndPrependBannerToIndexFile(
+				group, indexFileFullPath
 			);
 			await openReportIfNecessary(
 				config.paths.html_report, runSilently || process.env.NONINTERACTIVE
@@ -280,8 +289,9 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 
 	if ( err.message.includes( 'Exit with error code 1' ) ) {
 		if ( type !== 'reference' ) {
-			await writeBanner(
-				group, reportPath
+			const indexFileFullPath = `${__dirname}/${reportPath}/index.html`;
+			await generateAndPrependBannerToIndexFile(
+				group, indexFileFullPath
 			);
 			await openReportIfNecessary(
 				reportPath, process.env.NONINTERACTIVE
