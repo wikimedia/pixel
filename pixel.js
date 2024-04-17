@@ -55,10 +55,9 @@ async function getLatestCodexVersion() {
 /**
  * @param {'mobile'|'desktop'|'desktop-dev'|'echo|campaign-events'} group
  * @param {string} relativePath Relative path to report.
- * @param {boolean} nonInteractive
  * @return {Promise<undefined>}
  */
-async function writeBannerAndOpenReportIfNecessary( group, relativePath, nonInteractive ) {
+async function writeBanner( group, relativePath ) {
 	const filePathFull = `${__dirname}/${relativePath}/index.html`;
 	const markerString = '<div id="root">';
 	try {
@@ -89,6 +88,20 @@ const daysElapsed = ( new Date() - new Date('${date}') ) / ( 1000 * 60 * 60 * 24
 ${markerString}`
 		);
 		fs.writeFileSync( filePathFull, fileString );
+	} catch ( e ) {
+		console.log( `Could not write banner to ${filePathFull}` );
+		console.error( e );
+	}
+}
+
+/**
+ * @param {string} relativePath Relative path to report.
+ * @param {boolean} nonInteractive
+ * @return {Promise<undefined>}
+ */
+async function openReportIfNecessary( relativePath, nonInteractive ) {
+	const filePathFull = `${__dirname}/${relativePath}/index.html`;
+	try {
 		if ( !nonInteractive ) {
 			await simpleSpawn.spawn( 'open', [ filePathFull ] );
 		}
@@ -238,8 +251,11 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 	).then( async () => {
 		if ( type !== 'reference' ) {
-			await writeBannerAndOpenReportIfNecessary(
-				group, config.paths.html_report, runSilently || process.env.NONINTERACTIVE
+			await writeBanner(
+				group, config.paths.html_report
+			);
+			await openReportIfNecessary(
+				config.paths.html_report, runSilently || process.env.NONINTERACTIVE
 			);
 		}
 	}, async ( err ) => {
@@ -264,8 +280,11 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 
 	if ( err.message.includes( 'Exit with error code 1' ) ) {
 		if ( type !== 'reference' ) {
-			await writeBannerAndOpenReportIfNecessary(
-				group, reportPath, process.env.NONINTERACTIVE
+			await writeBanner(
+				group, reportPath
+			);
+			await openReportIfNecessary(
+				reportPath, process.env.NONINTERACTIVE
 			);
 		}
 		if ( !runSilently ) {
