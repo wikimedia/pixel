@@ -101,18 +101,14 @@ const daysElapsed = (new Date() - new Date('${date}')) / (1000 * 60 * 60 * 24);
 }
 
 /**
- * @param {string} relativePath Relative path to report.
- * @param {boolean} nonInteractive
+ * @param {string} fullFilePath Full path to file.
  * @return {Promise<undefined>}
  */
-async function openReportIfNecessary( relativePath, nonInteractive ) {
-	const filePathFull = `${__dirname}/${relativePath}/index.html`;
+async function openReport( fullFilePath ) {
 	try {
-		if ( !nonInteractive ) {
-			await simpleSpawn.spawn( 'open', [ filePathFull ] );
-		}
+		await simpleSpawn.spawn( 'open', [ fullFilePath ] );
 	} catch ( e ) {
-		console.log( `Could not open report, but it is located at ${filePathFull}` );
+		console.log( `Could not open report, but it is located at ${fullFilePath}` );
 		console.error( e );
 	}
 }
@@ -260,9 +256,9 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 			const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
 			const banner = getBannerForGroup( group );
 			prependBannerToIndexFile( indexFileFullPath, banner );
-			await openReportIfNecessary(
-				config.paths.html_report, runSilently || process.env.NONINTERACTIVE
-			);
+			if ( !runSilently && !process.env.NONINTERACTIVE ) {
+				await openReport( indexFileFullPath );
+			}
 		}
 	}, async ( err ) => {
 		await handleTestError( err, type, group, config.paths.html_report, runSilently );
@@ -289,9 +285,9 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 			const indexFileFullPath = `${__dirname}/${reportPath}/index.html`;
 			const banner = getBannerForGroup( group );
 			prependBannerToIndexFile( indexFileFullPath, banner );
-			await openReportIfNecessary(
-				reportPath, process.env.NONINTERACTIVE
-			);
+			if ( !process.env.NONINTERACTIVE ) {
+				await openReport( indexFileFullPath );
+			}
 		}
 		if ( !runSilently ) {
 			// eslint-disable-next-line no-process-exit
