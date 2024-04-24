@@ -160,6 +160,8 @@ async function processCommand( type, opts, runSilently = false ) {
 		updateContext( group, type, activeBranch, description );
 
 		await prepareDockerEnvironment( opts );
+		const { stdout } = await simpleSpawn.exec( './purgeParserCache.sh' );
+		console.log( stdout );
 
 		const { stdout } = await exec( './purgeParserCache.sh' );
 		console.log( stdout );
