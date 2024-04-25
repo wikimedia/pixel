@@ -303,6 +303,9 @@ async function processCommand( type, opts, runSilently = false ) {
 			[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
 		);
 
+		const { stdout } = await exec( './purgeParserCache.sh' );
+		console.log( stdout );
+
 		if ( opts.a11y ) {
 			// Execute a11y regression tests.
 			return batchSpawn.spawn(
