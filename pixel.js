@@ -163,9 +163,6 @@ async function processCommand( type, opts, runSilently = false ) {
 		const { stdout } = await simpleSpawn.exec( './purgeParserCache.sh' );
 		console.log( stdout );
 
-		const { stdout } = await exec( './purgeParserCache.sh' );
-		console.log( stdout );
-
 		if ( opts.a11y ) {
 			return await runA11yRegressionTests( type, configFile, opts.logResults, opts );
 		} else {
