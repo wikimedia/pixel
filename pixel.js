@@ -104,7 +104,7 @@ const daysElapsed = (new Date() - new Date('${date}')) / (1000 * 60 * 60 * 24);
  * @param {string} fullFilePath Full path to file.
  * @return {Promise<undefined>}
  */
-async function openReport( fullFilePath ) {
+async function openReportFile( fullFilePath ) {
 	try {
 		await simpleSpawn.spawn( 'open', [ fullFilePath ] );
 	} catch ( e ) {
@@ -247,20 +247,19 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 		removeFolder( config.paths.bitmaps_test );
 	}
 
+	const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
+
 	const finished = await simpleSpawn.spawn(
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
 	).then( async () => {
 		if ( type !== 'reference' ) {
-			const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
-			const banner = getBannerForGroup( group );
-			prependBannerToIndexFile( indexFileFullPath, banner );
-			if ( !runSilently && !process.env.NONINTERACTIVE ) {
-				await openReport( indexFileFullPath );
-			}
+			await addBannerAndIfNecessaryOpenReport(
+				indexFileFullPath, group, !runSilently && !process.env.NONINTERACTIVE
+			);
 		}
 	}, async ( err ) => {
-		await handleTestError( err, type, group, config.paths.html_report, runSilently );
+		await handleTestError( err, type, group, indexFileFullPath, runSilently );
 	} ).finally( async () => {
 		if ( resetDb ) {
 			await resetDatabase();
@@ -270,7 +269,7 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	return finished;
 }
 
-async function handleTestError( err, type, group, reportPath, runSilently ) {
+async function handleTestError( err, type, group, indexFileFullPath, runSilently ) {
 	console.error( err );
 	if ( err.message.includes( '130' ) ) {
 		if ( !runSilently ) {
@@ -281,12 +280,9 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 
 	if ( err.message.includes( 'Exit with error code 1' ) ) {
 		if ( type !== 'reference' ) {
-			const indexFileFullPath = `${__dirname}/${reportPath}/index.html`;
-			const banner = getBannerForGroup( group );
-			prependBannerToIndexFile( indexFileFullPath, banner );
-			if ( !process.env.NONINTERACTIVE ) {
-				await openReport( indexFileFullPath );
-			}
+			await addBannerAndIfNecessaryOpenReport(
+				indexFileFullPath, group, !process.env.NONINTERACTIVE
+			);
 		}
 		if ( !runSilently ) {
 			// eslint-disable-next-line no-process-exit
@@ -299,6 +295,15 @@ async function handleTestError( err, type, group, reportPath, runSilently ) {
 	} else {
 		throw err;
 	}
+}
+
+async function addBannerAndIfNecessaryOpenReport( indexFileFullPath, group, openReport ) {
+	const banner = getBannerForGroup( group );
+	prependBannerToIndexFile( indexFileFullPath, banner );
+	if ( !openReport ) {
+		return;
+	}
+	await openReportFile( indexFileFullPath );
 }
 
 async function resetDatabase() {
