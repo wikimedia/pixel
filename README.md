@@ -122,13 +122,12 @@ If you want to stop all of Pixel's services, run:
 ./stop.sh
 ```
 
-### Updates
+### Rebuild
 
-Updating Pixel to the latest version can be done with the following command when
-you are on the `main` branch:
+Stop and remove Docker containers, networks, and volumes and rebuild them:
 
 ```sh
-./update.sh
+./rebuild.sh
 ```
 
 This command will `git pull` the latest code from the `main` branch and destroy
