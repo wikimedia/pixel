@@ -388,3 +388,6 @@ $wgVectorLanguageAlertInSidebar = [
 
 $wgMFAmcOutreachMinEditCount = 0;
 $wgMFAmcOutreach = true;
+
+// Add CSS from the WikimediaMessages repo to the following skins.
+$wgWikimediaStylesSkins = [ "vector-2022", "minerva" ];
