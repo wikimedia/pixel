@@ -31,4 +31,4 @@ EOF
     echo "${filePath}"
 }
 
-export -f makeReport
+makeReport "$@"
