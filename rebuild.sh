@@ -7,7 +7,7 @@
 ./build-base-regression-image.sh
 
 # Build or rebuild services
-CLONE_DEPTH=1 docker compose --progress=plain --project-directory . -f ./docker-compose.yml build
+docker compose --progress=plain --project-directory . -f ./docker-compose.yml build
 
 # Remove any dangling images
 docker image prune -f
