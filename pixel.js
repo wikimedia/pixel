@@ -479,7 +479,7 @@ async function runRegressionGroup( groupName, groupDef, opts ) {
 
 async function generateIndexFile( outputDir, html ) {
 	const indexFilePath = `${outputDir}/index.html`;
-	const { stdout } = await exec( `source ./src/makeReportIndex.sh && makeReport "${indexFilePath}" "${html.replace( /"/g, '\\"' )}"` );
+	const { stdout } = await exec( `./src/makeReportIndex.sh "${indexFilePath}" "${html.replace( /"/g, '\\"' )}"` );
 	console.log( stdout );
 	return indexFilePath;
 }
