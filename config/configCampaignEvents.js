@@ -44,6 +44,10 @@ const tests = [
 	{
 		label: 'My Events (#logged-in)',
 		path: '/wiki/Special:MyEvents'
+	},
+	{
+		label: 'All Events',
+		path: '/wiki/Special:AllEvents'
 	}
 ];
 
