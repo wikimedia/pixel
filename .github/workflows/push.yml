@@ -7,9 +7,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches:
-      - main
-      - '!update-changelog'
+    branches: [ main ]
 
 jobs:
   build:
@@ -17,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+    - name: Print branch name
+      run: echo "Branch name is ${{ github.head_ref }}"
     - name: Checkout branch
       uses: actions/checkout@v4
     - name: Setup Node.js
