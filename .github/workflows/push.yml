@@ -6,7 +6,6 @@ name: Push or PR workflow
 on:
   push:
     branches: [ main ]
-    branches-ignore: [ update-changelog ]
   pull_request:
     branches: [ main ]
     branches-ignore: [ update-changelog ]
