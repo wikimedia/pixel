@@ -7,15 +7,14 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches:
-      - main
-      - '!update-changelog'
+    branches: [ main ]
 
 jobs:
   build:
     name: Lint, test, and run visual regression tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    if: github.head_ref != 'update-changelog'
     steps:
     - name: Checkout branch
       uses: actions/checkout@v4
