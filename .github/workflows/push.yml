@@ -5,7 +5,9 @@ name: Push or PR workflow
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - '!update-changelog'
   pull_request:
     branches:
       - main
