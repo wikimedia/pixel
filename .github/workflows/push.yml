@@ -14,10 +14,7 @@ jobs:
     name: Lint, test, and run visual regression tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: github.head_ref != 'update-changelog'
     steps:
-    - name: Print branch name
-      run: echo "Branch name is ${{ github.head_ref }}"
     - name: Checkout branch
       uses: actions/checkout@v4
     - name: Setup Node.js
