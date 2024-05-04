@@ -1,0 +1,46 @@
+name: Make branch updating CHANGELOG.md
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21'
+
+    - name: Install auto-changelog
+      run: npm install -g auto-changelog
+
+    - name: Generate changelog
+      run: auto-changelog
+
+    - name: Generate unique branch name
+      id: generate_branch_name
+      run: |
+        seconds_since_midnight=$(date -d "$(date '+%Y-%m-%d') 00:00:00" +%s)
+        current_time=$(date +%s)
+        seconds_diff=$((current_time - seconds_since_midnight))
+        padded_seconds=$(printf "%05d" $seconds_diff)
+        echo "::set-output name=branch_name::update-changelog-$(date +'%Y-%m-%d')-$padded_seconds"
+
+    - name: Create uniquely named CHANGELOG.md update branch
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout -b ${{ steps.generate_branch_name.outputs.branch_name }}
+        git add CHANGELOG.md
+        git commit -m "Update changelog"
+        git push origin ${{ steps.generate_branch_name.outputs.branch_name }}
