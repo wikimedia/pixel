@@ -63,8 +63,9 @@ class MwCheckout {
 	 * `origin/main`, respectively.
 	 * @param {string[]} changeIds An array of Gerrit Change-Ids
 	 * @param {Object.<string, string>} repoBranches
+	 * @param {string} group
 	 */
-	async checkout( branch, changeIds, repoBranches = {} ) {
+	async checkout( branch, changeIds, repoBranches = {}, group = '' ) {
 		if ( branch === 'master' || branch === 'main' ) {
 			branch = `origin/${branch}`;
 		}
@@ -93,8 +94,7 @@ class MwCheckout {
 
 			await this.#updateSubmodules( path );
 			await this.#updateComposer( path );
-
-			if ( repoId === 'design/codex' ) {
+			if ( group === 'codex' && repoId === 'design/codex' ) {
 				// Build the Codex sandbox and its dependencies
 				await this.#simpleSpawn.spawn(
 					`
