@@ -1,6 +1,6 @@
 module.exports = {
 	id: 'MediaWiki',
-	asyncCaptureLimit: 10,
+	asyncCaptureLimit: 8,
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
 	engine: 'puppeteer',
