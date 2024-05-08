@@ -16,7 +16,7 @@ async function init() {
 	benchmark( async () => {
 		const simpleSpawn = new SimpleSpawn();
 		const mwCheckout = new MwCheckout( repos, simpleSpawn );
-		await mwCheckout.checkout( opts.branch, opts.changeId ?? [], repoBranches );
+		await mwCheckout.checkout( opts.branch, opts.changeId ?? [], repoBranches, opts.group );
 	} );
 }
 
