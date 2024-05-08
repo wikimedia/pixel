@@ -1,4 +1,5 @@
 const utils = require( '../utils' );
+const configCommon = require( './configCommon' );
 
 const {
 	VIEWPORT_PHONE,
@@ -38,7 +39,7 @@ const scenarios = utils.makeScenariosForSkins( [
 } ) );
 
 module.exports = {
-	id: 'MediaWiki',
+	...configCommon,
 	viewports: [
 		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
@@ -46,20 +47,6 @@ module.exports = {
 		VIEWPORT_DESKTOP_WIDE,
 		VIEWPORT_DESKTOP_WIDEST
 	],
-	onBeforeScript: 'puppet/onBefore.js',
-	onReadyScript: 'puppet/onReady.js',
 	scenarios,
-	paths: utils.makePaths( 'login' ),
-	report: [],
-	engine: 'puppeteer',
-	engineOptions: {
-		headless: 'new',
-		args: [
-			'--no-sandbox'
-		]
-	},
-	asyncCaptureLimit: 10,
-	asyncCompareLimit: 50,
-	debug: false,
-	debugWindow: false
+	paths: utils.makePaths( 'login' )
 };

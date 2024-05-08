@@ -1,4 +1,5 @@
 const utils = require( '../utils' );
+const configCommon = require( './configCommon' );
 const {
 	VIEWPORT_PHONE,
 	VIEWPORT_TABLET,
@@ -142,24 +143,12 @@ const scenarios = components.map( ( componentData ) => {
 } );
 
 module.exports = {
-	id: 'MediaWiki',
+	...configCommon,
 	viewports: [
 		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
 		VIEWPORT_DESKTOP
 	],
 	scenarios,
-	paths: utils.makePaths( 'codex' ),
-	report: [],
-	engine: 'puppeteer',
-	engineOptions: {
-		headless: 'new',
-		args: [
-			'--no-sandbox'
-		]
-	},
-	asyncCaptureLimit: 10,
-	asyncCompareLimit: 50,
-	debug: false,
-	debugWindow: false
+	paths: utils.makePaths( 'codex' )
 };
