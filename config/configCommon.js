@@ -7,7 +7,8 @@ module.exports = {
 	engineOptions: {
 		headless: 'new',
 		args: [
-			'--no-sandbox'
+			'--no-sandbox',
+			'--single-process'
 		]
 	},
 	debug: false,
