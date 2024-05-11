@@ -1,6 +1,7 @@
 module.exports = {
 	id: 'MediaWiki',
 	asyncCaptureLimit: 4,
+	asyncCompareLimit: 25,
 	engine: 'puppeteer',
 	engineOptions: {
 		headless: 'new',
