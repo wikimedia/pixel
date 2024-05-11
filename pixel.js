@@ -224,6 +224,8 @@ function updateContext( group, type, activeBranch, description ) {
 async function prepareDockerEnvironment( opts ) {
 	await simpleSpawn.spawn( './build-base-regression-image.sh' );
 	await simpleSpawn.spawn( './start.sh' );
+	const { stdout } = await simpleSpawn.exec( './reset-db.sh' );
+	console.log( stdout );
 	await simpleSpawn.spawn(
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
