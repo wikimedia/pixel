@@ -160,8 +160,10 @@ async function processCommand( type, opts, runSilently = false ) {
 		updateContext( group, type, activeBranch, description );
 
 		await prepareDockerEnvironment( opts );
-		const { stdout } = await simpleSpawn.exec( './purgeParserCache.sh' );
-		console.log( stdout );
+		const { stdout: stdout1 } = await simpleSpawn.exec( './reset-db.sh' );
+		console.log( stdout1 );
+		const { stdout: stdout2 } = await simpleSpawn.exec( './purgeParserCache.sh' );
+		console.log( stdout2 );
 
 		if ( opts.a11y ) {
 			return await runA11yRegressionTests( type, configFile, opts.logResults, opts );
@@ -224,8 +226,6 @@ function updateContext( group, type, activeBranch, description ) {
 async function prepareDockerEnvironment( opts ) {
 	await simpleSpawn.spawn( './build-base-regression-image.sh' );
 	await simpleSpawn.spawn( './start.sh' );
-	const { stdout } = await simpleSpawn.exec( './reset-db.sh' );
-	console.log( stdout );
 	await simpleSpawn.spawn(
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
