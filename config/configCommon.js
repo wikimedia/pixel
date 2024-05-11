@@ -13,5 +13,5 @@ module.exports = {
 	},
 	debug: false,
 	debugWindow: false,
-	delay: 1000
+	delay: 500
 };
