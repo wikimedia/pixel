@@ -40,6 +40,8 @@ const scenarios = utils.makeScenariosForSkins( [
 
 module.exports = {
 	...configCommon,
+	onBeforeScript: 'puppet/onBefore.js',
+	onReadyScript: 'puppet/onReady.js',
 	viewports: [
 		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
