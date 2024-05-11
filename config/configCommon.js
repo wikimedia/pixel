@@ -10,7 +10,8 @@ module.exports = {
 			'--disable-setuid-sandbox',
 			'--single-process',
 			'--disable-dev-shm-usage',
-			'--disable-gpu'
+			'--disable-gpu',
+			'--disable-gpu-sandbox'
 		]
 	},
 	debug: false,
