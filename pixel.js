@@ -160,9 +160,9 @@ async function processCommand( type, opts, runSilently = false ) {
 		updateContext( group, type, activeBranch, description );
 
 		await prepareDockerEnvironment( opts );
-		const { stdout: stdout1 } = await simpleSpawn.exec( './reset-db.sh' );
+		const { stdout: stdout1 } = await simpleSpawn.exec( './purgeParserCache.sh' );
 		console.log( stdout1 );
-		const { stdout: stdout2 } = await simpleSpawn.exec( './purgeParserCache.sh' );
+		const { stdout: stdout2 } = await simpleSpawn.exec( './reset-db.sh' );
 		console.log( stdout2 );
 
 		if ( opts.a11y ) {
