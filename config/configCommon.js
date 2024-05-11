@@ -6,6 +6,7 @@ module.exports = {
 		headless: 'new',
 		args: [
 			'--no-sandbox',
+			'--disable-setuid-sandbox',
 			'--single-process',
 			'--disable-dev-shm-usage'
 		]
