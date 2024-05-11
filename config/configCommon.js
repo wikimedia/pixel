@@ -12,5 +12,6 @@ module.exports = {
 		]
 	},
 	debug: false,
-	debugWindow: false
+	debugWindow: false,
+	delay: 1000
 };
