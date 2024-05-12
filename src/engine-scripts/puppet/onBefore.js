@@ -17,6 +17,18 @@ const getUsernameFromHashtags = ( hashtags ) => {
 	}
 };
 
+const applyFilterToConsoleLog = () => {
+	const origConsoleLog = console.log;
+	console.log = ( ...args ) => {
+		if ( ![
+		// Lines matching these regexes will not be console logged
+			/BackstopTools have been installed/i
+		].some( ( regex ) => regex.test( args.join( ' ' ) ) ) ) {
+			origConsoleLog( ...args );
+		}
+	};
+};
+
 /**
  * Runs before each scenario -- use for setting cookies or other env state (.js suffix is optional)
  *
@@ -24,6 +36,7 @@ const getUsernameFromHashtags = ( hashtags ) => {
  * @param {import("backstopjs").Scenario} scenario
  */
 module.exports = async ( page, scenario ) => {
+	applyFilterToConsoleLog();
 	const hashtags = scenario.label.match( /(#[^ ,)]*)/g ) || [];
 	const requireLogin = hashtags.includes( '#logged-in' );
 	if ( requireLogin ) {
