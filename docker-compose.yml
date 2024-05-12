@@ -72,6 +72,9 @@ services:
       - ./config:/pixel/config
       - ./src:/pixel/src
       - ./report:/pixel/report
+    shm_size: 1gb
+    cap_add:
+      - SYS_ADMIN
   a11y-regression:
     init: true
     network_mode: host
@@ -90,6 +93,9 @@ services:
       - ./config:/pixel/config
       - ./src:/pixel/src
       - ./report:/pixel/report
+    shm_size: 1gb
+    cap_add:
+      - SYS_ADMIN
   png-optimizer:
     build:
       context: .
