@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18.19.1-bullseye-slim
+FROM --platform=linux/amd64 node:18.20.2-bookworm-slim
 
 # Base packages and Chrome dependencies
 RUN apt-get update -qq \
@@ -8,7 +8,6 @@ RUN apt-get update -qq \
     software-properties-common \
     libfontconfig \
     libfreetype6 \
-    xfonts-cyrillic \
     xfonts-scalable \
     fonts-dejavu \
     fonts-dejavu-core \
