@@ -3,10 +3,13 @@ FROM --platform=linux/amd64 pixel-base-regression:latest
 ARG BACKSTOPJS_VERSION
 
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
+ENV DBUS_TIMEOUT=60000
 
 RUN set -ex && \
     sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION};
 
 WORKDIR /src
+
+CMD ["sh", "-c", "/usr/bin/dbus-daemon --system --fork"]
 
 ENTRYPOINT ["backstop"]
