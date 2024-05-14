@@ -2,12 +2,7 @@
 	"extends": [
 		"wikimedia",
 		"wikimedia/node",
-		"wikimedia/language/es2021",
-		"plugin:jest/recommended",
-		"plugin:jest/style"
-	],
-	"plugins": [
-		"jest"
+		"wikimedia/language/es2021"
 	],
 	"env": {
 		"browser": true,
