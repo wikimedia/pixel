@@ -1,5 +1,4 @@
 const SimpleSpawn = require( './SimpleSpawn' );
-const GerritClient = require( './GerritClient' );
 const GERRIT_BASE_URL = 'https://gerrit.wikimedia.org/r';
 
 /**
@@ -45,7 +44,6 @@ const GERRIT_BASE_URL = 'https://gerrit.wikimedia.org/r';
 class MwCheckout {
 	#repos;
 	#simpleSpawn;
-	#gerritClient;
 
 	/**
 	 * @param {Repos} repos
@@ -54,7 +52,6 @@ class MwCheckout {
 	constructor( repos, simpleSpawn ) {
 		this.#repos = repos;
 		this.#simpleSpawn = simpleSpawn;
-		this.#gerritClient = new GerritClient( GERRIT_BASE_URL );
 	}
 
 	/**
@@ -211,6 +208,17 @@ cd ${path} && git submodule update
 	}
 
 	/**
+	 * @param {string} path
+	 * @return {Promise<any>}
+	 */
+	async #gerritGet( path ) {
+		const { stdout } = await this.#simpleSpawn.exec(
+			`curl -s --compressed --retry 5 --retry-delay 5 --retry-max-time 120 -H "Accept: application/json" "${GERRIT_BASE_URL}${path}" | sed '1d'`
+		);
+		return JSON.parse( stdout );
+	}
+
+	/**
 	 * Processes a list of Change-Ids and returns a list of PatchCommands that can
 	 * be executed in each relevant repo at a later time.
 	 *
@@ -230,7 +238,7 @@ cd ${path} && git submodule update
 
 		while ( changeQueue.length ) {
 			const changeId = changeQueue.shift();
-			const changes = ( await this.#gerritClient.get( `/changes/?q=change:${changeId}&o=LABELS&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=DOWNLOAD_COMMANDS` ) );
+			const changes = ( await this.#gerritGet( `/changes/?q=change:${changeId}&o=LABELS&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=DOWNLOAD_COMMANDS` ) );
 
 			const change = changes[ 0 ];
 
@@ -275,7 +283,7 @@ cd ${path} && git submodule update
 
 			/** @type {{changes: RelatedChange[]}} */
 			// eslint-disable-next-line no-underscore-dangle
-			const relatedChanges = ( await this.#gerritClient.get( `/changes/${change.id}/revisions/${change.revisions[ change.current_revision ]._number}/related` ) );
+			const relatedChanges = ( await this.#gerritGet( `/changes/${change.id}/revisions/${change.revisions[ change.current_revision ]._number}/related` ) );
 
 			const dependsOnQueue = [
 				{
@@ -304,7 +312,7 @@ cd ${path} && git submodule update
 			} );
 
 			await Promise.all( dependsOnQueue.map( async ( item ) => {
-				const commit = await this.#gerritClient.get( `/changes/${item.changeNumber}/revisions/${item.revisionNumber}/commit` );
+				const commit = await this.#gerritGet( `/changes/${item.changeNumber}/revisions/${item.revisionNumber}/commit` );
 
 				const matches = [ ...commit.message.matchAll( /^Depends-On: (.+)$/gm ) ];
 
