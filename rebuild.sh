@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Stop and remove Docker containers, networks, and volumes
 ./clean.sh
 
