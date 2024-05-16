@@ -21,11 +21,34 @@ remove_lock_file() {
   fi
 }
 
-optimize_png() {
-  sleep 1
+wait_for_stable_file_size() {
+  local file=$1
+  local max_attempts=20
+  local attempt=0
+  local size1=0
+  local size2=1
+  while [ "$size1" != "$size2" ] || [ "$size1" -eq 0 ]; do
+    size1=$(stat -c%s "$file")
+    sleep 0.1
+    size2=$(stat -c%s "$file")
+    attempt=$((attempt + 1))
+    if [ "$attempt" -eq "$max_attempts" ]; then
+      echo "Error: File is empty or size is unstable - $file"
+      return 1
+    fi
+  done
+  # echo "$attempt"
+  return 0
+}
 
+optimize_png() {
   local file
   file=$1
+
+  if ! wait_for_stable_file_size "$file"; then
+    debug_log "Skipping optimization for unstable file: $file"
+    return
+  fi
 
   if exiftool -quiet -Software "$file" | grep -q "$OPTIMIZATION_TAG"; then
     debug_log "$file already optimized, skipping"
