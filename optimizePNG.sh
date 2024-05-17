@@ -4,7 +4,7 @@ DIR_TO_MONITOR="/pixel/report"
 
 OPTIMIZATION_TAG="OptimizedWithOptiPNG"
 
-ENABLE_DEBUG_LOGGING=0
+ENABLE_DEBUG_LOGGING=1
 
 debug_log() {
   if [ "$ENABLE_DEBUG_LOGGING" -ne 1 ]; then
@@ -33,11 +33,11 @@ wait_for_stable_file_size() {
     size2=$(stat -c%s "$file")
     attempt=$((attempt + 1))
     if [ "$attempt" -eq "$max_attempts" ]; then
-      echo "Error: File is empty or size is unstable - $file"
+      debug_log "File is empty or size is unstable - $file"
       return 1
     fi
   done
-  # echo "$attempt"
+  debug_log "wait_for_stable_file_size attempts: $attempt"
   return 0
 }
 
