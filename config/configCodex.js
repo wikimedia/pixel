@@ -94,6 +94,10 @@ const components = [
 		sandboxSection: 'select'
 	},
 	{
+		label: 'Table',
+		sandboxSection: 'table'
+	},
+	{
 		label: 'Tabs',
 		sandboxSection: 'tabs'
 	},
