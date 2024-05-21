@@ -8,20 +8,30 @@ const clickBtn = require( './clickBtn' );
 module.exports = async ( page, hashtags ) => {
 	// limit width by default to ensure consistency between tests
 	// Only disable when hashtag is provided
-	const isClientPrefs = await page.evaluate( () => {
-		return document.documentElement.classList.contains( 'vector-feature-client-preferences-enabled' );
+	const isAppearanceEnabled = await page.evaluate( () => {
+		return document.documentElement.classList.contains( 'vector-feature-appearance-enabled' );
 	} );
 
-	if ( isClientPrefs ) {
+	if ( isAppearanceEnabled ) {
 		// FIXME: Handle limited width with client pref menu instead
 		return;
 	}
 
 	const isDisabled = hashtags.includes( '#limited-width-disabled' );
+	const isExcluded = await page.evaluate( () => {
+		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref--excluded' );
+	} );
+
+	if ( isExcluded ) {
+		// Cannot change on this page!
+		if ( isDisabled ) {
+			mw.log.warn( 'Attempt to disable limited width on a page where you cannot change limited width.' );
+		}
+		return;
+	}
+
 	const isCurrentlyEnabled = await page.evaluate( () => {
-		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' ) ||
-			// For reference
-			document.documentElement.classList.contains( 'vector-feature-limited-width-enabled' );
+		return document.documentElement.classList.contains( 'vector-feature-limited-width-clientpref-1' );
 	} );
 
 	if ( ( isDisabled && isCurrentlyEnabled ) || ( !isDisabled && !isCurrentlyEnabled ) ) {
