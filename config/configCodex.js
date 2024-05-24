@@ -148,6 +148,7 @@ const scenarios = components.map( ( componentData ) => {
 
 module.exports = {
 	...configCommon,
+	onReadyScript: 'puppet/onReady-codex.js',
 	viewports: [
 		VIEWPORT_PHONE,
 		VIEWPORT_TABLET,
