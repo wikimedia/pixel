@@ -163,18 +163,20 @@ function removeFolder( relativePath ) {
 }
 
 async function updateCodexRepoBranchIfNecessary( opts, mwBranch ) {
-	// If the user hasn't specified a '--repo-branch' for codex
-	// determine which version the MW branch wants and use it
-	if ( !opts.repoBranch?.some( ( branch ) => branch.startsWith( 'design/codex:' ) ) ) {
-		let codexVersion;
-		try {
-			codexVersion = await getCodexVersionForMWBranch( mwBranch );
-		} catch ( error ) {
-			codexVersion = await getLatestCodexVersion();
-			console.log( `\x1b[33m${error.message}Falling back to latest Codex version ${codexVersion}\x1b[0m` );
-		}
-		opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexVersion}` ];
+	// Return if the user has already specified a '--repo-branch' for Codex
+	if ( opts.repoBranch?.some( ( branch ) => branch.startsWith( 'design/codex:' ) ) ) {
+		return;
 	}
+	// Determine which Codex version the MW branch wants and use it,
+	// fallback on latest version
+	let codexVersion;
+	try {
+		codexVersion = await getCodexVersionForMWBranch( mwBranch );
+	} catch ( error ) {
+		codexVersion = await getLatestCodexVersion();
+		console.log( `\x1b[33m${error.message}Falling back to latest Codex version ${codexVersion}\x1b[0m` );
+	}
+	opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexVersion}` ];
 }
 
 /**
