@@ -162,6 +162,21 @@ function removeFolder( relativePath ) {
 	fs.rmSync( `${__dirname}/${relativePath}`, { recursive: true, force: true } );
 }
 
+async function updateCodexRepoBranchIfNecessary( opts, mwBranch ) {
+	// If the user hasn't specified a '--repo-branch' for codex
+	// determine which version the MW branch wants and use it
+	if ( !opts.repoBranch?.some( ( branch ) => branch.startsWith( 'design/codex:' ) ) ) {
+		let codexVersion;
+		try {
+			codexVersion = await getCodexVersionForMWBranch( mwBranch );
+		} catch ( error ) {
+			codexVersion = await getLatestCodexVersion();
+			console.log( `\x1b[33m${error.message}Falling back to latest Codex version ${codexVersion}\x1b[0m` );
+		}
+		opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexVersion}` ];
+	}
+}
+
 /**
  * @typedef {Object} CommandOptions
  * @property {string[]} [changeId]
@@ -183,26 +198,12 @@ async function processCommand( type, opts, runSilently = false ) {
 
 		setEnvironmentFlagIfGroup( 'ENABLE_WIKILAMBDA', 'wikilambda', group );
 
-		const activeBranch = await getActiveBranch( opts );
+		const activeMWBranch = await getActiveBranch( opts );
 
-		// If the user hasn't specified a '--repo-branch' for codex
-		// determine which version the MW branch wants and use it
-		if ( !opts.repoBranch?.some( ( branch ) => branch.startsWith( 'design/codex:' ) ) ) {
-			let codexVersion;
-			try {
-				codexVersion = await getCodexVersionForMWBranch( activeBranch );
-			} catch ( error ) {
-				codexVersion = await getLatestCodexVersion();
-				console.log( `\x1b[33m${error.message}Falling back to latest Codex version ${codexVersion}\x1b[0m` );
-			}
-			opts.repoBranch = [ ...( opts.repoBranch ?? [] ), `design/codex:${codexVersion}` ];
-		}
-		console.log( 'repoBranch:' );
-		console.log( opts.repoBranch );
-		// process.exit ( 1 )
+		await updateCodexRepoBranchIfNecessary( opts, activeMWBranch );
 
 		const description = getDescription( opts );
-		updateContext( group, type, activeBranch, description );
+		updateContext( group, type, activeMWBranch, description );
 
 		await prepareDockerEnvironment( opts );
 		const { stdout: stdout1 } = await simpleSpawn.exec( './purgeParserCache.sh' );
