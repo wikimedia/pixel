@@ -16,6 +16,10 @@ const tests = [
 		path: '/wiki/Test'
 	},
 	{
+		label: 'Test in night mode (#minerva #mobile)',
+		path: '/wiki/Test?minervanightmode=1'
+	},
+	{
 		label: 'Test (#minerva #mobile #logged-in)',
 		path: '/wiki/Test'
 	},
