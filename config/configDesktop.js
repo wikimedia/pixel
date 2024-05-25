@@ -97,6 +97,13 @@ const tests = [
 		]
 	},
 	//
+	// NIGHT THEME
+	//
+	{
+		label: 'Night mode (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
+		path: '/wiki/Test?vectornightmode=1'
+	},
+	//
 	// TOC
 	//
 	{
