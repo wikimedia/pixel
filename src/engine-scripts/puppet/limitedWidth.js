@@ -25,6 +25,7 @@ module.exports = async ( page, hashtags ) => {
 	if ( isExcluded ) {
 		// Cannot change on this page!
 		if ( isDisabled ) {
+			// eslint-disable-next-line no-undef
 			mw.log.warn( 'Attempt to disable limited width on a page where you cannot change limited width.' );
 		}
 		return;
