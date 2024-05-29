@@ -42,7 +42,8 @@ const tests = [
 	},
 	{
 		label: 'Full article page (#vector-2022)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: 'Article history page (#vector-2022)',
@@ -65,43 +66,50 @@ const tests = [
 	//
 	{
 		label: '3 column (#vector-2022, #logged-in)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: '3 column full width (#vector-2022, #logged-in, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
-		]
+		],
+		selectors: []
 	},
 	{
 		label: '2 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: '2 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
-		]
+		],
+		selectors: []
 	},
 	{
 		label: '1 column (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: '1 column full width (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned, #limited-width-disabled)',
 		path: '/wiki/Test',
 		viewports: [
 			VIEWPORT_DESKTOP_WIDEST
-		]
+		],
+		selectors: []
 	},
 	//
 	// NIGHT THEME
 	//
 	{
 		label: 'Night mode (#vector-2022, #logged-in, #toc-unpinned, #main-menu-unpinned, #page-tools-unpinned)',
-		path: '/wiki/Test?vectornightmode=1'
+		path: '/wiki/Test?vectornightmode=1',
+		selectors: []
 	},
 	//
 	// TOC
@@ -113,15 +121,18 @@ const tests = [
 			VIEWPORT_DESKTOP,
 			VIEWPORT_DESKTOP_WIDE,
 			VIEWPORT_DESKTOP_WIDEST
-		]
+		],
+		selectors: []
 	},
 	{
 		label: 'TOC unpinned in page title (#vector-2022, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: 'TOC unpinned below page title (#vector-2022, #scroll, #toc-unpinned, #toc-open)',
-		path: '/wiki/Test'
+		path: '/wiki/Test',
+		selectors: []
 	},
 	{
 		label: 'TOC pinned below page title (#vector-2022, #scroll)',
@@ -130,7 +141,8 @@ const tests = [
 			VIEWPORT_DESKTOP,
 			VIEWPORT_DESKTOP_WIDE,
 			VIEWPORT_DESKTOP_WIDEST
-		]
+		],
+		selectors: []
 	},
 	//
 	// Sticky header
