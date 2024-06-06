@@ -283,9 +283,18 @@ $wgMinervaOverflowInPageActions = [
 $wgULSIMEEnabled = false;
 
 const QS_ANSWERS_MULTI_CHOICE =  [
-	'ext-quicksurveys-example-internal-survey-answer-positive',
-	'ext-quicksurveys-example-internal-survey-answer-neutral',
-	'ext-quicksurveys-example-internal-survey-answer-negative'
+	[
+		'label' => 'ext-quicksurveys-example-internal-survey-answer-positive',
+		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+	],
+	[
+		'label' => 'ext-quicksurveys-example-internal-survey-answer-neutral',
+		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+	],
+	[
+		'label' => 'ext-quicksurveys-example-internal-survey-answer-negative',
+		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+	],
 ];
 
 // Applies to all surveys
@@ -321,16 +330,19 @@ $wgQuickSurveysConfig = [
 		'name' => 'internal example survey',
 		// Internal or external link survey?
 		'type' => 'internal',
-		// The respondent can choose one answer from a list.
-		'layout' => 'single-answer',
 		// Survey question message key
-		'question' => 'ext-quicksurveys-example-internal-survey-question',
-		// The message key of the description of the survey. Displayed immediately below the survey question.
-		//'description' => 'ext-quicksurveys-example-internal-survey-description',
-		// Possible answer message keys for positive, neutral, and negative
-		'answers' => QS_ANSWERS_MULTI_CHOICE,
-		// Label for the optional free form text answer
-		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+		'questions' => [
+			[
+				'name' => 'q1',
+				'question' => 'ext-quicksurveys-example-internal-survey-question',
+				// The respondent can choose one answer from a list.
+				'layout' => 'single-answer',
+				// The message key of the description of the survey. Displayed immediately below the survey question.
+				//'description' => 'ext-quicksurveys-example-internal-survey-description',
+				// Possible answer message keys for positive, neutral, and negative
+				'answers' => QS_ANSWERS_MULTI_CHOICE,
+			]
+		],
 	] + QS_DEFAULTS,
 
 	[
@@ -338,16 +350,14 @@ $wgQuickSurveysConfig = [
 		'name' => 'internal multi answer example survey',
 		// Internal or external link survey?
 		'type' => 'internal',
-		// The respondent can choose one answer from a list.
-		'layout' => 'multiple-answer',
 		// Survey question message key
-		'question' => 'ext-quicksurveys-example-internal-survey-question',
-		// The message key of the description of the survey. Displayed immediately below the survey question.
-		//'description' => 'ext-quicksurveys-example-internal-survey-description',
-		// Possible answer message keys for positive, neutral, and negative
-		'answers' => QS_ANSWERS_MULTI_CHOICE,
-		// Label for the optional free form text answer
-		'freeformTextLabel' => 'ext-quicksurveys-example-internal-survey-freeform-text-label',
+		'questions' => [
+			[
+				'layout' => 'multiple-answer',
+				'question' => 'ext-quicksurveys-example-internal-survey-question',
+				'answers' => QS_ANSWERS_MULTI_CHOICE,
+			]
+		],
 	] + QS_DEFAULTS,
 	// Example of an external survey
 	[
@@ -355,13 +365,14 @@ $wgQuickSurveysConfig = [
 		// Internal or external link survey
 		'type' => 'external',
 		// Survey question message key
-		'question' => 'ext-quicksurveys-example-external-survey-question',
-		// The i18n key of the description of the survey
-		'description' => 'ext-quicksurveys-example-external-survey-description',
-		// External link to the survey
-		'link' => 'ext-quicksurveys-example-external-survey-link',
-		// Parameter to add to external link
-		'instanceTokenParameterName' => 'parameterName',
+		'questions' => [
+			[
+				'question' => 'ext-quicksurveys-example-external-survey-question',
+				'description' => 'ext-quicksurveys-example-external-survey-description',
+				'link' => 'ext-quicksurveys-example-external-survey-link',
+				'instanceTokenParameterName' => 'parameterName',
+			]
+		],
 	] + QS_DEFAULTS,
 ];
 
