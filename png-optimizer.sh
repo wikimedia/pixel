@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR_TO_MONITOR="/pixel/report"
+set -e
 
 OPTIMIZATION_TAG="OptimizedWithOptiPNG"
 
@@ -10,7 +10,7 @@ debug_log() {
   if [ "$ENABLE_DEBUG_LOGGING" -ne 1 ]; then
     return
   fi
-  echo "$(date +"%Y-%m-%d %H:%M:%S") - $1"
+  echo "$(date +"%Y-%m-%d %H:%M:%S") - Job $PARALLEL_SEQ - $1"
 }
 
 remove_lock_file() {
@@ -95,29 +95,42 @@ optimize_png() {
   remove_lock_file "$lock_file"
 }
 
-monitor_dir_optimizing_pngs_upon_creation() {
+optimize_pngs_in_dir_recursively() {
+  local start_time end_time duration
+  start_time=$(date +%s)
   local dir
   dir=$1
-  local file_lower
-  while true; do
-    inotifywait -r -m -e create --format '%w%f' "$dir" | while read file; do
-      file_lower=$(echo "$file" | tr '[:upper:]' '[:lower:]')
-      if [[ "$file_lower" =~ \.png$ ]]; then
-        optimize_png "$file" &
-      fi
-    done
+
+  # Parallel run - one job per processor
+  local processor_count
+  processor_count=$(nproc)
+  local jobs_per_processor
+  jobs_per_processor=1
+  local jobs
+  jobs=$((processor_count * jobs_per_processor))
+  find "$dir" -type f -iname "*.png" -print0 | parallel -0 --jobs "$jobs" optimize_png {}
+
+  # Series run
+  # find "$dir" -type f -iname "*.png" -print0 | while read -r -d '' file; do optimize_png "$file"; done
+
+  end_time=$(date +%s)
+  duration=$((end_time - start_time))
+  echo "Duration: $duration seconds"
+}
+
+export_all_functions_and_variables() {
+  local func var
+  for func in $(declare -F | awk '{print $3}'); do
+    export -f $func
+  done
+  for var in $(compgen -v); do
+    export "$var"
   done
 }
 
-ensure_dependencies_present() {
-  if ! command -v inotifywait &>/dev/null ||
-    ! command -v optipng &>/dev/null ||
-    ! command -v exiftool &>/dev/null; then
-    debug_log "Required tools are missing. The Dockerfile should install inotify-tools, optipng, and exiftool."
-    exit 1
-  fi
-}
+# Needed to use "parallel"
+export_all_functions_and_variables
 
-ensure_dependencies_present
-
-monitor_dir_optimizing_pngs_upon_creation "$DIR_TO_MONITOR"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  optimize_pngs_in_dir_recursively "$1"
+fi

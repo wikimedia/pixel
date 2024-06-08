@@ -1,0 +1,9 @@
+FROM alpine
+
+COPY png-optimizer.sh /opt/scripts/png-optimizer.sh
+
+WORKDIR /pixel/report
+
+RUN apk add --no-cache inotify-tools optipng exiftool bash parallel
+
+CMD ["/bin/bash", "/opt/scripts/png-optimizer.sh", "/pixel/report"]

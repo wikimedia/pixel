@@ -99,9 +99,8 @@ services:
   png-optimizer:
     build:
       context: .
-      dockerfile: Dockerfile.optimizePNG
+      dockerfile: Dockerfile.png-optimizer
     volumes:
       - ./report:/pixel/report
-      - ./optimizePNG.sh:/opt/scripts/optimizePNG.sh
-      - ./optimizePNG_supervisord.conf:/etc/optimizePNG_supervisord.conf
+      - ./png-optimizer.sh:/opt/scripts/png-optimizer.sh
     working_dir: /pixel/report
