@@ -353,6 +353,7 @@ $wgQuickSurveysConfig = [
 		// Survey question message key
 		'questions' => [
 			[
+				'name' => 'q1',
 				'layout' => 'multiple-answer',
 				'question' => 'ext-quicksurveys-example-internal-survey-question',
 				'answers' => QS_ANSWERS_MULTI_CHOICE,
@@ -367,6 +368,7 @@ $wgQuickSurveysConfig = [
 		// Survey question message key
 		'questions' => [
 			[
+				'name' => 'q1',
 				'question' => 'ext-quicksurveys-example-external-survey-question',
 				'description' => 'ext-quicksurveys-example-external-survey-description',
 				'link' => 'ext-quicksurveys-example-external-survey-link',
