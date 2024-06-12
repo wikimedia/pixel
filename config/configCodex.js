@@ -74,6 +74,11 @@ const components = [
 		sandboxSection: 'menu-item'
 	},
 	{
+		label: 'Menu button',
+		sandboxSection: 'menu-button'
+		// TODO add a test that clicks the button to open the menu
+	},
+	{
 		label: 'Message',
 		sandboxSection: 'message'
 	},
@@ -96,6 +101,7 @@ const components = [
 	{
 		label: 'Table',
 		sandboxSection: 'table'
+		// TODO also add a scenario that looks at the table demo page
 	},
 	{
 		label: 'Tabs',
