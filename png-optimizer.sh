@@ -101,14 +101,8 @@ optimize_pngs_in_dir_recursively() {
   local dir
   dir=$1
 
-  # Parallel run - one job per processor
-  local processor_count
-  processor_count=$(nproc)
-  local jobs_per_processor
-  jobs_per_processor=1
-  local jobs
-  jobs=$((processor_count * jobs_per_processor))
-  find "$dir" -type f -iname "*.png" -print0 | parallel -0 --jobs "$jobs" optimize_png {}
+  # Parallel run, "-j+0" keeps each core fed with one job at a time
+  find "$dir" -type f -iname "*.png" -print0 | parallel -0 -j+0 optimize_png {}
 
   # Series run
   # find "$dir" -type f -iname "*.png" -print0 | while read -r -d '' file; do optimize_png "$file"; done
