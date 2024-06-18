@@ -55,6 +55,9 @@ optimize_pngs_in_dir_recursively() {
   local dir
   dir=$1
 
+  # Remove any dangling exiftool temp files
+  find "$dir" -type f -iname "*.png_exiftool_tmp" -delete
+
   # Parallel run, "-j+0" keeps each core fed with one job at a time
   find "$dir" -type f -iname "*.png" -print0 | parallel -0 -j+0 optimize_png {}
 
