@@ -13,14 +13,6 @@ debug_log() {
   echo "$(date +"%Y-%m-%d %H:%M:%S") - Job $PARALLEL_SEQ - $1"
 }
 
-remove_lock_file() {
-  local lock_file
-  lock_file=$1
-  if [ -f "$lock_file" ]; then
-    rm -f "$lock_file" || true
-  fi
-}
-
 optimize_png() {
   local file
   file=$1
@@ -29,16 +21,6 @@ optimize_png() {
     debug_log "$file already optimized, skipping"
     return
   fi
-
-  local lock_file
-  lock_file="/tmp/$(echo "$file" | sed 's/\//_/g').lock"
-
-  if [ -f "$lock_file" ]; then
-    debug_log "$file already being processed, skipping"
-    return
-  fi
-
-  touch "$lock_file"
 
   local size_before
   size_before=$(stat -c%s "$file")
@@ -49,7 +31,6 @@ optimize_png() {
 
   if ! exiftool -quiet -Software "$file" | grep -q "$OPTIMIZATION_TAG"; then
     debug_log "$file failed to write processed flag"
-    remove_lock_file "$lock_file"
     return
   fi
 
@@ -66,8 +47,6 @@ optimize_png() {
   fi
 
   echo "$file optimized: Size reduction = $size_percent_reduction%"
-
-  remove_lock_file "$lock_file"
 }
 
 optimize_pngs_in_dir_recursively() {
