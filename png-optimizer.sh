@@ -27,7 +27,7 @@ optimize_png() {
 
   optipng -silent -fix -o2 "$file"
 
-  exiftool -quiet -overwrite_original_in_place -Software="$OPTIMIZATION_TAG" "$file"
+  exiftool -quiet -overwrite_original -Software="$OPTIMIZATION_TAG" "$file"
 
   if ! exiftool -quiet -Software "$file" | grep -q "$OPTIMIZATION_TAG"; then
     debug_log "$file failed to write processed flag"
