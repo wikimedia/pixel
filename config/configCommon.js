@@ -15,7 +15,7 @@ module.exports = {
 			'--disable-gpu-sandbox'
 		]
 	},
-	debug: false,
+	debug: true,
 	debugWindow: false,
 	delay: 100
 };
