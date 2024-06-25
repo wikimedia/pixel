@@ -10,7 +10,6 @@ module.exports = {
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
 			'--single-process',
-			'--shm-size=1gb',
 			'--disable-gpu',
 			'--disable-gpu-sandbox'
 		]
