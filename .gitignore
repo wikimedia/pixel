@@ -1,3 +1,5 @@
+/report
+
 # git-deploy status file:
 /.deploy
 /context.json
