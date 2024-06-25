@@ -1,6 +1,6 @@
 module.exports = {
 	id: 'MediaWiki',
-	asyncCaptureLimit: 6,
+	asyncCaptureLimit: 4,
 	asyncCompareLimit: 25,
 	engine: 'puppeteer',
 	engineOptions: {
@@ -10,12 +10,12 @@ module.exports = {
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
 			'--single-process',
-			'--shm-size=1gb',
+			'--disable-dev-shm-usage',
 			'--disable-gpu',
 			'--disable-gpu-sandbox'
 		]
 	},
-	debug: false,
+	debug: true,
 	debugWindow: false,
 	delay: 100
 };
