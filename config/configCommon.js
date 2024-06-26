@@ -5,7 +5,6 @@ module.exports = {
 	engine: 'puppeteer',
 	engineOptions: {
 		headless: 'new',
-		protocolTimeout: 30000,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
