@@ -1,3 +1,6 @@
+networks:
+  pixel_network:
+
 volumes:
   dbdata:
   mwcode:
@@ -25,6 +28,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    networks:
+      - pixel_network
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:2.0.0-s1
     ports:
@@ -40,6 +45,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    networks:
+      - pixel_network
   database:
     build:
       context: .
@@ -54,9 +61,10 @@ services:
       interval: 1s
       timeout: 5s
       retries: 20
+    networks:
+      - pixel_network
   visual-regression:
     init: true
-    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile.visual-regression
@@ -75,9 +83,10 @@ services:
     shm_size: 2gb
     cap_add:
       - SYS_ADMIN
+    networks:
+      - pixel_network
   a11y-regression:
     init: true
-    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile.a11y-regression
@@ -96,6 +105,8 @@ services:
     shm_size: 2gb
     cap_add:
       - SYS_ADMIN
+    networks:
+      - pixel_network
   png-optimizer:
     build:
       context: .
@@ -104,3 +115,5 @@ services:
       - ./report:/pixel/report
       - ./png-optimizer.sh:/opt/scripts/png-optimizer.sh
     working_dir: /pixel/report
+    networks:
+      - pixel_network
