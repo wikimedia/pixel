@@ -8,7 +8,6 @@ module.exports = {
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
-			'--single-process',
 			'--disable-dev-shm-usage',
 			'--disable-gpu',
 			'--disable-gpu-sandbox'
