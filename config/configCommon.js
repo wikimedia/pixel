@@ -4,17 +4,16 @@ module.exports = {
 	asyncCompareLimit: 25,
 	engine: 'puppeteer',
 	engineOptions: {
-		headless: 'new',
+		headless: true,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
-			'--single-process',
 			'--disable-dev-shm-usage',
 			'--disable-gpu',
 			'--disable-gpu-sandbox'
 		]
 	},
-	debug: true,
+	debug: false,
 	debugWindow: false,
 	delay: 100
 };

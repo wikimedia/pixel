@@ -5,7 +5,7 @@
 # will reset everything so that Pixel starts with a clean slate.
 
 # Stop and remove Docker containers, networks, and volumes
-docker compose --progress=plain --project-directory . -f ./docker-compose.yml down --rmi all --volumes --remove-orphans
+docker compose --progress=plain --project-directory . -f ./docker-compose.yml down --rmi all --volumes --remove-orphans 2>&1
 
 # Remove other images and intermediate build artifacts
-docker system prune -af
+docker system prune -af 2>&1
