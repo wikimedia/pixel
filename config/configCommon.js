@@ -4,7 +4,7 @@ module.exports = {
 	asyncCompareLimit: 25,
 	engine: 'puppeteer',
 	engineOptions: {
-		headless: 'new',
+		headless: true,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
