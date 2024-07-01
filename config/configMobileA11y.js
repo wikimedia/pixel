@@ -19,6 +19,8 @@ const testDefaults = {
 	ignore: [
 		// Prevent contrast ratio error on absolutely positioned elements
 		'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs',
+		// Noisey htmlcs rule about "Interfering with a user agent's ability to zoom"
+		'WCAG2AA.Principle1.Guideline1_4.1_4_10.C32,C31,C33,C38,SCR34,G206',
 		'color-contrast'
 	],
 	chromeLaunchConfig: {
