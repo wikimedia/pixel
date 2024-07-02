@@ -244,12 +244,26 @@ async function runA11yRegressionTests( type, configFile, logResults, opts ) {
 	} );
 }
 
+function writeRunInProgressTemplateToIndexFile(indexFileFullPath, group) {
+	try {
+		let template = fs.readFileSync('./src/run-in-progress-template.html', 'utf8');
+		const startTime = Date.now();
+		template = template.replace('START_TIME_PLACEHOLDER', startTime);
+		template = template.replace('GROUP_NAME_PLACEHOLDER', group);
+		fs.writeFileSync(indexFileFullPath, template);
+	} catch (e) {
+		console.log(`Could not write 'run in progress' template to ${indexFileFullPath}`);
+		console.error(e);
+	}
+}
+
 async function runVisualRegressionTests( type, config, group, runSilently, configFile, resetDb ) {
 	if ( type === 'test' ) {
 		removeFolder( config.paths.bitmaps_test );
 	}
 
 	const indexFileFullPath = `${__dirname}/${config.paths.html_report}/index.html`;
+	writeRunInProgressTemplateToIndexFile( indexFileFullPath, group );
 
 	const finished = await simpleSpawn.spawn(
 		'docker',

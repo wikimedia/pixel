@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<body style="font-size: 3em; margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;">
+  <div id="root">
+    Running 'GROUP_NAME_PLACEHOLDER'
+    <hr>
+    Started at: <span id="startTime"></span>
+    <br>
+    Time elapsed: <span id="elapsedTime"></span>
+    <hr>
+    The Backstop report will appear when the run finishes
+  </div>
+
+  <script>
+    const initialTimestamp = START_TIME_PLACEHOLDER;
+    const initialDate = new Date(initialTimestamp);
+
+    function formatPacificTime(date) {
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        weekday: 'short',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        year: 'numeric',
+        hour12: false,
+      });
+    }
+
+    document.getElementById('startTime').textContent = formatPacificTime(initialDate);
+
+    function updateElapsedTime() {
+      const elapsed = Date.now() - initialTimestamp;
+      const hours = Math.floor(elapsed / 3600000);
+      const minutes = Math.floor((elapsed % 3600000) / 60000);
+      const seconds = Math.floor((elapsed % 60000) / 1000);
+      const elapsedTimeString = [hours, minutes, seconds]
+        .map(v => v.toString().padStart(2, '0'))
+        .join(':');
+      document.getElementById('elapsedTime').textContent = elapsedTimeString;
+    }
+
+    setInterval(updateElapsedTime, 100);
+
+    // This reload lets the user see the Backstop report soon after it overwrites this placeholder content
+    setTimeout(() => {
+      window.location.reload();
+    }, 5000);
+  </script>
+</body>
+
+</html>
