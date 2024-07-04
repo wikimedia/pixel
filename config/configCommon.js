@@ -27,18 +27,19 @@ const watchConfig = {
   delay: 1000
 };
 
-function deepMerge(target, source) {
-  for (const key in source) {
-    if (source.hasOwnProperty(key)) {
-      if (source[key] && typeof source[key] === 'object') {
-        target[key] = deepMerge(target[key] || {}, source[key]);
-      } else {
-        target[key] = source[key];
-      }
+const deepMerge = (target, source) => {
+  Object.keys(source).forEach(key => {
+    const sourceValue = source[key];
+    if (Array.isArray(target[key]) && Array.isArray(sourceValue)) {
+      target[key] = [...new Set([...target[key], ...sourceValue])];
+    } else if (sourceValue && typeof sourceValue === 'object') {
+      target[key] = deepMerge(target[key] ?? {}, sourceValue);
+    } else {
+      target[key] = sourceValue;
     }
-  }
+  });
   return target;
-}
+};
 
 if ( process.env.WATCH_MODE === '1' ) {
   deepMerge(config, watchConfig);
