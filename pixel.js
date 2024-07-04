@@ -226,6 +226,9 @@ function updateContext( group, type, activeBranch, description ) {
 async function prepareDockerEnvironment( opts ) {
 	await simpleSpawn.spawn( './build-base-regression-image.sh' );
 	await simpleSpawn.spawn( './start.sh' );
+	if (process.env.WATCH_MODE === '1') {
+		await simpleSpawn.spawn( './watch.sh' );
+	}
 	await simpleSpawn.spawn(
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
@@ -266,8 +269,20 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	writeRunInProgressTemplateToIndexFile( indexFileFullPath, group );
 
 	const finished = await simpleSpawn.spawn(
-		'docker',
-		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+	  'docker',
+	  [
+	    'compose',
+	    ...getComposeOpts( [
+	      'run',
+	      ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ),
+	      '--rm',
+	      ...( process.env.WATCH_MODE ? [ '-e', `WATCH_MODE=${process.env.WATCH_MODE}` ] : [] ),
+	      'visual-regression',
+	      type,
+	      '--config',
+	      configFile
+	    ] )
+	  ]		
 	).then( async () => {
 		if ( type !== 'reference' ) {
 			await addBannerAndIfNecessaryOpenReport(
