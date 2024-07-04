@@ -18,7 +18,7 @@ const config = {
 	delay: 100
 };
 
-const debugConfig = {
+const watchConfig = {
   asyncCaptureLimit: 1,
   engineOptions: {
     headless: false,
@@ -43,7 +43,7 @@ function deepMerge(target, source) {
 }
 
 if (isWatchMode()) {
-  deepMerge(config, debugConfig);
+  deepMerge(config, watchConfig);
 }
 
 console.log('-----------------------------');
