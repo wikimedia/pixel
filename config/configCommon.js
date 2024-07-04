@@ -27,8 +27,6 @@ const watchConfig = {
   delay: 1000
 };
 
-const isWatchMode = () => process.env.WATCH_MODE === '1';
-
 function deepMerge(target, source) {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
@@ -42,7 +40,7 @@ function deepMerge(target, source) {
   return target;
 }
 
-if (isWatchMode()) {
+if ( process.env.WATCH_MODE === '1' ) {
   deepMerge(config, watchConfig);
 }
 
