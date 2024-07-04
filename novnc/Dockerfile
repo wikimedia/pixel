@@ -2,8 +2,6 @@ FROM alpine
 
 RUN set -ex; \
     apk add --no-cache \
-        dbus \
-        dbus-x11 \
         xfce4 \
         novnc \
         supervisor \
