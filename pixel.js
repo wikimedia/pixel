@@ -283,7 +283,7 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	      '--config',
 	      configFile
 	    ] )
-	  ]		
+	  ]
 	).then( async () => {
 		if ( type !== 'reference' ) {
 			await addBannerAndIfNecessaryOpenReport(
