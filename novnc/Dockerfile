@@ -18,5 +18,7 @@ ENV HOME=/root \
     DISPLAY_HEIGHT=1024
 
 COPY . /app
+COPY background.svg /usr/share/backgrounds/xfce/xfce-shapes.svg
+
 CMD ["/app/entrypoint.sh"]
 EXPOSE 8088
