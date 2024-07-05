@@ -165,6 +165,10 @@ async function processCommand( type, opts, runSilently = false ) {
 		const { stdout: stdout2 } = await simpleSpawn.exec( './reset-db.sh' );
 		console.log( stdout2 );
 
+		if (process.env.WATCH_MODE === '1') {
+			await simpleSpawn.spawn( './novnc/open-watch-url.sh' );
+		}
+
 		if ( opts.a11y ) {
 			return await runA11yRegressionTests( type, configFile, opts.logResults, opts );
 		} else {
@@ -226,9 +230,6 @@ function updateContext( group, type, activeBranch, description ) {
 async function prepareDockerEnvironment( opts ) {
 	await simpleSpawn.spawn( './build-base-regression-image.sh' );
 	await simpleSpawn.spawn( './start.sh' );
-	if (process.env.WATCH_MODE === '1') {
-		await simpleSpawn.spawn( './watch.sh' );
-	}
 	await simpleSpawn.spawn(
 		'docker',
 		[ 'compose', ...getComposeOpts( [ 'exec', ...( process.env.NONINTERACTIVE ? [ '-T' ] : [] ), 'mediawiki', '/src/main.js', JSON.stringify( opts ) ] ) ]
