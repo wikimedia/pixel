@@ -253,11 +253,23 @@ Please file all bugs, requests, and issues on the [web team's visual regression 
 
 ## Debugging
 
+The following env vars are useful when running and debugging Pixel locally
+
+### Watch mode
+
 To watch BackstopJS taking your screenshots (in its visual-regression container) you can use the `WATCH_MODE` env var:
 
 `WATCH_MODE=1 ./pixel.js reference`
 
-This can be very helpful determining Mediawiki related configuration issues and should work with any command kicking off Pixel BackstopJS runs.
+This can be very helpful determining Mediawiki related configuration issues and should work with any command kicking off Pixel BackstopJS runs
+
+### Filter
+
+To quickly restrict which scenario runs without modifying any code, you can use the `FILTER` env var:
+
+`FILTER="Sticky header with unpinned TOC" ./pixel.js reference`
+
+This is useful when debugging specific scenarios and should work with any command kicking off Pixel BackstopJS runs
 
 ## Roadmap
 
