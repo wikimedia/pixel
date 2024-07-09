@@ -263,11 +263,11 @@ To watch BackstopJS taking your screenshots (in its visual-regression container)
 
 This can be very helpful determining Mediawiki related configuration issues and should work with any command kicking off Pixel BackstopJS runs
 
-### Filter
+### Scenario filter
 
-To quickly restrict which scenario runs without modifying any code, you can use the `FILTER` env var:
+To quickly restrict which scenario runs without modifying any code, you can use the `SCENARIO_FILTER` env var:
 
-`FILTER="Sticky header with unpinned TOC" ./pixel.js reference`
+`SCENARIO_FILTER="Sticky header with unpinned TOC" ./pixel.js reference`
 
 This is useful when debugging specific scenarios and should work with any command kicking off Pixel BackstopJS runs
 

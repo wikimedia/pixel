@@ -282,7 +282,7 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	      type,
 	      '--config',
 	      configFile,
-	      ...( process.env.FILTER ? [ '--filter', `${process.env.FILTER}` ] : [] )
+	      ...( process.env.SCENARIO_FILTER ? [ '--filter', `${process.env.SCENARIO_FILTER}` ] : [] )
 	    ] )
 	  ]
 	).then( async () => {
