@@ -165,6 +165,10 @@ async function processCommand( type, opts, runSilently = false ) {
 		const { stdout: stdout2 } = await simpleSpawn.exec( './reset-db.sh' );
 		console.log( stdout2 );
 
+		if (process.env.WATCH_MODE === '1') {
+			await simpleSpawn.spawn( './novnc/open-watch-url.sh' );
+		}
+
 		if ( opts.a11y ) {
 			return await runA11yRegressionTests( type, configFile, opts.logResults, opts );
 		} else {
@@ -266,8 +270,21 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	writeRunInProgressTemplateToIndexFile( indexFileFullPath, group );
 
 	const finished = await simpleSpawn.spawn(
-		'docker',
-		[ 'compose', ...getComposeOpts( [ 'run', ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ), '--rm', 'visual-regression', type, '--config', configFile ] ) ]
+	  'docker',
+	  [
+	    'compose',
+	    ...getComposeOpts( [
+	      'run',
+	      ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ),
+	      '--rm',
+	      ...( process.env.WATCH_MODE ? [ '-e', `WATCH_MODE=${process.env.WATCH_MODE}` ] : [] ),
+	      'visual-regression',
+	      type,
+	      '--config',
+	      configFile,
+	      ...( process.env.SCENARIO_FILTER ? [ '--filter', `${process.env.SCENARIO_FILTER}` ] : [] )
+	    ] )
+	  ]
 	).then( async () => {
 		if ( type !== 'reference' ) {
 			await addBannerAndIfNecessaryOpenReport(

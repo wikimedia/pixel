@@ -63,7 +63,20 @@ services:
       retries: 20
     networks:
       - pixel_network
+  novnc:
+    profiles:
+      - manual
+    build: novnc
+    environment:
+      - DISPLAY_WIDTH=1280
+      - DISPLAY_HEIGHT=1024
+    networks:
+      - pixel_network
+    ports:
+        - 8088:8088
   visual-regression:
+    profiles:
+      - manual
     init: true
     build:
       context: .
@@ -73,6 +86,8 @@ services:
     working_dir: /pixel
     env_file:
       - .env
+    environment:
+      - DISPLAY=novnc:0
     volumes:
       - ./context.json:/pixel/context.json
       - ./viewports.js:/pixel/viewports.js
@@ -86,6 +101,8 @@ services:
     networks:
       - pixel_network
   a11y-regression:
+    profiles:
+      - manual
     init: true
     build:
       context: .
@@ -95,6 +112,8 @@ services:
     working_dir: /pixel
     env_file:
       - .env
+    environment:
+      - DISPLAY=novnc:0
     volumes:
       - ./context.json:/pixel/context.json
       - ./viewports.js:/pixel/viewports.js
