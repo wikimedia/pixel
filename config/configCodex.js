@@ -133,8 +133,8 @@ const components = [
 	}
 ];
 
-const scenarios = components.map( ( componentData ) => {
-	const { sandboxSection, ...otherData } = componentData;
+const scenarios = components.flatMap( ( componentData ) => {
+	const { sandboxSection, label, ...otherData } = componentData;
 	/** @type {string[]} */
 	let selectors = [];
 	/** @type {string[]} */
@@ -143,13 +143,26 @@ const scenarios = components.map( ( componentData ) => {
 		selectors = [ `#cdx-${sandboxSection}` ];
 		removeSelectors = [ `main section:not(#cdx-${sandboxSection})` ];
 	}
-	return {
+
+	const url = `${process.env.PIXEL_MW_SERVER}/w/codex/packages/codex/dist/sandbox/index.html`;
+	const scenario = {
 		selectors,
 		removeSelectors,
 		...otherData,
-		url: `${process.env.PIXEL_MW_SERVER}/w/codex/packages/codex/dist/sandbox/index.html`,
+		url,
+		label,
 		misMatchThreshold: 1
 	};
+
+	return [
+		scenario,
+		// Add a dark mode version of this scenario
+		{
+			...scenario,
+			label: `${label} (dark mode)`,
+			url: `${url}?darkmode`
+		}
+	];
 } );
 
 module.exports = {
