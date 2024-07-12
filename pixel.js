@@ -6,6 +6,7 @@ const MAIN_BRANCH = 'master';
 const SimpleSpawn = require( './src/SimpleSpawn' );
 const simpleSpawn = new SimpleSpawn();
 const fs = require( 'fs' );
+const path = require( 'path' )
 const CONTEXT_PATH = `${__dirname}/context.json`;
 const GROUP_CONFIG = require( './config/groupConfig' );
 const A11Y_GROUP_CONFIG = require( './config/a11yGroupConfig' );
@@ -250,6 +251,10 @@ async function runA11yRegressionTests( type, configFile, logResults, opts ) {
 
 function writeRunInProgressTemplateToIndexFile(indexFileFullPath, group) {
 	try {
+		const fullPath = path.dirname(indexFileFullPath);
+		if (!fs.existsSync(fullPath)) {
+			fs.mkdirSync(fullPath, { recursive: true });
+		}
 		let template = fs.readFileSync('./src/run-in-progress-template.html', 'utf8');
 		const startTime = Date.now();
 		template = template.replace('START_TIME_PLACEHOLDER', startTime);
