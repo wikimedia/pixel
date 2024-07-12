@@ -28,5 +28,6 @@ jobs:
       shell: 'script -q -e -c "bash {0}"'
       env:
         SCENARIO_FILTER: "Skip all scenarios"
+        NONINTERACTIVE: 1
       run: |
         script -e -c "./pixel.js runAll --priority 3"
