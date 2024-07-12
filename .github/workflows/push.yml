@@ -31,4 +31,4 @@ jobs:
       env:
         SCENARIO_FILTER: "Skip all scenarios"
       run: |
-        script -e -c "./pixel.js reference && ./pixel.js test"
+        script -e -c "./pixel.js runAll --priority 3"
