@@ -12,7 +12,7 @@ module.exports = async ( page, username ) => {
 	}
 	const cookies = strippedCookies.map( ( cookie ) => {
 		return {
-			domain: 'localhost',
+			domain: 'mediawiki-web',
 			...cookie
 		};
 	} );
