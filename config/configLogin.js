@@ -24,13 +24,13 @@ const scenarios = utils.makeScenariosForSkins( [
 	},
 	{
 		label: 'login when logged in',
-		hashtags: [ 'logged-in' ],
+		hashtags: [ '#logged-in' ],
 		path: '/wiki/Special:UserLogin',
 		selectors: [ 'viewport' ]
 	},
 	{
 		label: 'create account when logged in',
-		hashtags: [ 'logged-in' ],
+		hashtags: [ '#logged-in' ],
 		path: '/wiki/Special:CreateAccount',
 		selectors: [ 'viewport' ]
 	}
