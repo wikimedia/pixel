@@ -32,8 +32,8 @@ services:
       - pixel_network
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:2.0.0-s1
-    ports:
-      - "${PIXEL_MW_DOCKER_PORT}:8080"
+    expose:
+      - "${PIXEL_MW_DOCKER_PORT}"
     env_file:
       - .env
     environment:
@@ -136,3 +136,14 @@ services:
     working_dir: /pixel/report
     networks:
       - pixel_network
+
+  nginx-proxy:
+      image: nginx:alpine
+      ports:
+        - "${PIXEL_MW_DOCKER_PORT}:80"
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      depends_on:
+        - mediawiki-web
+      networks:
+        - pixel_network
