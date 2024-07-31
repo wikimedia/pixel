@@ -20,6 +20,9 @@
 	"mediawiki/extensions/GlobalPreferences": {
 		"path": "extensions/GlobalPreferences"
 	},
+	"mediawiki/extensions/CommunityConfiguration": {
+		"path": "extensions/CommunityConfiguration"
+	},
 	"mediawiki/extensions/GrowthExperiments": {
 		"path": "extensions/GrowthExperiments"
 	},
