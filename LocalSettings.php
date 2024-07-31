@@ -163,6 +163,7 @@ wfLoadExtension( 'SandboxLink' );
 wfLoadExtension( 'Thanks' );
 wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
+wfLoadExtension( 'CommunityConfiguration' );
 wfLoadExtension( 'GrowthExperiments' );
 wfLoadExtension( 'VueTest' );
 if ( getenv('ENABLE_WIKILAMBDA') == 'true' ) {
