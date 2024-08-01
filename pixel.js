@@ -472,6 +472,7 @@ Running regression group "${groupName}"
 						console.log( 'Error occurred' );
 						console.error( e );
 					}
+					await new Promise(resolve => setTimeout(resolve, 5000));
 				} else {
 					console.log( `*************************
 Skipping group "${groupName}" due to priority.
