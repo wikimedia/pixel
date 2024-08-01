@@ -2,6 +2,7 @@ const deferToFrame = require( './deferToFrame' );
 const fastForwardAnimations = require( './fastForwardAnimations' );
 const waitForIdle = require( './waitForIdle' );
 const clickBtn = require( './clickBtn' );
+const printScenario = require( './debugPrint' );
 
 /**
  * Runs after onReady event on all scenarios -- use for simulating interactions.
@@ -10,7 +11,7 @@ const clickBtn = require( './clickBtn' );
  * @param {import('backstopjs').Scenario} scenario
  */
 module.exports = async ( page, scenario ) => {
-	console.log( 'SCENARIO > ' + scenario.label );
+	printScenario( scenario );
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
 

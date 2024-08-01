@@ -1,12 +1,12 @@
 const waitForIdle = require( './waitForIdle' );
+const printScenario = require( './debugPrint' );
 
 /**
  * @param {import('puppeteer').Page} page
  * @param {import('backstopjs').Scenario} scenario
  */
 module.exports = async ( page, scenario ) => {
-	console.log( 'SCENARIO > ' + scenario.label );
-
+	printScenario( scenario );
 	// Add CSS that disables all animations
 	await page.evaluate( () => {
 		const styleNode = document.createElement( 'style' );
