@@ -271,6 +271,14 @@ To quickly restrict which scenario runs without modifying any code, you can use 
 
 This is useful when debugging specific scenarios and should work with any command kicking off Pixel BackstopJS runs
 
+### Scenario details
+
+To see full scenario objects printed to the console during a run, you can use the `SCENARIO_DETAILS` env var:
+
+`SCENARIO_DETAILS=1 ./pixel.js reference`
+
+This is also useful when debugging specific scenarios
+
 ## Roadmap
 
 Future plans can be seen by visiting the [web team's visual regression

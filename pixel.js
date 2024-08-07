@@ -283,6 +283,7 @@ async function runVisualRegressionTests( type, config, group, runSilently, confi
 	      ...( process.env.NONINTERACTIVE ? [ '--no-TTY' ] : [] ),
 	      '--rm',
 	      ...( process.env.WATCH_MODE ? [ '-e', `WATCH_MODE=${process.env.WATCH_MODE}` ] : [] ),
+	      ...( process.env.SCENARIO_DETAILS ? [ '-e', `SCENARIO_DETAILS=${process.env.SCENARIO_DETAILS}` ] : [] ),
 	      'visual-regression',
 	      type,
 	      '--config',
