@@ -1,4 +1,4 @@
-FROM docker-registry.wikimedia.org/dev/buster-php74-fpm:1.0.0-s3
+FROM docker-registry.wikimedia.org/dev/buster-php81-fpm:1.0.1-s2
 
 # IMPORTANT: Any local dependency that `setupRepos.sh` needs MUST have a `COPY`
 # statement here before `setupRepos.sh` is executed. We copy individual files
