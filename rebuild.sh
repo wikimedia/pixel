@@ -2,7 +2,10 @@
 
 set -e
 
-# Stop and remove Docker containers, networks, and volumes
+# Stop containers
+./stop.sh 2>&1
+
+# Remove Docker containers, networks, and volumes
 ./clean.sh 2>&1
 
 # Build the pixel-base-regression image
