@@ -251,6 +251,12 @@ repo.
 
 Please file all bugs, requests, and issues on the [web team's visual regression phabricator board](https://phabricator.wikimedia.org/project/board/5933/)
 
+## Ports
+
+If you want to change the ports used you can modify the port env vars in the [.env](./.env) file
+
+After changing them, run the `./rebuild.sh` script
+
 ## Debugging
 
 The following env vars are useful when running and debugging Pixel locally

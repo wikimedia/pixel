@@ -21,4 +21,4 @@ COPY . /app
 COPY background.svg /usr/share/backgrounds/xfce/xfce-shapes.svg
 
 CMD ["/app/entrypoint.sh"]
-EXPOSE 8088
+EXPOSE ${PIXEL_NOVNC_PORT}

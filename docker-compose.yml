@@ -33,7 +33,7 @@ services:
   mediawiki-web:
     image: docker-registry.wikimedia.org/dev/buster-apache2:2.0.0-s1
     expose:
-      - "${PIXEL_MW_DOCKER_PORT}"
+      - "8080"
     env_file:
       - .env
     environment:
@@ -70,10 +70,11 @@ services:
     environment:
       - DISPLAY_WIDTH=1280
       - DISPLAY_HEIGHT=1024
+      - PIXEL_NOVNC_PORT
     networks:
       - pixel_network
     ports:
-        - 8088:8088
+        - "${PIXEL_NOVNC_PORT}:${PIXEL_NOVNC_PORT}"
   visual-regression:
     profiles:
       - manual

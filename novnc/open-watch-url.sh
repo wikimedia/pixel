@@ -1,6 +1,14 @@
 #!/bin/sh
 
-URL="http://localhost:8088/vnc_lite.html?autoconnect=true"
+# Source the .env file
+. "$(dirname "$0")/../.env"
+
+if [ -z "$PIXEL_NOVNC_PORT" ]; then
+    echo "Error: PIXEL_NOVNC_PORT is not set in the .env file."
+    exit 1
+fi
+
+URL="http://localhost:${PIXEL_NOVNC_PORT}/vnc_lite.html?autoconnect=true"
 
 open "$URL" 2>/dev/null || {
     printf "\n\033[0;32mThe 'open' command is not available\033[0m\n"
