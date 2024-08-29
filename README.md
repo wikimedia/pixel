@@ -255,6 +255,10 @@ Please file all bugs, requests, and issues on the [web team's visual regression 
 
 If you want to change the ports used you can modify the port env vars in the [.env](./.env) file
 
+`PIXEL_MW_HOST_PORT` is the port you can use to access pages from the host
+
+`PIXEL_NOVNC_PORT` is the port used by the NoVNC viewer when you use `WATCH_MODE=1`
+
 After changing them, run the `./rebuild.sh` script
 
 ## Debugging
