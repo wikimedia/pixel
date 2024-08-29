@@ -31,8 +31,6 @@ $wgMetaNamespace = "Mediawiki";
 ## https://www.mediawiki.org/wiki/Manual:Short_URL
 $wgScriptPath = getenv('PIXEL_MW_SCRIPT_PATH');
 
-$PORT = getenv('PIXEL_MW_DOCKER_PORT');
-
 ## The protocol and server name to use in fully-qualified URLs
 $wgServer = getenv('PIXEL_MW_SERVER');
 
