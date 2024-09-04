@@ -262,9 +262,10 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
     'url' => "http://mediawiki-web:8080" . $wgScriptPath . '/rest.php',
 ];
 
-// Show new sidebar table of contents.
-$wgVectorTableOfContents = [
-	"default" => true,
+$wgVectorAppearance = [
+	'logged_in' => true,
+	'logged_out' => true,
+	'beta' => true
 ];
 
 // For origin/wmf/1.39.0-wmf.14 against master.
