@@ -22,11 +22,6 @@ module.exports = {
 		priority: 3,
 		config: 'configEcho.js'
 	},
-	'desktop-dev': {
-		name: 'Zebra Vector 2022 skin',
-		priority: 3,
-		config: 'configDesktopDev.js'
-	},
 	desktop: {
 		name: 'Vector 2022 skin',
 		priority: 1,
