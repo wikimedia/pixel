@@ -64,6 +64,7 @@ const scenarios = tests.map( ( test ) => {
 
 module.exports = {
 	...configCommon,
+	id: 'campaign-events',
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
 	viewports: [

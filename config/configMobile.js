@@ -129,6 +129,7 @@ const scenarios = tests.map( ( test ) => {
 } );
 
 module.exports = Object.assign( {}, configDesktop, {
+	id: 'mobile',
 	scenarios,
 	paths: utils.makePaths( 'mobile' )
 } );
