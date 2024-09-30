@@ -272,6 +272,7 @@ const scenarios = tests.map( ( test ) => {
 
 module.exports = {
 	...configCommon,
+	id: 'desktop',
 	onBeforeScript: 'puppet/onBefore.js',
 	onReadyScript: 'puppet/onReady.js',
 	viewports: [

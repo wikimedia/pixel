@@ -167,6 +167,7 @@ const scenarios = components.flatMap( ( componentData ) => {
 
 module.exports = {
 	...configCommon,
+	id: 'codex',
 	onReadyScript: 'puppet/onReady-codex.js',
 	viewports: [
 		VIEWPORT_PHONE,

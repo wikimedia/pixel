@@ -126,6 +126,7 @@ const makeMobileAndDesktopScenarios = ( tests ) => {
 const scenarios = makeMobileAndDesktopScenarios( baseScenarios );
 
 module.exports = Object.assign( {}, configDesktop, {
+	id: 'echo',
 	scenarios,
 	paths: utils.makePaths( 'echo' )
 } );

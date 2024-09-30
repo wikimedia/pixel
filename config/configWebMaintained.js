@@ -64,6 +64,7 @@ const nearbyScenarios = utils.makeScenariosForSkins(
 );
 
 module.exports = Object.assign( {}, configDesktop, {
+	id: 'web-maintained',
 	scenarios: skinScenarios.concat( quickSurveyScenarios ).concat(
 		nearbyScenarios
 	),
