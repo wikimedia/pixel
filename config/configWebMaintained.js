@@ -19,7 +19,7 @@ const quickSurveyScenarios = utils.makeScenariosForSkins(
 			query: {
 				quicksurvey: 'external example survey'
 			},
-			selectors: [ '.ext-quick-survey-panel .survey-content' ]
+			selectors: [ '.ext-quick-survey-panel' ]
 		},
 		{
 			label: 'QuickSurvey with single answer',
@@ -28,7 +28,7 @@ const quickSurveyScenarios = utils.makeScenariosForSkins(
 			query: {
 				quicksurvey: 'internal example survey'
 			},
-			selectors: [ '.ext-quick-survey-panel .survey-content' ]
+			selectors: [ '.ext-quick-survey-panel' ]
 		},
 		{
 			label: 'QuickSurvey with multiple answers',
@@ -37,7 +37,7 @@ const quickSurveyScenarios = utils.makeScenariosForSkins(
 			query: {
 				quicksurvey: 'internal multi answer example survey'
 			},
-			selectors: [ '.ext-quick-survey-panel .survey-content' ]
+			selectors: [ '.ext-quick-survey-panel' ]
 		}
 	],
 	[ 'vector', 'vector-2022', 'minerva' ]
@@ -56,7 +56,7 @@ const nearbyScenarios = utils.makeScenariosForSkins(
 			label: 'Nearby error state',
 			path: '/wiki/Special:Nearby',
 			hash: '#/coord/0,-700',
-			hashtags: [ '#nearby' ],
+			hashtags: [ '#nearby', ' #nearby-error' ],
 			selectors: [ '#mw-content-text' ]
 		}
 	],
