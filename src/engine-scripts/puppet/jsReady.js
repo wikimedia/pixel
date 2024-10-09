@@ -28,6 +28,14 @@ module.exports = async ( page, hashtags ) => {
 	await moduleReady( page, getSkinModuleFromHashtags( hashtags ) );
 	if ( hashtags.includes( '#quicksurvey' ) ) {
 		await moduleReady( page, 'ext.quicksurveys.lib.vue' );
+		// Wait for the survey close button to render.
+		await page.waitForSelector( '.survey-close-button' );
+	}
+	if ( hashtags.includes( '#nearby' ) ) {
+		await moduleReady( page, 'ext.nearby.scripts' );
+		if ( !hashtags.includes( '#nearby-error' ) ) {
+			await page.waitForSelector( '.mw-vue-nearby .mw-vue-page-list__card-proximity' );
+		}
 	}
 	await page.evaluate( () => {
 		// Wait until the next frame before resolving. collapsibleTabs.js in Vector
