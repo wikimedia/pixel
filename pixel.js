@@ -229,6 +229,7 @@ function updateContext( group, type, activeBranch, description ) {
 }
 
 async function prepareDockerEnvironment( opts ) {
+	await simpleSpawn.spawn( './check-docker-storage-driver.sh' );
 	await simpleSpawn.spawn( './build-base-regression-image.sh' );
 	await simpleSpawn.spawn( './start.sh' );
 	await simpleSpawn.spawn(
