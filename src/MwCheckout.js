@@ -70,7 +70,7 @@ class MwCheckout {
 		// Get list of gerrit patch commands that can be executed later.
 		const patchCommands = await this.#getPatchCommands( changeIds, this.#repos, branch );
 
-		const batchSize = 5;
+		const batchSize = 1;
 		for ( let i = 0; i < Object.keys( this.#repos ).length; i += batchSize ) {
 		await Promise.all( Object.keys( this.#repos ).slice( i, i + batchSize ).map( async ( repoId ) => {
 			const path = this.#repos[ repoId ].path;
