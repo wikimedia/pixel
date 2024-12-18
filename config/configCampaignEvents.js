@@ -27,6 +27,10 @@ const tests = [
 		path: '/w/index.php?title=Special:EventDetails/1&tab=ParticipantsPanel'
 	},
 	{
+		label: 'Message tab (#logged-in)',
+		path: '/w/index.php?title=Special:EventDetails/1&tab=EmailPanel'
+	},
+	{
 		label: 'Delete Event Registration (#logged-in)',
 		path: '/wiki/Special:DeleteEventRegistration/1'
 	},
