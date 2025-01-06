@@ -46,6 +46,11 @@ const tests = [
 		selectors: []
 	},
 	{
+		label: 'Full article page with JS disabled (#vector-2022 #nojs)',
+		path: '/wiki/Test',
+		selectors: []
+	},
+	{
 		label: 'Article history page (#vector-2022)',
 		path: '/w/index.php?title=Test&action=history'
 	},

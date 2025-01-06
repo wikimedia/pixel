@@ -15,6 +15,11 @@ module.exports = async ( page, scenario ) => {
 	const label = scenario.label;
 	const hashtags = label.match( /(#[^ ,)]*)/g ) || [];
 
+  	// Disable JavaScript
+	if ( hashtags.includes( '#nojs' ) ) {
+		await page.setJavaScriptEnabled( false );
+	}
+
 	// Make sure the main skin JavaScript module has loaded.
 	await require( './jsReady' )( page, hashtags );
 
