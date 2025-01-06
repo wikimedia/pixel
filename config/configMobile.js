@@ -12,6 +12,14 @@ const tests = [
 		path: '/wiki/Talk:Test'
 	},
 	{
+		label: 'Test history page in AMC mode (#minerva)',
+		path: '/wiki/Test?action=history'
+	},
+	{
+		label: 'Test history page (#minerva #mobile)',
+		path: '/wiki/Test?action=history'
+	},
+	{
 		label: 'Test (#minerva #mobile)',
 		path: '/wiki/Test'
 	},
