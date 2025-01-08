@@ -17,7 +17,7 @@ module.exports = async ( page, scenario ) => {
 
   	// Disable JavaScript
 	if ( hashtags.includes( '#nojs' ) ) {
-		await page.setJavaScriptEnabled( false );
+		return;
 	}
 
 	// Make sure the main skin JavaScript module has loaded.
