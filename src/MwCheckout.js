@@ -113,7 +113,7 @@ class MwCheckout {
 		// The final step is to run maintenance/update script to perform any
 		// database migrations.
 		await this.#simpleSpawn.spawn(
-			'php maintenance/run.php update.php --quick',
+			'php maintenance/run.php update.php --quick --force',
 			[],
 			{ shell: true }
 		);
