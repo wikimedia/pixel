@@ -83,7 +83,7 @@ services:
       context: .
       dockerfile: Dockerfile.visual-regression
       args:
-        - BACKSTOPJS_VERSION=6.3.23
+        - BACKSTOPJS_VERSION=6.3.25
     working_dir: /pixel
     env_file:
       - .env
