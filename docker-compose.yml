@@ -58,9 +58,10 @@ services:
       - ./src/seedDb.sh:/docker-entrypoint-initdb.d/seedDb.sh
     healthcheck:
       test: [ CMD, mysql, my_wiki, -e, status ]
-      interval: 5s
-      timeout: 10s
-      retries: 20
+      interval: 20s
+      timeout: 15s
+      retries: 10
+      start_period: 30s
     networks:
       - pixel_network
   novnc:
