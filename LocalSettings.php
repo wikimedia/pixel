@@ -407,3 +407,18 @@ $wgWikimediaStylesSkins = [ "vector-2022", "minerva" ];
 
 $wgParserEnableLegacyHeadingDOM = false;
 
+// Campaign events settings
+$wgCampaignEventsEnableEventInvitation = true;
+$wgCampaignEventsShowEventInvitationSpecialPages = true;
+
+$wgGroupPermissions['user']['campaignevents-enable-registration'] = true;
+$wgGroupPermissions['user']['campaignevents-delete-registration'] = true;
+$wgGroupPermissions['user']['campaignevents-organize-events'] = true;
+$wgGroupPermissions['user']['campaignevents-send-email'] = true;
+$wgGroupPermissions['organizer']['campaignevents-enable-registration'] = true;
+$wgGroupPermissions['organizer']['campaignevents-delete-registration'] = true;
+$wgGroupPermissions['organizer']['campaignevents-organize-events'] = true;
+$wgGroupPermissions['organizer']['campaignevents-send-email'] = true;
+
+$wgCampaignEventsEnableEventWikis = true;
+
