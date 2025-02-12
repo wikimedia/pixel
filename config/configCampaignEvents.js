@@ -48,7 +48,7 @@ const tests = [
 	},
 	{
 		label: 'Cancel Event Registration (#logged-in)',
-		path: '/wiki/Special:CancelEventRegistration/1'
+		path: '/wiki/Special:CancelEventRegistration/5'
 	},
 	{
 		label: 'My Events (#logged-in)',
