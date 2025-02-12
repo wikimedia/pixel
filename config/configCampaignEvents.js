@@ -31,6 +31,10 @@ const tests = [
 		path: '/w/index.php?title=Special:EventDetails/1&tab=EmailPanel'
 	},
 	{
+		label: 'Response statistics tab (#logged-in)',
+		path: '/w/index.php?title=Special:EventDetails/5&tab=StatsPanel'
+	},
+	{
 		label: 'Delete Event Registration (#logged-in)',
 		path: '/wiki/Special:DeleteEventRegistration/1'
 	},
@@ -40,11 +44,11 @@ const tests = [
 	},
 	{
 		label: 'Register for Event (#logged-in)',
-		path: '/wiki/Special:RegisterForEvent/5'
+		path: '/wiki/Special:RegisterForEvent/1'
 	},
 	{
 		label: 'Cancel Event Registration (#logged-in)',
-		path: '/wiki/Special:CancelEventRegistration/6'
+		path: '/wiki/Special:CancelEventRegistration/1'
 	},
 	{
 		label: 'My Events (#logged-in)',
