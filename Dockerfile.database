@@ -2,7 +2,7 @@ FROM mariadb:10.11.8
 
 COPY src/seedDb.sh /docker-entrypoint-initdb.d/
 
-ARG database="database_2024-05-28_12-10-37-0500(CDT).tar.gz"
+ARG database="database_2025-02-12_16-49-46-0600(CST).tar.gz"
 
 RUN apt-get update && apt-get install -y \
 	curl \
