@@ -15,7 +15,7 @@ ENV CLONE_DEPTH=$CLONE_DEPTH
 
 WORKDIR /var/www/html/w
 
-RUN /node-preparation.sh ensure_node_major_version_installed 18 || \
+RUN /node-preparation.sh ensure_node_major_version_installed 20 || \
     (echo "Failed to install Node" && exit 1) && \
     git config --global user.email "app@example.com" && \
     git config --global user.name "app" && \
