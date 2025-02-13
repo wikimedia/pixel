@@ -1,7 +1,7 @@
 const config = {
 	id: 'MediaWiki',
-	asyncCaptureLimit: 4,
-	asyncCompareLimit: 25,
+	asyncCaptureLimit: 2,
+	asyncCompareLimit: 10,
 	protocolTimeout: 45000,
 	engine: 'puppeteer',
 	engineOptions: {
