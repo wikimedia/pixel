@@ -57,9 +57,6 @@ module.exports = async ( page, scenario ) => {
 		if ( hashtags.includes( '#click-redlink' ) ) {
 			await clickBtn( page, 'a.new' );
 		}
-		if ( hashtags.includes( '#click-edit-suggestions' ) ) {
-			await clickBtn( page, '.growthexperiments-homepage-module-header-nav-icon' );
-		}
 		if ( hashtags.includes( '#click-reference' ) ) {
 			await clickBtn( page, '#cite_ref-1 a' );
 		}
