@@ -23,9 +23,6 @@
 	"mediawiki/extensions/CommunityConfiguration": {
 		"path": "extensions/CommunityConfiguration"
 	},
-	"mediawiki/extensions/GrowthExperiments": {
-		"path": "extensions/GrowthExperiments"
-	},
 	"mediawiki/extensions/Linter": {
 		"path": "extensions/Linter"
 	},
