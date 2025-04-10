@@ -25,9 +25,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Run visual regression
-      shell: 'script -q -e -c "bash {0}"'
       env:
         SCENARIO_FILTER: "Skip all scenarios"
         NONINTERACTIVE: 1
-      run: |
-        script -e -c "./pixel.js runAll --priority 3"
+      run: ./pixel.js runAll --priority 3
