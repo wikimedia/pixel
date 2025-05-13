@@ -262,7 +262,8 @@ const tests = [
 	},
 	{
 		label: 'MathML (#vector-2022)',
-		path: '/wiki/MathTestNative'
+		path: '/wiki/MathTestNative',
+		selectors: []
 	}
 ];
 
