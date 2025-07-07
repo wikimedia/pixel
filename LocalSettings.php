@@ -163,6 +163,7 @@ wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'CommunityConfiguration' );
 wfLoadExtension( 'VueTest' );
+wfLoadExtension( 'cldr' );
 if ( getenv('ENABLE_WIKILAMBDA') == 'true' ) {
 	wfLoadExtension( 'WikiLambda' );
 }

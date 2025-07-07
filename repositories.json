@@ -68,6 +68,9 @@
 	"mediawiki/extensions/WikimediaMessages": {
 		"path": "extensions/WikimediaMessages"
 	},
+	"mediawiki/extensions/cldr": {
+		"path": "extensions/cldr"
+	},
 	"mediawiki/skins/CologneBlue": {
 		"path": "skins/CologneBlue"
 	},
