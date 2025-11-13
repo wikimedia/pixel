@@ -59,9 +59,6 @@
 	"mediawiki/extensions/VueTest": {
 		"path": "extensions/VueTest"
 	},
-	"mediawiki/extensions/WikiLambda": {
-		"path": "extensions/WikiLambda"
-	},
 	"mediawiki/extensions/WikimediaMessages": {
 		"path": "extensions/WikimediaMessages"
 	},

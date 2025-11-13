@@ -35,9 +35,5 @@ module.exports = {
 	codex: {
 		priority: 1,
 		config: 'configCodex.js'
-	},
-	wikilambda: {
-		priority: 2,
-		config: 'configWikiLambda.js'
 	}
 };

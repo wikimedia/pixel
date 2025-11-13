@@ -163,9 +163,6 @@ wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'CommunityConfiguration' );
 wfLoadExtension( 'VueTest' );
 wfLoadExtension( 'cldr' );
-if ( getenv('ENABLE_WIKILAMBDA') == 'true' ) {
-	wfLoadExtension( 'WikiLambda' );
-}
 wfLoadExtension( 'WikimediaMessages' );
 
 // Make extended cookies (e.g. when logging in with "Keep me logged in" option)
