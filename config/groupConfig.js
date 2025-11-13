@@ -32,10 +32,6 @@ module.exports = {
 		priority: 1,
 		config: 'configMobile.js'
 	},
-	'campaign-events': {
-		priority: 2,
-		config: 'configCampaignEvents.js'
-	},
 	codex: {
 		priority: 1,
 		config: 'configCodex.js'
