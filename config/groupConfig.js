@@ -31,9 +31,5 @@ module.exports = {
 		name: 'Minerva and MobileFrontend',
 		priority: 1,
 		config: 'configMobile.js'
-	},
-	codex: {
-		priority: 1,
-		config: 'configCodex.js'
 	}
 };

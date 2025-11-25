@@ -56,9 +56,6 @@
 	"mediawiki/extensions/VisualEditor": {
 		"path": "extensions/VisualEditor"
 	},
-	"mediawiki/extensions/VueTest": {
-		"path": "extensions/VueTest"
-	},
 	"mediawiki/extensions/WikimediaMessages": {
 		"path": "extensions/WikimediaMessages"
 	},
@@ -85,8 +82,5 @@
 	},
 	"mediawiki/core": {
 		"path": "."
-	},
-	"design/codex": {
-		"path": "codex"
 	}
 }

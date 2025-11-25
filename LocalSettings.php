@@ -161,7 +161,6 @@ wfLoadExtension( 'Thanks' );
 wfLoadExtension( 'UniversalLanguageSelector' );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'CommunityConfiguration' );
-wfLoadExtension( 'VueTest' );
 wfLoadExtension( 'cldr' );
 wfLoadExtension( 'WikimediaMessages' );
 
