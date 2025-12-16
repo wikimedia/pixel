@@ -18,7 +18,7 @@ function makeReport() {
     <p>This page is automatically updated by the command: <pre>node pixel.js runAll</pre></p>
     <p>Page was last generated on: $(date)</p>
     <p>Using Pixel $(git describe --tags)</p>
-    <p>New version of Pixel is available <a href="https://pixel-clean.wmcloud.org/">here</a></p>
+    <p>New version of Pixel is available <a href="https://pixel.wmcloud.org/">here</a></p>
     <h2>Available reports</h2>
     <ul>
       ${html}
